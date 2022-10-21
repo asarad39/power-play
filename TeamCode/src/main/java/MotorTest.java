@@ -31,9 +31,11 @@
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
+import org.firstinspires.ftc.teamcode.RobotHardware;
+import org.firstinspires.ftc.teamcode.TeleopMove;
 
 
 @TeleOp(name="Motor Test", group="Iterative Opmode")
@@ -43,10 +45,7 @@ public class MotorTest extends OpMode
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
 
-    private DcMotor motorFR = null;
-    private DcMotor motorFL = null;
-    private DcMotor motorBR = null;
-    private DcMotor motorBL = null;
+    private RobotHardware rh = null;
 
     private double moveX;
     private double moveY;
@@ -57,57 +56,33 @@ public class MotorTest extends OpMode
     private double powerBR;
     private double powerBL;
 
+    // State
+    private TeleopMove state;
+
     @Override
     public void init() {
         telemetry.addData("Status", "Initialized");
-        motorFR = hardwareMap.get(DcMotor.class, "motorFR");
-        motorFL = hardwareMap.get(DcMotor.class, "motorFL");
-        motorBR = hardwareMap.get(DcMotor.class, "motorBR");
-        motorBL = hardwareMap.get(DcMotor.class, "motorBL");
+        rh = new RobotHardware();
+        rh.initialize(this);
         // Tell the driver that initialization is complete.
+
+        state = new TeleopMove(rh);
     }
 
     @Override
     public void loop() {
 
-        movement(gamepad1.left_stick_x,gamepad1.left_stick_y,gamepad1.right_stick_x);
+        state.update();
 
     }
 
     public void move() {
-        motorFR.setPower(powerFR);
-        motorFL.setPower(powerFL);
-        motorBR.setPower(powerBR);
-        motorBL.setPower(powerBL);
+
     }
 
-    public void movement(double x, double y, double rotate) {
-        moveX = x;
-        moveY = y;
-        moveRotate = rotate;
 
-        powerFR = - moveX + moveY + moveRotate;
-        powerFL =   moveX - moveY + moveRotate;
-        powerBR =   moveX - moveY + moveRotate;
-        powerBL = - moveX - moveY + moveRotate;
 
-        double divisor = findPowerDivisor(powerFR,powerFL,powerBR,powerBL);
 
-        powerFR = powerFR / divisor;
-        powerFL = powerFL / divisor;
-        powerBR = powerBR / divisor;
-        powerBL = powerBL / divisor;
-
-        move();
-    }
-
-    public double findPowerDivisor(double a, double b, double c, double d) {
-        double maxPower = Math.abs(a);
-        if(Math.abs(b)>maxPower) maxPower = Math.abs(b);
-        if(Math.abs(c)>maxPower) maxPower = Math.abs(c);
-        if(Math.abs(d)>maxPower) maxPower = Math.abs(d);
-        return maxPower;
-    }
 
     /////////////////////////////////////////////////////////////////////////////////
     @Override
