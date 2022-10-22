@@ -59,21 +59,32 @@ public class MotorTest extends OpMode
 
     // State
     private TeleopMove state;
+    public DcMotor motorFR;
 
     @Override
     public void init() {
         telemetry.addData("Status", "Initialized");
-        rh = new RobotHardware();
-        rh.initialize(this);
+        motorFR = hardwareMap.get(DcMotor.class, "motorFR");
+//        rh = new RobotHardware();
+//        rh.initialize(this);
         // Tell the driver that initialization is complete.
 
-        state = new TeleopMove(rh);
+//        state = new TeleopMove(rh);
     }
 
     @Override
     public void loop() {
 
-        state.update();
+        double power = 0.8;
+        //state.update();
+        if(gamepad1.dpad_up) {
+            motorFR.setPower(power);
+        } else if(gamepad1.dpad_down) {
+            motorFR.setPower(-power);
+        } else {
+            motorFR.setPower(0);
+        }
+
 
     }
 

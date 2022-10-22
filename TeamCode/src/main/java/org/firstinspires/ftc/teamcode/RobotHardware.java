@@ -28,4 +28,14 @@ public class RobotHardware {
         driveTrain.setPower(powerFR, powerFL, powerBR, powerBL);
     }
 
+    public int getLeftEncoder() {
+        return driveTrain.getLeftEncoder();
+    }
+    public int getRightEncoder() {
+        return driveTrain.getRightEncoder();
+    }
+    public int getBackEncoder() {
+        return driveTrain.getBackEncoder();
+    }
+
 }
