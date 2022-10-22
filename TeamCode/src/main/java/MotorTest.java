@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.TeleopMove;
 
+// Teleop program that uses TeleopMove state to drive using robot controller
 
 @TeleOp(name="Motor Test", group="Iterative Opmode")
 public class MotorTest extends OpMode
