@@ -70,8 +70,8 @@ public class DriveConstants {
     // Constrained to 80% of theoretical maximum to avoid trajectory errors
 
     public static double MAX_ACCEL = 30; // in inches per second^2
-    public static double MAX_ANG_VEL = Math.toRadians(60); // in radians per second
-    public static double MAX_ANG_ACCEL = Math.toRadians(60); // in radians per second^2
+    public static double MAX_ANG_VEL = Math.toRadians(180); // in radians per second
+    public static double MAX_ANG_ACCEL = Math.toRadians(180); // in radians per second^2
 
 
     public static double encoderTicksToInches(double ticks) {

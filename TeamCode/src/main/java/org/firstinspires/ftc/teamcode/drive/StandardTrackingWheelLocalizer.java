@@ -31,14 +31,13 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     public static double WHEEL_RADIUS = 1; // in
     public static double GEAR_RATIO = 1; // output (wheel) speed / input (encoder) speed
 
-    public static double LATERAL_DISTANCE = 13.797842073974683; // in; distance between the left and right wheels
-    public static double FORWARD_OFFSET = 3.5; // in; offset of the lateral wheel
+    public static double LATERAL_DISTANCE = 14.0; // in; distance between the left and right wheels
+    public static double FORWARD_OFFSET = -3.5; // in; offset of the lateral wheel
 
     private Encoder leftEncoder, rightEncoder, frontEncoder;
 
-    // TODO Multipliers Tuning
-    public static double X_MULTIPLIER = 0.98411; // Multiplier in X direction
-    public static double Y_MULTIPLIER = 0.98411; // Multiplier in Y direction
+    public static double X_MULTIPLIER = 0.980; // Multiplier in X direction
+    public static double Y_MULTIPLIER = 0.982; // Multiplier in Y direction
 
     public StandardTrackingWheelLocalizer(HardwareMap hardwareMap) {
         super(Arrays.asList(
@@ -51,10 +50,8 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
         rightEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "motorFL"));
         frontEncoder = new Encoder(hardwareMap.get(DcMotorEx.class, "motorBR"));
 
-        // TODO: reverse any encoders using Encoder.setDirection(Encoder.Direction.REVERSE)
-
-        leftEncoder.setDirection(Encoder.Direction.FORWARD);
-        rightEncoder.setDirection(Encoder.Direction.REVERSE);
+        leftEncoder.setDirection(Encoder.Direction.REVERSE);
+        rightEncoder.setDirection(Encoder.Direction.FORWARD);
         frontEncoder.setDirection(Encoder.Direction.FORWARD);
     }
 
@@ -75,10 +72,6 @@ public class StandardTrackingWheelLocalizer extends ThreeTrackingWheelLocalizer 
     @NonNull
     @Override
     public List<Double> getWheelVelocities() {
-        // TODO: If your encoder velocity can exceed 32767 counts / second (such as the REV Through Bore and other
-        //  competing magnetic encoders), change Encoder.getRawVelocity() to Encoder.getCorrectedVelocity() to enable a
-        //  compensation method
-
         return Arrays.asList(
                 encoderTicksToInches(leftEncoder.getCorrectedVelocity()) * X_MULTIPLIER,
                 encoderTicksToInches(rightEncoder.getCorrectedVelocity()) * X_MULTIPLIER,
