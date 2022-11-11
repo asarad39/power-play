@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.TeleopMove;
+import org.firstinspires.ftc.teamcode.State;
 
 // Teleop program that uses TeleopMove state to drive using robot controller
 
@@ -46,7 +47,7 @@ public class MotorTest extends OpMode
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
 
-    private RobotHardware rh = null;
+    private RobotHardware rh = new RobotHardware();;
 
     private double moveX;
     private double moveY;
@@ -59,31 +60,29 @@ public class MotorTest extends OpMode
 
     // State
     private TeleopMove state;
+
+    private State[] stack = {
+            new TeleopMove(rh)
+    };
     public DcMotor motorFR;
 
     @Override
     public void init() {
         telemetry.addData("Status", "Initialized");
         motorFR = hardwareMap.get(DcMotor.class, "motorFR");
-//        rh = new RobotHardware();
-//        rh.initialize(this);
+
+        rh.initialize(this);
         // Tell the driver that initialization is complete.
 
-//        state = new TeleopMove(rh);
     }
 
     @Override
     public void loop() {
 
-        double power = 0.8;
-        //state.update();
-        if(gamepad1.dpad_up) {
-            motorFR.setPower(power);
-        } else if(gamepad1.dpad_down) {
-            motorFR.setPower(-power);
-        } else {
-            motorFR.setPower(0);
+        for(int i=0;i<stack.length;i++) {
+            state.update();
         }
+
 
 
     }

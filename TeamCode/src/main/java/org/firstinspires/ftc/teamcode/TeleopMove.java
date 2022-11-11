@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 // State for driving using game controller
-public class TeleopMove {
+public class TeleopMove implements State {
 
     RobotHardware rh = null;
 
@@ -21,10 +21,10 @@ public class TeleopMove {
         double moveY = rh.gamepad1.left_stick_y;
         double moveRotate = rh.gamepad1.right_stick_x;
 
-        double powerFR = moveX + moveY + moveRotate;
-        double powerFL = moveX - moveY + moveRotate;
-        double powerBR = -moveX + moveY + moveRotate;
-        double powerBL = -moveX - moveY + moveRotate;
+        double powerFR =   moveX + moveY + moveRotate;
+        double powerFL =   moveX - moveY + moveRotate;
+        double powerBR = - moveX + moveY + moveRotate;
+        double powerBL = - moveX - moveY + moveRotate;
 
         double divisor = findPowerDivisor(powerFR, powerFL, powerBR, powerBL);
 
