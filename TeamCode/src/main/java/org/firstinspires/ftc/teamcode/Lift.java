@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
-// Represents the four motors of the robot in code
+// Represents the lift of the robot in code
 public class Lift {
 
     // The system contains for DC motors
@@ -15,8 +15,8 @@ public class Lift {
     private Servo liftArm = null;
     private Servo liftClaw = null;
 
-    private TouchSensor lowerBound = null;
-    private TouchSensor upperBound = null;
+    private TouchSensor touch = null;
+    // private TouchSensor upperBound = null;
 
     private int liftEncoder1 = 0;
     private int liftEncoder2 = 0;
@@ -28,6 +28,10 @@ public class Lift {
         // Links the code to the ports on the robot
         liftMotor1 = op.hardwareMap.get(DcMotor.class, "liftMotor1");
         liftMotor2 = op.hardwareMap.get(DcMotor.class, "liftMotor2");
+
+        liftArm = op.hardwareMap.get(Servo.class, "liftArm");
+        liftClaw = op.hardwareMap.get(Servo.class, "liftClaw");
+//        touch = op.hardwareMap.get(DcMotor.class, "touch");
     }
 
     public void setPower(double powerL, double positionArmL, double positionClawL) {
@@ -47,10 +51,9 @@ public class Lift {
     public int getLiftEncoder1() { return liftEncoder1; }
     public int getLiftEncoder2() { return liftEncoder2; }
 
-    public double getLiftArmEncoder() { return liftArmEncoder; }
-    public double getLiftClawEncoder() { return liftClawEncoder; }
+    public double getLiftArmEncoder() { return liftArmEncoder; } // servo
+    public double getLiftClawEncoder() { return liftClawEncoder; } // servo
 
-    public boolean getUpperBound() { return upperBound.isPressed(); }
-    public boolean getLowerBound() { return lowerBound.isPressed(); }
+//    public boolean getLowerBound() { return touch.isPressed(); }
 
 }

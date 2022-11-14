@@ -36,6 +36,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.TeleopMove;
+import org.firstinspires.ftc.teamcode.TeleopLift;
 import org.firstinspires.ftc.teamcode.State;
 
 // Teleop program that uses TeleopMove state to drive using robot controller
@@ -59,17 +60,16 @@ public class MotorTest extends OpMode
     private double powerBL;
 
     // State
-    private TeleopMove state;
 
     private State[] stack = {
-            new TeleopMove(rh)
+//            new TeleopMove(rh),
+            new TeleopLift(rh)
     };
     public DcMotor motorFR;
 
     @Override
     public void init() {
         telemetry.addData("Status", "Initialized");
-        motorFR = hardwareMap.get(DcMotor.class, "motorFR");
 
         rh.initialize(this);
         // Tell the driver that initialization is complete.
@@ -80,10 +80,8 @@ public class MotorTest extends OpMode
     public void loop() {
 
         for(int i=0;i<stack.length;i++) {
-            state.update();
+            stack[i].update();
         }
-
-
 
     }
 

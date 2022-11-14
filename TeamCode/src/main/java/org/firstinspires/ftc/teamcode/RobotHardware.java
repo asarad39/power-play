@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 // Represents the hardware of our robot in code
 
 public class RobotHardware {
@@ -11,6 +13,7 @@ public class RobotHardware {
     private DriveTrain driveTrain = null;
     private Lift lift = null;
     public Gamepad gamepad1 = null;
+    public Telemetry telemetry;
 
     public RobotHardware() {
 
@@ -24,6 +27,7 @@ public class RobotHardware {
         driveTrain.initialize(op);
         lift.initialize(op);
         gamepad1 = op.gamepad1;
+        telemetry = op.telemetry;
     }
 
     // Drive in teleop
@@ -31,10 +35,16 @@ public class RobotHardware {
         driveTrain.setPower(powerFR, powerFL, powerBR, powerBL);
     }
 
+    // Lift in teleop
     public void lift(double powerL, double positionArmL, double positionClawL) {
         lift.setPower(powerL, positionArmL, positionClawL);
     }
 
+    public Telemetry getTelemetry() {
+        return this.telemetry;
+    }
+
+    // Drive returns
     public int getLeftDriveEncoder() {
         return driveTrain.getLeftEncoder();
     }
@@ -45,21 +55,23 @@ public class RobotHardware {
         return driveTrain.getBackEncoder();
     }
 
-
-    public int getLift1Encoder() {
+    // Lift returns
+    // lift height
+    public int getLiftEncoder1() {
         return lift.getLiftEncoder1();
     }
-    public int getLift2Encoder() {
+    public int getLiftEncoder2() {
         return lift.getLiftEncoder2();
     }
 
-    public double getArmEncoder() {
+    // lift arm position
+    public double getLiftArmEncoder() {
         return lift.getLiftArmEncoder();
     }
-    public double getClawEncoder() {
+    public double getLiftClawEncoder() {
         return lift.getLiftClawEncoder();
     }
 
-    public boolean getLiftUpperBound() { return lift.getUpperBound(); }
-    public boolean getLiftLowerBound() { return lift.getLowerBound(); }
+    // lift claw position
+//    public boolean getLiftLowerBound() { return lift.getLowerBound(); }
 }
