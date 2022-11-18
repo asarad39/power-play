@@ -16,6 +16,13 @@ public abstract class Mathematics {
         return logisticPower;
     }
 
+    public static double PIDcontrol(double currentPosition, double targetPosition, double currentTime, double startTime) {
+
+        double PIDpower = (currentPosition - targetPosition) * (currentTime - startTime);
+
+        return PIDpower;
+    }
+
 
 
 }

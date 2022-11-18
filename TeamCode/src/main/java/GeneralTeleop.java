@@ -30,8 +30,6 @@
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
@@ -41,9 +39,10 @@ import org.firstinspires.ftc.teamcode.State;
 
 // Teleop program that uses TeleopMove state to drive using robot controller
 
-@TeleOp(name="Motor Test", group="Iterative Opmode")
-public class MotorTest extends OpMode
+@TeleOp(name="General Teleop 2022", group="Iterative Opmode")
+public class GeneralTeleop extends OpMode
 {
+
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
@@ -62,10 +61,9 @@ public class MotorTest extends OpMode
     // State
 
     private State[] stack = {
-//            new TeleopMove(rh),
+            new TeleopMove(rh),
             new TeleopLift(rh)
     };
-    public DcMotor motorFR;
 
     @Override
     public void init() {
@@ -85,9 +83,8 @@ public class MotorTest extends OpMode
 
     }
 
-    public void move() {
 
-    }
+
 
 
 

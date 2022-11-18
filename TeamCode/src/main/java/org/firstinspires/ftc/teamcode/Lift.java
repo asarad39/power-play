@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -29,21 +31,29 @@ public class Lift {
         liftMotor1 = op.hardwareMap.get(DcMotor.class, "liftMotor1");
         liftMotor2 = op.hardwareMap.get(DcMotor.class, "liftMotor2");
 
+        liftMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
         liftArm = op.hardwareMap.get(Servo.class, "liftArm");
         liftClaw = op.hardwareMap.get(Servo.class, "liftClaw");
-//        touch = op.hardwareMap.get(DcMotor.class, "touch");
+        touch = op.hardwareMap.get(TouchSensor.class, "touch");
     }
 
-    public void setPower(double powerL, double positionArmL, double positionClawL) {
-        liftMotor1.setPower(powerL);
-        liftMotor2.setPower(-powerL);
-
-        liftArm.setPosition(positionArmL);
-        liftClaw.setPosition(positionClawL);
+    public void setPower(double powerL) {
+        //TODO: swap sign if going backwards
+        liftMotor1.setPower(-powerL);
+        liftMotor2.setPower( powerL);
 
         liftEncoder1 = liftMotor1.getCurrentPosition();
         liftEncoder2 = liftMotor2.getCurrentPosition();
+    }
 
+    public void setLiftServos(double positionArmL, double positionClawL) {
+        liftArm.setPosition(positionArmL);
+        liftClaw.setPosition(positionClawL);
+    }
+
+    public void setLiftServoEncoders() {
         liftArmEncoder = liftArm.getPosition();
         liftClawEncoder = liftClaw.getPosition();
     }
@@ -54,6 +64,6 @@ public class Lift {
     public double getLiftArmEncoder() { return liftArmEncoder; } // servo
     public double getLiftClawEncoder() { return liftClawEncoder; } // servo
 
-//    public boolean getLowerBound() { return touch.isPressed(); }
+    public boolean getTouch() { return touch.isPressed(); }
 
 }

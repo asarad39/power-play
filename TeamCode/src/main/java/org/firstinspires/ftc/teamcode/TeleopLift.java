@@ -7,10 +7,13 @@ public class TeleopLift implements State {
 
     RobotHardware rh = null;
     Telemetry telemetry;
+
+    private double lastClaw = 0;
+    private double lastArm = 0;
+
     public TeleopLift(RobotHardware rh) {
 
         this.rh = rh;
-//        this.telemetry = rh.getTelemetry();
     }
 
     public void update() {
@@ -21,10 +24,9 @@ public class TeleopLift implements State {
         double liftMove = getLiftPowerDebug(maxLiftSpeed);
 
         //TODO: Add touch sensor back in, Anish removed it on 11/14
-        //TODO: add in drive motors
 
 //        // stop points
-//        if (rh.getLiftLowerBound() == true) {
+//        if (rh.getTouch() == true) {
 //            liftMove = 0;
 //        }
 
@@ -34,7 +36,8 @@ public class TeleopLift implements State {
         // claw open and shut (servo)
         double liftClawPosition = claw();
 
-        rh.lift(liftMove, liftArmPosition, liftClawPosition);
+        rh.lift(liftMove);
+        rh.liftServos(liftArmPosition, liftClawPosition);
 
         rh.telemetry.addData("Lift Clicks 1", rh.getLiftEncoder1());
         rh.telemetry.addData("Lift Clicks 2", rh.getLiftEncoder2());
@@ -49,35 +52,44 @@ public class TeleopLift implements State {
         if (rh.gamepad1.dpad_up == true) {
             liftMove = + maxLiftSpeed;
         } else if (rh.gamepad1.dpad_down == true) {
-            liftMove = - maxLiftSpeed;
+            liftMove = -0.5 * maxLiftSpeed;
         } else {
             liftMove = 0;
         }
         return liftMove;
     }
 
+    public double getLiftPowerLgstcCrv(double maxPower, double targetPosition) {
+        return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoder1(), targetPosition, .005);
+    }
+
+    public double getLiftPowerPID(double targetPosition, double startTime) {
+        return Mathematics.PIDcontrol(rh.getLiftEncoder1(), targetPosition, rh.time.seconds(), startTime);
+    }
+
     public double claw() {
-        double liftClawPosition;
-        double minClawPosition = 0;
-        double maxClawPosition = 1;
-        if (rh.gamepad1.left_bumper == true) {
-            liftClawPosition = maxClawPosition;
-        } else {
-            liftClawPosition = minClawPosition;
+
+        double liftClawPosition = rh.getLiftClawEncoder();
+
+        if (rh.gamepad1.left_bumper && lastClaw == liftClawPosition) {
+            liftClawPosition = (liftClawPosition + 1) % 2;
+        } else if (!rh.gamepad1.left_bumper) {
+            lastClaw = rh.getLiftClawEncoder();
         }
+
         return liftClawPosition;
     }
 
     public double arm() {
 
-        double liftArmPosition;
-        double minArmPosition = 0;
-        double maxArmPosition = 1;
-        if (rh.gamepad1.right_bumper == true) {
-            liftArmPosition = maxArmPosition;
-        } else {
-            liftArmPosition = minArmPosition;
+        double liftArmPosition = rh.getLiftArmEncoder();
+
+        if (rh.gamepad1.left_bumper && lastClaw == liftArmPosition) {
+            liftArmPosition = (liftArmPosition + 1) % 2;
+        } else if (!rh.gamepad1.left_bumper) {
+            lastClaw = rh.getLiftClawEncoder();
         }
+
         return liftArmPosition;
     }
 }

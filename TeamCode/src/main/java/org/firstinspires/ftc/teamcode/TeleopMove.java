@@ -34,7 +34,7 @@ public class TeleopMove implements State {
         powerBR = powerBR * scalar / divisor;
         powerBL = powerBL * scalar / divisor;
 
-        rh.drive(-powerFR, -powerFL, -powerBR, -powerBL);
+        rh.drive(powerFR, powerFL, powerBR, powerBL);
     }
 
     public double findPowerDivisor(double a, double b, double c, double d) {
