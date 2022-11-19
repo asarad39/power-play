@@ -67,11 +67,14 @@ public class GeneralTeleop extends OpMode
 
     @Override
     public void init() {
+        // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
 
         rh.initialize(this);
-        // Tell the driver that initialization is complete.
 
+        for(int i=0;i<stack.length;i++) {
+            stack[i].init();
+        }
     }
 
     @Override

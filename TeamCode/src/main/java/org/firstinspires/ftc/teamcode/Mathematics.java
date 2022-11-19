@@ -16,9 +16,14 @@ public abstract class Mathematics {
         return logisticPower;
     }
 
-    public static double PIDcontrol(double currentPosition, double targetPosition, double currentTime, double startTime) {
+    public static double PIDcontrol(double maxPower, double scalar, double currentPosition, double targetPosition, double currentTime, double startTime) {
 
-        double PIDpower = (currentPosition - targetPosition) * (currentTime - startTime);
+        // smaller scalar will be shallower curve
+        double PIDpower = (targetPosition - currentPosition) * (currentTime - startTime) * scalar;
+        if (PIDpower > 1) {
+            PIDpower = 1;
+        }
+        PIDpower = PIDpower * maxPower;
 
         return PIDpower;
     }

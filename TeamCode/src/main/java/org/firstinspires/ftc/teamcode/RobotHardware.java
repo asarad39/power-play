@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,6 +15,7 @@ public class RobotHardware {
     private DriveTrain driveTrain = null;
     private Lift lift = null;
     public Gamepad gamepad1 = null;
+    public Gamepad gamepad2 = null;
     public Telemetry telemetry;
 
     public ElapsedTime time = new ElapsedTime();
@@ -32,6 +34,7 @@ public class RobotHardware {
         driveTrain.initialize(op);
         lift.initialize(op);
         gamepad1 = op.gamepad1;
+        gamepad2 = op.gamepad2;
         telemetry = op.telemetry;
     }
 
@@ -44,9 +47,13 @@ public class RobotHardware {
     public void lift(double powerL) {
         lift.setPower(powerL);
     }
+    public void liftTarget(double target) {
+        lift.setTarget(target);
+    }
 
     public void liftServos(double positionArmL, double positionClawL) {
         lift.setLiftServos(positionArmL, positionClawL);
+        lift.setLiftServoEncoders();
     }
 
     public Telemetry getTelemetry() {

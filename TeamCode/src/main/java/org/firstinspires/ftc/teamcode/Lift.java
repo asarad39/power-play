@@ -4,6 +4,7 @@ import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
@@ -34,15 +35,27 @@ public class Lift {
         liftMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        liftMotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        liftMotor1.setDirection(DcMotorSimple.Direction.FORWARD);
+        liftMotor1.setDirection(DcMotorSimple.Direction.REVERSE);
+
         liftArm = op.hardwareMap.get(Servo.class, "liftArm");
         liftClaw = op.hardwareMap.get(Servo.class, "liftClaw");
+
         touch = op.hardwareMap.get(TouchSensor.class, "touch");
+    }
+
+    public void setTarget(double target) {
+        liftMotor1.setTargetPosition((int)target);
+        liftMotor2.setTargetPosition((int)target);
     }
 
     public void setPower(double powerL) {
         //TODO: swap sign if going backwards
-        liftMotor1.setPower(-powerL);
-        liftMotor2.setPower( powerL);
+        liftMotor1.setPower(powerL);
+        liftMotor2.setPower(powerL);
 
         liftEncoder1 = liftMotor1.getCurrentPosition();
         liftEncoder2 = liftMotor2.getCurrentPosition();

@@ -7,6 +7,7 @@ public class TeleopLift implements State {
 
     RobotHardware rh = null;
     Telemetry telemetry;
+    PID liftPID = new PID();
 
     private double lastClaw = 0;
     private double lastArm = 0;
@@ -16,12 +17,18 @@ public class TeleopLift implements State {
         this.rh = rh;
     }
 
+    public void init() {
+        rh.liftServos(0, 1);
+    }
+
     public void update() {
 
         // set lift movement speed
-        double maxLiftSpeed = 0.75;
+        double maxLiftSpeed = 0.2;
 
-        double liftMove = getLiftPowerDebug(maxLiftSpeed);
+        double liftMove = maxLiftSpeed;
+        double target = getLiftPowerPID(1);
+
 
         //TODO: Add touch sensor back in, Anish removed it on 11/14
 
@@ -36,6 +43,7 @@ public class TeleopLift implements State {
         // claw open and shut (servo)
         double liftClawPosition = claw();
 
+        rh.liftTarget(target);
         rh.lift(liftMove);
         rh.liftServos(liftArmPosition, liftClawPosition);
 
@@ -63,19 +71,47 @@ public class TeleopLift implements State {
         return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoder1(), targetPosition, .005);
     }
 
-    public double getLiftPowerPID(double targetPosition, double startTime) {
-        return Mathematics.PIDcontrol(rh.getLiftEncoder1(), targetPosition, rh.time.seconds(), startTime);
+    public double getLiftPowerPID(double maxPower) {
+        if (rh.gamepad1.a == true) {
+            liftPID.setTargetPosition(0);
+            liftPID.setStartTime(rh.time.milliseconds());
+        }
+        if (rh.gamepad1.b == true) {
+            liftPID.setTargetPosition(900);
+            liftPID.setStartTime(rh.time.milliseconds());
+        }
+        if (rh.gamepad1.y == true) {
+            liftPID.setTargetPosition(1900);
+            liftPID.setStartTime(rh.time.milliseconds());
+        }
+        if (rh.gamepad1.x == true) {
+            liftPID.setTargetPosition(2500);
+            liftPID.setStartTime(rh.time.milliseconds());
+        }
+        double targetPosition = liftPID.getTargetPosition();
+        double startTime = liftPID.getStartTime();
+
+        return targetPosition;
+
+        //return Mathematics.PIDcontrol(maxPower, 0.0000005, rh.getLiftEncoder1(), targetPosition, rh.time.seconds(), startTime);
     }
 
     public double claw() {
 
         double liftClawPosition = rh.getLiftClawEncoder();
 
-        if (rh.gamepad1.left_bumper && lastClaw == liftClawPosition) {
-            liftClawPosition = (liftClawPosition + 1) % 2;
-        } else if (!rh.gamepad1.left_bumper) {
+        if (rh.gamepad1.left_bumper) {
+            if (lastClaw == liftClawPosition) {
+                liftClawPosition = (liftClawPosition + 1) % 2;
+            }
+        } else {
             lastClaw = rh.getLiftClawEncoder();
         }
+
+        rh.telemetry.addData("liftClawPosition", liftClawPosition);
+        rh.telemetry.addData("lastClaw", lastClaw);
+        rh.telemetry.addData("clawEncoder", rh.getLiftClawEncoder());
+        rh.telemetry.addLine();
 
         return liftClawPosition;
     }
@@ -84,11 +120,18 @@ public class TeleopLift implements State {
 
         double liftArmPosition = rh.getLiftArmEncoder();
 
-        if (rh.gamepad1.left_bumper && lastClaw == liftArmPosition) {
-            liftArmPosition = (liftArmPosition + 1) % 2;
-        } else if (!rh.gamepad1.left_bumper) {
-            lastClaw = rh.getLiftClawEncoder();
+        if (rh.gamepad1.right_bumper) {
+            if (lastArm == liftArmPosition) {
+                liftArmPosition = (liftArmPosition + .5) % 1;
+            }
+        } else {
+            lastArm = rh.getLiftArmEncoder();
         }
+
+        rh.telemetry.addData("liftArmPosition", liftArmPosition);
+        rh.telemetry.addData("lastArm", lastArm);
+        rh.telemetry.addData("armEncoder", rh.getLiftArmEncoder());
+        rh.telemetry.addLine();
 
         return liftArmPosition;
     }
