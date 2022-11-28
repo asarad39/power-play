@@ -28,35 +28,27 @@
  */
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.RobotHardware;
-import org.firstinspires.ftc.teamcode.TeleopMove;
-import org.firstinspires.ftc.teamcode.TeleopLift;
 import org.firstinspires.ftc.teamcode.State;
+import org.firstinspires.ftc.teamcode.TeleopLift;
+import org.firstinspires.ftc.teamcode.TeleopMove;
 
-// Teleop program that uses TeleopMove state to drive using robot controller
 
-@TeleOp(name="General Teleop 2022", group="Iterative Opmode")
-public class GeneralTeleop extends OpMode
+
+@Autonomous(name="General Autonomous 2022", group="")
+public class GeneralAutonomous extends OpMode
 {
 
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
 
-    private RobotHardware rh = new RobotHardware();;
-
-    private double moveX;
-    private double moveY;
-    private double moveRotate;
-
-    private double powerFR;
-    private double powerFL;
-    private double powerBR;
-    private double powerBL;
+    private RobotHardware rh = new RobotHardware();
 
     // State
 
@@ -77,31 +69,14 @@ public class GeneralTeleop extends OpMode
         }
     }
 
+    public void start() {
+    }
+
     @Override
     public void loop() {
 
-        for(int i=0;i<stack.length;i++) {
+        for (int i = 0; i < stack.length; i++) {
             stack[i].update();
         }
-
-    }
-
-
-
-
-
-
-
-    /////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    public void stop() {
-    }
-    @Override
-    public void init_loop() {
-    }
-    @Override
-    public void start() {
-        runtime.reset();
     }
 }

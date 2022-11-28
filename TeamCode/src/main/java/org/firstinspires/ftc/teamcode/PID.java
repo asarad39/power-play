@@ -4,10 +4,12 @@ public class PID {
 
     private double targetPosition;
     private double startTime;
+    private double maxHeight;
 
-    public PID() {
+    public PID(double max) {
         targetPosition = 0;
         startTime = 0;
+        maxHeight = max;
     }
 
     public double getStartTime() {
@@ -24,5 +26,18 @@ public class PID {
 
     public void setTargetPosition(double targetPosition) {
         this.targetPosition = targetPosition;
+    }
+
+    public void adjustTargetPosition(double adjustment) {
+        targetPosition += adjustment;
+    }
+
+    public void checkForInvalid() {
+        if (targetPosition < 0) {
+            targetPosition = 0;
+        }
+        if (targetPosition > maxHeight) {
+            targetPosition = maxHeight;
+        }
     }
 }
