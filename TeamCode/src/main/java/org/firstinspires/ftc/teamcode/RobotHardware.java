@@ -88,6 +88,11 @@ public class RobotHardware {
         return lift.getLiftClawEncoder();
     }
 
+    // lift reset encoders
+    public void resetLiftEncoders() {
+        lift.resetEncoders();
+    }
+
     // lift claw position
     public boolean getTouch() { return lift.getTouch(); }
 }

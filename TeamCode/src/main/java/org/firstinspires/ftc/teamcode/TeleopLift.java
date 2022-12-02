@@ -11,24 +11,25 @@ public class TeleopLift implements State {
 
     private double lastClaw = 0;
     private double lastArm = 0;
+    private boolean goHome;
 
     public TeleopLift(RobotHardware rh) {
-
         this.rh = rh;
     }
 
     public void init() {
         rh.liftServos(0, 1);
+        goHome = true;
     }
 
 
     public void update() {
-        //TODO: Add touch sensor back in, Anish removed it on 11/14
 
-//        // stop points
-//        if (rh.getTouch() == true) {
-//            liftMove = 0;
-//        }
+        // stop point
+        if (rh.getTouch() == true && ( rh.getLiftEncoder1() != 0 || rh.getLiftEncoder2() != 0 )) {
+            rh.resetLiftEncoders();
+            goHome = false;
+        }
 
         // move arm up and down (servo)
         double liftArmPosition = arm();
@@ -45,8 +46,14 @@ public class TeleopLift implements State {
 
         double liftMove = getLiftPowerLgstcCrv(liftSpeed, liftPID.getTargetPosition());
 
-        rh.lift(liftMove);
+        if (goHome == false) {
+            rh.lift(liftMove);
+        } else {
+            rh.lift(-.2);
+        }
         rh.liftServos(liftArmPosition, liftClawPosition);
+
+        rh.telemetry.addData("Touch is pressed", rh.getTouch());
 
         rh.telemetry.addData("Lift Clicks 1", rh.getLiftEncoder1());
         rh.telemetry.addData("Lift Clicks 2", rh.getLiftEncoder2());

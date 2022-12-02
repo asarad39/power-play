@@ -35,8 +35,7 @@ public class Lift {
         liftMotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         liftMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        liftMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        resetEncoders();
 
         liftMotor1.setTargetPosition(0);
         liftMotor2.setTargetPosition(0);
@@ -50,6 +49,11 @@ public class Lift {
         liftClaw = op.hardwareMap.get(Servo.class, "liftClaw");
 
         touch = op.hardwareMap.get(TouchSensor.class, "touch");
+    }
+
+    public void resetEncoders() {
+        liftMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void setTarget(double target) {
