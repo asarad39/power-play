@@ -25,12 +25,6 @@ public class TeleopLift implements State {
 
     public void update() {
 
-        // stop point
-        if (rh.getTouch() == true && ( rh.getLiftEncoder1() != 0 || rh.getLiftEncoder2() != 0 )) {
-            rh.resetLiftEncoders();
-            goHome = false;
-        }
-
         // move arm up and down (servo)
         double liftArmPosition = arm();
 
@@ -46,17 +40,27 @@ public class TeleopLift implements State {
 
         double liftMove = getLiftPowerLgstcCrv(liftSpeed, liftPID.getTargetPosition());
 
+        if (rh.getTouch() == true && ( rh.getLiftEncoder1() != 0 || rh.getLiftEncoder2() != 0 )) {
+            rh.resetLiftEncoders();
+            goHome = false;
+        }
+
         if (goHome == false) {
             rh.lift(liftMove);
         } else {
-            rh.lift(-.2);
+            rh.lift(-0.2);
+            liftPID.setTargetPosition(-1000);
         }
+
         rh.liftServos(liftArmPosition, liftClawPosition);
 
         rh.telemetry.addData("Touch is pressed", rh.getTouch());
+        rh.telemetry.addData("Home", goHome);
+        rh.telemetry.addData("Lift Target Position", liftPID.getTargetPosition());
 
         rh.telemetry.addData("Lift Clicks 1", rh.getLiftEncoder1());
         rh.telemetry.addData("Lift Clicks 2", rh.getLiftEncoder2());
+
 
         rh.telemetry.addData("Arm Servo Pos", rh.getLiftClawEncoder());
         rh.telemetry.addData("Claw Servo Pos", rh.getLiftArmEncoder());
@@ -113,7 +117,9 @@ public class TeleopLift implements State {
             liftPID.setStartTime(rh.time.milliseconds());
         }
 
-        liftPID.checkForInvalid();
+        if (goHome == false) { // so the lift can move down while homing
+            liftPID.checkForInvalid();
+        }
 
         return getLiftPowerLgstcCrv(maxPower, liftPID.getTargetPosition());
     }
