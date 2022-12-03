@@ -12,6 +12,10 @@ public class TeleopMove implements State {
 
     public void init() {}
 
+    public boolean getIsDone() {
+        return false;
+    }
+
     public void update() {
 
         // Calculate the motor powers and send them to the DC motors

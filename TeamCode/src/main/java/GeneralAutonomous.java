@@ -33,7 +33,9 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.AutoClawArm;
 import org.firstinspires.ftc.teamcode.RobotHardware;
+import org.firstinspires.ftc.teamcode.StackState;
 import org.firstinspires.ftc.teamcode.State;
 import org.firstinspires.ftc.teamcode.TeleopLift;
 import org.firstinspires.ftc.teamcode.TeleopMove;
@@ -47,36 +49,25 @@ public class GeneralAutonomous extends OpMode
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
-
     private RobotHardware rh = new RobotHardware();
-
-    // State
-
-    private State[] stack = {
-            new TeleopMove(rh),
-            new TeleopLift(rh)
-    };
+    private StackState autoStack = new StackState();
 
     @Override
     public void init() {
-        // Tell the driver that initialization is complete.
-        telemetry.addData("Status", "Initialized");
+
+        autoStack.push(new AutoClawArm(rh, "open", "down"));
 
         rh.initialize(this);
 
-        for(int i=0;i<stack.length;i++) {
-            stack[i].init();
-        }
-    }
+        autoStack.init();
 
-    public void start() {
+        // Tell the driver that initialization is complete.
+        telemetry.addData("Status", "Initialized");
     }
 
     @Override
     public void loop() {
 
-        for (int i = 0; i < stack.length; i++) {
-            stack[i].update();
-        }
+        autoStack.update();
     }
 }
