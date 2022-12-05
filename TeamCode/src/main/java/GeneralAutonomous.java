@@ -35,11 +35,12 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.AutoClawArm;
 import org.firstinspires.ftc.teamcode.RobotHardware;
-import org.firstinspires.ftc.teamcode.StackState;
+import org.firstinspires.ftc.teamcode.SeriesStack;
 import org.firstinspires.ftc.teamcode.State;
 import org.firstinspires.ftc.teamcode.TeleopLift;
 import org.firstinspires.ftc.teamcode.TeleopMove;
 
+import java.util.ArrayList;
 
 
 @Autonomous(name="General Autonomous 2022", group="")
@@ -50,7 +51,7 @@ public class GeneralAutonomous extends OpMode
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
-    private StackState autoStack = new StackState();
+    private SeriesStack autoStack = new SeriesStack();
 
     @Override
     public void init() {
@@ -59,7 +60,7 @@ public class GeneralAutonomous extends OpMode
 
         rh.initialize(this);
 
-        autoStack.init();
+        autoStack.init(this);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");

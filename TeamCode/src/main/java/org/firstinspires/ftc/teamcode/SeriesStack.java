@@ -1,16 +1,22 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.ArrayList;
 
-public class StackState implements State {
+public class SeriesStack implements AutoState {
 
     private ArrayList<State> stack;
     Telemetry telemetry;
     boolean isDone = false;
 
-    public StackState() {
+    public ArrayList<State> getStack() {
+        return this.stack;
+    }
+
+    public SeriesStack() {
         stack = new ArrayList<State>();
     }
 
@@ -22,12 +28,10 @@ public class StackState implements State {
         stack.remove(index);
     }
 
-    public void init() {
-        stack.get(0).init();
-    }
+    public void init(OpMode op) {
 
-    public boolean getIsDone() {
-        return stack.size() > 1;
+        stack.get(0).init();
+
     }
 
     public void update() {
@@ -35,7 +39,7 @@ public class StackState implements State {
         State s = stack.get(0);
         s.update();
 
-        if(s.getIsDone() == true) {
+        if(s.getIsDone() == true) { //TODO: find alternative
             pop(0);
 
             if (stack.size() > 0) {
