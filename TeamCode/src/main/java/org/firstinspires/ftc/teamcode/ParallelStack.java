@@ -35,7 +35,7 @@ public class ParallelStack implements AutoState {
     }
 
     public void update() {
-        
+
         for(State s: stack) {
 
             s.init();

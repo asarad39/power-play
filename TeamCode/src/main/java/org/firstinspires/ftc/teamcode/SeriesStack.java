@@ -39,13 +39,18 @@ public class SeriesStack implements AutoState {
         State s = stack.get(0);
         s.update();
 
-        if(s.getIsDone() == true) { //TODO: find alternative
+        //if(s.getIsDone() == true) { //TODO: find alternative
             pop(0);
 
             if (stack.size() > 0) {
                 State newS = stack.get(0);
                 newS.init();
             }
-        }
+        //}
+    }
+
+    @Override
+    public void init(OpMode op, int index) {
+
     }
 }
