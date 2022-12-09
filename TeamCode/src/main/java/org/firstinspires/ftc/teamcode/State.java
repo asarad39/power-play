@@ -4,4 +4,5 @@ public interface State {
     
     public void update();
     public void init();
+    public boolean getIsDone();
 }

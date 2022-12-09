@@ -22,6 +22,10 @@ public class TeleopLift implements State {
         goHome = true;
     }
 
+    @Override
+    public boolean getIsDone() {
+        return false;
+    }
 
     public void update() {
 

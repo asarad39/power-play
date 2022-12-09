@@ -7,50 +7,40 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class ParallelStack implements AutoState {
+public class ParallelStack extends StackList implements State {
 
-    private ArrayList<State> stack;
     Telemetry telemetry;
     boolean isDone = false;
 
-    public ArrayList<State> getStack() {
-        return this.stack;
-    }
 
     public ParallelStack() {
-        stack = new ArrayList<State>();
-    }
-
-    public void push(State state) {
-        stack.add(state);
-    }
-
-    public void pop(int index) {
-        stack.remove(index);
-    }
-
-    public void init(OpMode op, int index) {
-        stack.get(index).init();
 
     }
 
     public void update() {
 
-        for(State s: stack) {
-
-            s.init();
-        }
-
-        if (stack.size() > 0) {
-
-            for(State s: stack) {
+        if (getStack().size() > 0) {
+            for(State s: getStack()) {
+                s.init();
                 s.update();
             }
         }
     }
 
     @Override
-    public void init(OpMode op) {
-
+    public boolean getIsDone() {
+        return false;
     }
+
+    public void updateStack() {
+        for (State s : getStack()) {
+            s.update();
+        }
+    }
+
+    public void updateStackIndex(int index) {
+        getStack().get(index).update();
+    }
+
+
 }

@@ -71,8 +71,8 @@ public class GeneralTeleop extends OpMode
 
         rh.initialize(this);
 
-        for(int i=0;i<stack.length;i++) {
-            stack[i].init();
+        for(State s : stack) {
+            s.init();
         }
         telemetry.addData("Status", "Initialized");
     }
@@ -80,8 +80,8 @@ public class GeneralTeleop extends OpMode
     @Override
     public void loop() {
 
-        for(int i=0;i<stack.length;i++) {
-            stack[i].update();
+        for(State s : stack) {
+            s.update();
         }
 
     }

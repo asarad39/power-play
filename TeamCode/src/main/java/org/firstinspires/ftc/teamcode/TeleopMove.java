@@ -48,4 +48,9 @@ public class TeleopMove implements State {
         if(Math.abs(d)>maxPower) maxPower = Math.abs(d);
         return maxPower;
     }
+
+    @Override
+    public boolean getIsDone() {
+        return false;
+    }
 }

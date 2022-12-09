@@ -24,7 +24,6 @@ public class AutoClawArm implements State {
 
     }
 
-    @Override
     public boolean getIsDone() {
         return isDone;
     }
@@ -32,7 +31,7 @@ public class AutoClawArm implements State {
     public void update() {
 
         rh.liftServos(arm(), claw());
-        isDone = true;
+
     }
 
     public double claw() {
