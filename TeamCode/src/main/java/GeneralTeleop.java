@@ -47,19 +47,9 @@ public class GeneralTeleop extends OpMode
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
 
-    private RobotHardware rh = new RobotHardware();;
-
-    private double moveX;
-    private double moveY;
-    private double moveRotate;
-
-    private double powerFR;
-    private double powerFL;
-    private double powerBR;
-    private double powerBL;
+    private RobotHardware rh = new RobotHardware();
 
     // State
-
     private State[] stack = {
             new TeleopMove(rh),
             new TeleopLift(rh)
@@ -71,19 +61,19 @@ public class GeneralTeleop extends OpMode
 
         rh.initialize(this);
 
-        for(State s : stack) {
-            s.init();
+        for(int i = 0; i < stack.length; i++) {
+            stack[i].init();
         }
+
         telemetry.addData("Status", "Initialized");
     }
 
     @Override
     public void loop() {
 
-        for(State s : stack) {
-            s.update();
+        for(int i = 0; i < stack.length; i++) {
+            stack[i].update();
         }
-
     }
 
 

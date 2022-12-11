@@ -50,10 +50,14 @@ public class TeleopLift implements State {
         }
 
         if (goHome == false) {
+
             rh.lift(liftMove);
+
         } else {
+
             rh.lift(-0.2);
             liftPID.setTargetPosition(-1000);
+
         }
 
         rh.liftServos(liftArmPosition, liftClawPosition);
