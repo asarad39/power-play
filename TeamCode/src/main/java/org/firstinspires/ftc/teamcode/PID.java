@@ -32,12 +32,12 @@ public class PID {
         targetPosition += adjustment;
     }
 
-    public void checkForInvalid() {
-        if (targetPosition < 0) {
-            targetPosition = 0;
+    public void checkForInvalid(double adjust) {
+        if (targetPosition - adjust < 0) {
+            targetPosition = adjust;
         }
-        if (targetPosition > maxHeight) {
-            targetPosition = maxHeight;
+        if (targetPosition - adjust > maxHeight) {
+            targetPosition = maxHeight + adjust;
         }
     }
 }

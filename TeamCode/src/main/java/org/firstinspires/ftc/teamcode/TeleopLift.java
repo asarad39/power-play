@@ -12,6 +12,7 @@ public class TeleopLift implements State {
     private double lastClaw = 0;
     private double lastArm = 0;
     private boolean goHome;
+    private double homeAdjustment1 = 0;
 
     public TeleopLift(RobotHardware rh) {
         this.rh = rh;
@@ -44,51 +45,55 @@ public class TeleopLift implements State {
 
         double liftMove = getLiftPowerLgstcCrv(liftSpeed, liftPID.getTargetPosition());
 
-        if (rh.getTouch() == true && ( rh.getLiftEncoder1() != 0 || rh.getLiftEncoder2() != 0 )) {
-            rh.resetLiftEncoders();
-            goHome = false;
-        }
+        if (goHome == true) {
 
-        if (goHome == false) {
+            rh.lift(0.3);
+            liftPID.setTargetPosition(-10000);
 
-            rh.lift(liftMove);
+            if (rh.getTouch() == true) {
+
+//                rh.resetLiftEncoders(); // TODO: the problem!
+                homeAdjustment1 = rh.getLiftEncoder1();
+                goHome = false;
+            }
 
         } else {
 
-            rh.lift(-0.2);
-            liftPID.setTargetPosition(-1000);
-
+            rh.lift(liftMove);
         }
+
 
         rh.liftServos(liftArmPosition, liftClawPosition);
 
         rh.telemetry.addData("Touch is pressed", rh.getTouch());
-        rh.telemetry.addData("Home", goHome);
+        rh.telemetry.addData("goHome", goHome);
+        rh.telemetry.addData("liftMove", liftMove);
         rh.telemetry.addData("Lift Target Position", liftPID.getTargetPosition());
 
-        rh.telemetry.addData("Lift Clicks 1", rh.getLiftEncoder1());
-        rh.telemetry.addData("Lift Clicks 2", rh.getLiftEncoder2());
+        rh.telemetry.addData("Lift Clicks 1", rh.getLiftEncoder1() - homeAdjustment1);
+        rh.telemetry.addData("homeAdjustment1", homeAdjustment1);
+//        rh.telemetry.addData("Lift Clicks 2", rh.getLiftEncoder2() + homeAdjustment1);
 
 
         rh.telemetry.addData("Arm Servo Pos", rh.getLiftClawEncoder());
         rh.telemetry.addData("Claw Servo Pos", rh.getLiftArmEncoder());
     }
 
-    public double getLiftPowerDebug(double maxLiftSpeed) {
-        double liftMove;
-
-        if (rh.gamepad1.dpad_up == true) {
-            liftMove = + maxLiftSpeed;
-        } else if (rh.gamepad1.dpad_down == true) {
-            liftMove = -0.5 * maxLiftSpeed;
-        } else {
-            liftMove = 0;
-        }
-        return liftMove;
-    }
+//    public double getLiftPowerDebug(double maxLiftSpeed) {
+//        double liftMove;
+//
+//        if (rh.gamepad1.dpad_up == true) {
+//            liftMove = + maxLiftSpeed;
+//        } else if (rh.gamepad1.dpad_down == true) {
+//            liftMove = -0.5 * maxLiftSpeed;
+//        } else {
+//            liftMove = 0;
+//        }
+//        return liftMove;
+//    }
 
     public void adjustLiftHeight() {
-        double adjustmentSize = 10;
+        double adjustmentSize = 20;
 
         if (rh.gamepad1.dpad_up == true) {
             liftPID.adjustTargetPosition( adjustmentSize );
@@ -98,12 +103,12 @@ public class TeleopLift implements State {
     }
 
     public double getLiftPowerLgstcCrv(double maxPower, double targetPosition) {
-        return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoder1(), targetPosition, .01);
+        return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoder1() - homeAdjustment1, targetPosition, .01);
     }
 
     public double getLiftPowerPID(double maxPower) {
         double home = 0;
-        double ground = 180;
+//        double ground = 180;
         double low = 500;
         double middle = 1700;
         double high = 2900;
@@ -126,7 +131,7 @@ public class TeleopLift implements State {
         }
 
         if (goHome == false) { // so the lift can move down while homing
-            liftPID.checkForInvalid();
+            liftPID.checkForInvalid(homeAdjustment1);
         }
 
         return getLiftPowerLgstcCrv(maxPower, liftPID.getTargetPosition());

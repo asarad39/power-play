@@ -56,11 +56,11 @@ public class GeneralAutonomous extends OpMode
     @Override
     public void init() {
 
-        autoStack.push(new AutoClawArm(rh, "open", "down"));
+//        autoStack.push(new AutoClawArm(rh, "open", "down"));
 
         rh.initialize(this);
 
-        autoStack.init(this);
+//        autoStack.init(this);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
