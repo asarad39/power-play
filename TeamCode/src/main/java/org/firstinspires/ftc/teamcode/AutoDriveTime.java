@@ -11,10 +11,13 @@ public class AutoDriveTime implements State {
 
 
     private double startTime;
+    private String direction;
+    private double time;
 
-    public AutoDriveTime(RobotHardware rh, String goalString) {
+    public AutoDriveTime(RobotHardware rh, int seconds, String direction) {
         this.rh = rh;
-        this.goalString = goalString;
+        this.direction = direction;
+        this.time = seconds;
     }
 
     public void init() {
@@ -22,54 +25,34 @@ public class AutoDriveTime implements State {
     }
 
     public boolean getIsDone() {
-        return (15 > Math.abs(rh.getLiftEncoder1() - liftPID.getTargetPosition()));
+        return (rh.time.seconds() > startTime + time);
     }
 
     public void update() {
 
         // set lift movement speed
-        double maxLiftSpeed = 0.8;
-
-        double liftSpeed = getLiftPowerPID(maxLiftSpeed);
-        rh.liftTarget(liftPID.getTargetPosition());
-
-        double liftMove = getLiftPowerLgstcCrv(liftSpeed, liftPID.getTargetPosition());
-
-        rh.lift(liftMove);
-    }
-
-
-    public double getLiftPowerLgstcCrv(double maxPower, double targetPosition) {
-        return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoder1(), targetPosition, .01);
-    }
-
-    public double getLiftPowerPID(double maxPower) {
-        double home = 0;
-        double low = 500;
-        double middle = 1700;
-        double high = 2900;
-
-        if (goalString.equals("home")) {
-            liftPID.setTargetPosition(home);
-            liftPID.setStartTime(rh.time.milliseconds());
-
-        } else if (goalString.equals("low")) {
-            liftPID.setTargetPosition(low);
-            liftPID.setStartTime(rh.time.milliseconds());
-
-        } else if (goalString.equals("middle")) {
-            liftPID.setTargetPosition(middle);
-            liftPID.setStartTime(rh.time.milliseconds());
-
-        } else if (goalString.equals("high")) {
-            liftPID.setTargetPosition(high);
-            liftPID.setStartTime(rh.time.milliseconds());
-
+        double speed = 0.5;
+        double moveX = 0;
+        double moveY = 0;
+        double moveRotate = 0;
+        if (direction.equals("forward")) {
+            moveY = 1;
+        } else if (direction.equals("backward")) {
+            moveY = -1;
+        } else if (direction.equals("right")) {
+            moveX = 1;
+        } else if (direction.equals("front")) {
+            moveX = -1;
         } else {
-            throw new IllegalArgumentException("nonexistent lift position name");
+            throw new IllegalArgumentException("nonexistent move direction");
         }
 
-        return getLiftPowerLgstcCrv(maxPower, liftPID.getTargetPosition());
-    }
+        double powerFR = + moveX + moveY + moveRotate;
+        double powerFL = + moveX - moveY + moveRotate;
+        double powerBR = - moveX + moveY + moveRotate;
+        double powerBL = - moveX - moveY + moveRotate;
 
+        rh.drive(powerFR, powerFL, powerBR, powerBL);
+
+    }
 }
