@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class StackList {
 
-    private ArrayList<State> stack;
+    public ArrayList<State> stack;
     public StackList() {
         stack = new ArrayList<State>();
     }

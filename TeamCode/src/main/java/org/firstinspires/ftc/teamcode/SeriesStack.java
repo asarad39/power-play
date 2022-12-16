@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import androidx.annotation.NonNull;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -8,53 +10,53 @@ import java.util.ArrayList;
 
 public class SeriesStack extends StackList implements State {
 
-    Telemetry telemetry;
     boolean isDone = false;
+    RobotHardware rh = null;
 
-    public SeriesStack() {
 
+    public SeriesStack(RobotHardware rh) {
+
+        super();
+        this.rh = rh;
+    }
+
+    public void createStack(State[] states) {
+        for (int i=0; i<states.length; i++) {
+            stack.add(i, states[i]);
+        }
     }
 
     public void init() {
-
-        getStack().get(0).init();
+        stack.get(0).init();
     }
 
     @Override
     public boolean getIsDone() {
-        return false;
+        return isDone;
     }
 
     public void update() {
 
-        State s = getStack().get(0);
+        State s = stack.get(0);
+        s.update();
+        rh.telemetry.addData("stack size", stack.size());
 
-        if(s.getIsDone() == true) { //TODO: find alternative
-            pop(0);
+        if(s.getIsDone() == true) {
+            stack.remove(0);
 
-            if (getStack().size() > 0) {
-                State newS = getStack().get(0);
+            if (stack.size() > 0) {
+                State newS = stack.get(0);
                 newS.init();
+            } else {
+                isDone = true;
+                rh.telemetry.addData("isdone", isDone);
             }
         }
     }
 
-    public void updateStack() {
-        for (State s : getStack()) {
-            s.update();
-        }
-    }
-
     public void updateStackIndex(int index) {
-        getStack().get(index).update();
+        stack.get(index).update();
     }
 
-
-    public void pop(int index) {
-        getStack().remove(index);
-    }
-
-    public void init(OpMode op, int index) {
-
-    }
+//    public void init(OpMode op, int index) { }
 }

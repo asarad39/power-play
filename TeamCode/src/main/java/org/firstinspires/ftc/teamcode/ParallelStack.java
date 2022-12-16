@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+import androidx.annotation.NonNull;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -14,13 +16,19 @@ public class ParallelStack extends StackList implements State {
 
 
     public ParallelStack() {
-
+        super();
     }
+
+//    public void createStack(State[] states) {
+//        for (int i=0; i<states.length; i++) {
+//            stack.add(i, states[i]);
+//        }
+//    }
 
     public void update() {
 
-        if (getStack().size() > 0) {
-            for(State s: getStack()) {
+        if (stack.size() > 0) {
+            for(State s: stack) {
                 s.init();
                 s.update();
             }
@@ -33,13 +41,12 @@ public class ParallelStack extends StackList implements State {
     }
 
     public void updateStack() {
-        for (State s : getStack()) {
-            s.update();
-        }
-    }
+        for (State s : stack) {
 
-    public void updateStackIndex(int index) {
-        getStack().get(index).update();
+            if (!s.getIsDone()) {
+                s.update();
+            }
+        }
     }
 
 

@@ -51,12 +51,17 @@ public class GeneralAutonomous extends OpMode
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
-    private SeriesStack autoStack = new SeriesStack();
+    private SeriesStack autoStack = new SeriesStack(rh);
 
     @Override
     public void init() {
 
-//        autoStack.push(new AutoClawArm(rh, "open", "down"));
+        State[] states = {
+                new AutoClawArm(rh, "open", "down"),
+                new AutoClawArm(rh, "closed", "down")
+        };
+
+        autoStack.createStack(states);
 
         rh.initialize(this);
 
@@ -68,7 +73,8 @@ public class GeneralAutonomous extends OpMode
 
     @Override
     public void loop() {
-
-        autoStack.update();
+        if (!autoStack.getIsDone()) {
+            autoStack.update();
+        }
     }
 }

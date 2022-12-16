@@ -10,7 +10,7 @@ public class AutoClawArm implements State {
 
     private double lastClaw = 0;
     private double lastArm = 0;
-    private boolean isDone = false;
+    private double startTime;
     private String clawString = null; // "open" or "closed"
     private String armString = null; // "up" or "down"
 
@@ -21,11 +21,11 @@ public class AutoClawArm implements State {
     }
 
     public void init() {
-
+        startTime = rh.time.seconds();
     }
 
     public boolean getIsDone() {
-        return isDone;
+        return (rh.time.seconds() > 3 + startTime);
     }
 
     public void update() {
@@ -39,9 +39,9 @@ public class AutoClawArm implements State {
         double liftClawPosition = rh.getLiftClawEncoder();
 
         if (clawString.equals("open")) {
-            liftClawPosition = 1;
-        } else if (clawString.equals("closed")) {
             liftClawPosition = 0;
+        } else if (clawString.equals("closed")) {
+            liftClawPosition = 1;
         }
 
         return liftClawPosition;
@@ -52,9 +52,9 @@ public class AutoClawArm implements State {
         double liftArmPosition = rh.getLiftClawEncoder();
 
         if (armString.equals("up")) {
-            liftArmPosition = 0;
-        } else if (armString.equals("down")) {
             liftArmPosition = 1;
+        } else if (armString.equals("down")) {
+            liftArmPosition = 0;
         }
 
         return liftArmPosition;
