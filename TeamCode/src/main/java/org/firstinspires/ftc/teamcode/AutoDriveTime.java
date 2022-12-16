@@ -3,16 +3,16 @@ package org.firstinspires.ftc.teamcode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 // State for driving using game controller
-public class AutoMoveLift implements State {
+public class AutoDriveTime implements State {
 
     RobotHardware rh = null;
     Telemetry telemetry;
-    PID liftPID = new PID(2900);
+    double seconds;
+
 
     private double startTime;
-    private String goalString;
 
-    public AutoMoveLift(RobotHardware rh, String goalString) {
+    public AutoDriveTime(RobotHardware rh, String goalString) {
         this.rh = rh;
         this.goalString = goalString;
     }

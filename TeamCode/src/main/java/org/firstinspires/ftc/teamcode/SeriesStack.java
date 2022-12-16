@@ -41,7 +41,7 @@ public class SeriesStack extends StackList implements State {
         s.update();
         rh.telemetry.addData("stack size", stack.size());
 
-        if(s.getIsDone() == true) {
+        if (s.getIsDone() == true) {
             stack.remove(0);
 
             if (stack.size() > 0) {
@@ -49,14 +49,7 @@ public class SeriesStack extends StackList implements State {
                 newS.init();
             } else {
                 isDone = true;
-                rh.telemetry.addData("isdone", isDone);
             }
         }
     }
-
-    public void updateStackIndex(int index) {
-        stack.get(index).update();
-    }
-
-//    public void init(OpMode op, int index) { }
 }

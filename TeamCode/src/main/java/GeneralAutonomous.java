@@ -34,6 +34,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.AutoClawArm;
+import org.firstinspires.ftc.teamcode.AutoMoveLift;
+import org.firstinspires.ftc.teamcode.ParallelStack;
 import org.firstinspires.ftc.teamcode.RobotHardware;
 import org.firstinspires.ftc.teamcode.SeriesStack;
 import org.firstinspires.ftc.teamcode.State;
@@ -51,14 +53,14 @@ public class GeneralAutonomous extends OpMode
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
-    private SeriesStack autoStack = new SeriesStack(rh);
+    private ParallelStack autoStack = new ParallelStack(rh);
 
     @Override
     public void init() {
 
         State[] states = {
-                new AutoClawArm(rh, "open", "down"),
-                new AutoClawArm(rh, "closed", "down")
+                new AutoMoveLift(rh, "middle"),
+                new AutoClawArm(rh, "open", "up"),
         };
 
         autoStack.createStack(states);

@@ -16,12 +16,4 @@ public class StackList {
     public int size() {
         return stack.size();
     }
-
-    public void update() {
-
-    }
-
-    public void init() {
-
-    }
 }

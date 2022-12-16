@@ -42,6 +42,8 @@ public class AutoClawArm implements State {
             liftClawPosition = 0;
         } else if (clawString.equals("closed")) {
             liftClawPosition = 1;
+        } else {
+            throw new IllegalArgumentException("nonexistent claw position name");
         }
 
         return liftClawPosition;
@@ -55,6 +57,8 @@ public class AutoClawArm implements State {
             liftArmPosition = 1;
         } else if (armString.equals("down")) {
             liftArmPosition = 0;
+        } else {
+            throw new IllegalArgumentException("nonexistent arm position name");
         }
 
         return liftArmPosition;
