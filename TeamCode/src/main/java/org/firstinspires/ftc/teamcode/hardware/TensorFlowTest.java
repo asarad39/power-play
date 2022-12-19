@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -48,7 +48,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Custom TensorFlow Webcam Test", group = "Concept")
+@TeleOp(name = "Default TensorFlow Webcam Test", group = "Concept")
 public class TensorFlowTest extends LinearOpMode {
 
     /*
@@ -61,21 +61,21 @@ public class TensorFlowTest extends LinearOpMode {
 
     // Commented out lines that used built in asset - only custom objects
     private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-    private static final String TFOD_MODEL_FILE  =
-             "/sdcard/FIRST/tflitemodels/Felix_PowerPlay.tflite";
+//    private static final String TFOD_MODEL_FILE  =
+//             "/sdcard/FIRST/tflitemodels/Felix_PowerPlay.tflite";
 
-
-//    private static final String[] LABELS = {
-//            "1 Bolt",
-//            "2 Bulb",
-//            "3 Panel"
-//    };
 
     private static final String[] LABELS = {
-            "Green Bug Side",
-            "HHS Logo side",
-            "Red Robot Side"
+            "1 Bolt",
+            "2 Bulb",
+            "3 Panel"
     };
+//
+//    private static final String[] LABELS = {
+//            "Green Bug Side",
+//            "HHS Logo side",
+//            "Red Robot Side"
+//    };
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -196,7 +196,7 @@ public class TensorFlowTest extends LinearOpMode {
 
         // Use loadModelFromAsset() if the TF Model is built in as an asset by Android Studio
         // Use loadModelFromFile() if you have downloaded a custom team model to the Robot Controller's FLASH.
-//        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
-        tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
+//        tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
     }
 }
