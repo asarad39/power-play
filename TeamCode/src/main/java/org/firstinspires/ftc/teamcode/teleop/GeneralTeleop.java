@@ -33,7 +33,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.autonomous.AutoClawArm;
+import org.firstinspires.ftc.teamcode.autonomous.AutoDriveTime;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 // Teleop program that uses TeleopMove state to drive using robot controller
@@ -42,36 +45,35 @@ import org.firstinspires.ftc.teamcode.stateStructure.State;
 public class GeneralTeleop extends OpMode
 {
 
-
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
-
     private RobotHardware rh = new RobotHardware();
-
-    // State
-    private State[] stack = {
-            new TeleopMove(rh),
-            new TeleopLift(rh)
-    };
+    private ParallelStack teleStack = new ParallelStack(rh);
 
     @Override
     public void init() {
-        // Tell the driver that initialization is complete.
 
         rh.initialize(this);
 
-        for(int i = 0; i < stack.length; i++) {
-            stack[i].init();
-        }
+        State[] states = {
 
-        telemetry.addData("Status", "Initialized");
+                new TeleopMove(rh),
+                new TeleopLift(rh),
+        };
+
+        teleStack.createStack(states);
+        teleStack.init();
+
+        rh.telemetry.addData("Status", "Initialized");
     }
 
     @Override
     public void loop() {
 
-        for(int i = 0; i < stack.length; i++) {
-            stack[i].update();
+        rh.telemetry.addData("teleStack", teleStack.getIsDone());
+
+        if (!teleStack.getIsDone()) {
+            teleStack.update();
         }
     }
 

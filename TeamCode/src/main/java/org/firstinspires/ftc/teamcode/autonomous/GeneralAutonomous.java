@@ -62,6 +62,7 @@ public class GeneralAutonomous extends OpMode
         };
 
         autoStack.createStack(states);
+        autoStack.init();
 
         rh.initialize(this);
 
