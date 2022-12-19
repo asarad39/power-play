@@ -5,6 +5,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+
+import java.util.List;
 
 // Represents the hardware of our robot in code
 
@@ -13,18 +16,20 @@ public class RobotHardware {
     // Create objects for all of the hardware subsystems of the robot
     private DriveTrain driveTrain = null;
     private Lift lift = null;
+    public TensorFlow tensorFlow = null;
+
     public Gamepad gamepad1 = null;
     public Gamepad gamepad2 = null;
     public Telemetry telemetry;
+    private static int sleeve = 0;
 
     public ElapsedTime time = new ElapsedTime();
-
-
 
     public RobotHardware() {
 
         driveTrain = new DriveTrain();
         lift = new Lift();
+        tensorFlow = new TensorFlow();
 
     }
 
@@ -32,6 +37,8 @@ public class RobotHardware {
 
         driveTrain.initialize(op);
         lift.initialize(op);
+        tensorFlow.initialize(op);
+
         gamepad1 = op.gamepad1;
         gamepad2 = op.gamepad2;
         telemetry = op.telemetry;
@@ -94,4 +101,14 @@ public class RobotHardware {
 
     // lift claw position
     public boolean getTouch() { return lift.getTouch(); }
+
+    public List<Recognition> getRecognitions() throws Exception {
+        return tensorFlow.getRecognitions();
+    }
+
+    public static void setSleeve(int sleeve) {
+        RobotHardware.sleeve = sleeve;
+    }
+    public static int getSleeve() { return RobotHardware.sleeve; }
+    public boolean getCustom() { return tensorFlow.getCustom(); }
 }

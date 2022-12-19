@@ -8,7 +8,6 @@ import org.firstinspires.ftc.teamcode.stateStructure.State;
 public class AutoClawArm implements State {
 
     RobotHardware rh = null;
-    Telemetry telemetry;
 
     private double lastClaw = 0;
     private double lastArm = 0;

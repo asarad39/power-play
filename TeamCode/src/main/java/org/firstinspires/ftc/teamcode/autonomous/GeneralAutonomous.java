@@ -37,6 +37,7 @@ import org.firstinspires.ftc.teamcode.autonomous.AutoClawArm;
 import org.firstinspires.ftc.teamcode.autonomous.AutoDriveTime;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
+import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 
@@ -48,16 +49,18 @@ public class GeneralAutonomous extends OpMode
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
-    private ParallelStack autoStack = new ParallelStack(rh);
-//    private SeriesStack autoStack = new SeriesStack(rh);
+//    private ParallelStack autoStack = new ParallelStack(rh);
+    private SeriesStack autoStack = new SeriesStack(rh);
 
     @Override
     public void init() {
 
         State[] states = {
 
-                new AutoDriveTime(rh, 3.0, "forward"),
-                new AutoClawArm(rh, "open", "up"),
+                new AutoClawArm(rh, "open", "down"),
+                new AutoTensorFlow(rh),
+//                new AutoDriveTime(rh, 3.0, "forward"),
+                new AutoClawArm(rh, "closed", "down"),
 //                new AutoMoveLift(rh, "middle"),
         };
 
@@ -75,6 +78,7 @@ public class GeneralAutonomous extends OpMode
     @Override
     public void loop() {
         rh.telemetry.addData("autoStack", autoStack.getIsDone());
+        rh.telemetry.addData("sleeve", RobotHardware.getSleeve());
 
         if (!autoStack.getIsDone()) {
             autoStack.update();

@@ -29,7 +29,6 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import java.util.List;
@@ -49,8 +48,8 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
-public class CustomTFTest extends LinearOpMode {
+@TeleOp(name = "Custom TensorFlow Webcam Test", group = "Concept")
+public class TensorFlowTest extends LinearOpMode {
 
     /*
      * Specify the source for the Tensor Flow Model.
@@ -59,15 +58,23 @@ public class CustomTFTest extends LinearOpMode {
      * has been downloaded to the Robot Controller's SD FLASH memory, it must to be loaded using loadModelFromFile()
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
+
+    // Commented out lines that used built in asset - only custom objects
     private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-     private static final String TFOD_MODEL_FILE  =
-             "/sdcard/FIRST/tflitemodels/model_20221205_161828.tflite";
+    private static final String TFOD_MODEL_FILE  =
+             "/sdcard/FIRST/tflitemodels/Felix_PowerPlay.tflite";
 
 
-    private static final String[] LABELS = { // TODO: talk to Felix about names
-            "1 Bolt",
-            "2 Bulb",
-            "3 Panel"
+//    private static final String[] LABELS = {
+//            "1 Bolt",
+//            "2 Bulb",
+//            "3 Panel"
+//    };
+
+    private static final String[] LABELS = {
+            "Green Bug Side",
+            "HHS Logo side",
+            "Red Robot Side"
     };
 
     /*
@@ -83,7 +90,12 @@ public class CustomTFTest extends LinearOpMode {
      * and paste it in to your code on the next line, between the double quotes.
      */
     private static final String VUFORIA_KEY =
-            " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+            "AU4vjhT/////AAABmaAOaCEHnkkmsyVTf1phAM9YBREuY5WuM3Hg0fnl42nNCoSl+x7mRqdgpTT8Pwa8" +
+                    "PyDX1qoTMnA7CNJXEm+KMIBW21wArWKoFWAaUCcQhHzNYwq5lTwDU+DHLhoZxFnx0upTxEwS" +
+                    "AUoYfTMJ7xyWXRs0tuKHTGYjcVgb8rXWzCUu/P3No660ADve1RKvWlE2NYnzemzritTBYTazz" +
+                    "23XObdQelJgR84b5lv8aSMdOX6M0B/uqJTAgtBbnIHVp/lBNnAOETfKbbtE54gd694BijkFNs" +
+                    "lKUlWzexeTOLgH+51zpPhDabvZksMDqqmCNNjvAVlFuEGdHeG4lUK2wOb3EP/bHTehAgbTgJj" +
+                    "8kD/mQ8ay";
 
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -184,7 +196,7 @@ public class CustomTFTest extends LinearOpMode {
 
         // Use loadModelFromAsset() if the TF Model is built in as an asset by Android Studio
         // Use loadModelFromFile() if you have downloaded a custom team model to the Robot Controller's FLASH.
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
-        // tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
+//        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
+        tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
     }
 }
