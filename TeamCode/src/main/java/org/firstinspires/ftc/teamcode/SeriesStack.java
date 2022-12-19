@@ -30,16 +30,14 @@ public class SeriesStack extends StackList implements State {
         stack.get(0).init();
     }
 
-    @Override
-    public boolean getIsDone() {
-        return isDone;
-    }
-
     public void update() {
 
         State s = stack.get(0);
         s.update();
+
         rh.telemetry.addData("stack size", stack.size());
+//        rh.telemetry.addData("isDone [0]", this.getStack().get(0).getIsDone());
+        rh.telemetry.addData("isDone stack[0]", stack.get(0).getIsDone());
 
         if (s.getIsDone() == true) {
             stack.remove(0);
@@ -51,5 +49,10 @@ public class SeriesStack extends StackList implements State {
                 isDone = true;
             }
         }
+    }
+
+    @Override
+    public boolean getIsDone() {
+        return isDone;
     }
 }

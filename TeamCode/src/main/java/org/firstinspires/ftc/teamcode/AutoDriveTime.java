@@ -6,18 +6,15 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class AutoDriveTime implements State {
 
     RobotHardware rh = null;
-    Telemetry telemetry;
-    double seconds;
-
 
     private double startTime;
     private String direction;
-    private double time;
+    private double seconds;
 
-    public AutoDriveTime(RobotHardware rh, int seconds, String direction) {
+    public AutoDriveTime(RobotHardware rh, double seconds, String direction) {
         this.rh = rh;
         this.direction = direction;
-        this.time = seconds;
+        this.seconds = seconds;
     }
 
     public void init() {
@@ -25,7 +22,13 @@ public class AutoDriveTime implements State {
     }
 
     public boolean getIsDone() {
-        return (rh.time.seconds() > startTime + time);
+        if (rh.time.seconds() > seconds + startTime) {
+
+            rh.drive(0, 0, 0, 0);
+            return true;
+        }
+
+        return false;
     }
 
     public void update() {
@@ -35,14 +38,15 @@ public class AutoDriveTime implements State {
         double moveX = 0;
         double moveY = 0;
         double moveRotate = 0;
+
         if (direction.equals("forward")) {
-            moveY = 1;
+            moveY = -0.3;
         } else if (direction.equals("backward")) {
-            moveY = -1;
+            moveY = 0.3;
         } else if (direction.equals("right")) {
-            moveX = 1;
+            moveX = 0.3;
         } else if (direction.equals("front")) {
-            moveX = -1;
+            moveX = -0.3;
         } else {
             throw new IllegalArgumentException("nonexistent move direction");
         }
@@ -53,6 +57,5 @@ public class AutoDriveTime implements State {
         double powerBL = - moveX - moveY + moveRotate;
 
         rh.drive(powerFR, powerFL, powerBR, powerBL);
-
     }
 }
