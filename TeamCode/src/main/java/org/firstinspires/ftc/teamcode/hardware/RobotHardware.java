@@ -17,7 +17,7 @@ public class RobotHardware {
 
     // Create objects for all of the hardware subsystems of the robot
     private DriveTrain driveTrain = null;
-    private Lift lift = null;
+    private LiftClawArm lift = null;
     private TensorFlow tensorFlow = null;
     private Pose2d currentPose = null;
 
@@ -34,7 +34,7 @@ public class RobotHardware {
     public RobotHardware() {
 
         driveTrain = new DriveTrain();
-        lift = new Lift();
+        lift = new LiftClawArm();
         tensorFlow = new TensorFlow();
         currentPose = new Pose2d();
 
@@ -45,7 +45,7 @@ public class RobotHardware {
     public RobotHardware(Pose2d currentPose) {
 
         driveTrain = new DriveTrain();
-        lift = new Lift();
+        lift = new LiftClawArm();
         tensorFlow = new TensorFlow();
         this.currentPose = currentPose;
 

@@ -55,22 +55,20 @@ public class GeneralAutonomous extends OpMode
     @Override
     public void init() {
 
+        rh.initialize(this);
+
         State[] states = {
 
-                new AutoClawArm(rh, "open", "down"),
-                new AutoTensorFlow(rh),
+//                new AutoClawArm(rh, "open", "down"),
+//                new AutoTensorFlow(rh),
 //                new AutoDriveTime(rh, 3.0, "forward"),
-                new AutoClawArm(rh, "closed", "down"),
+//                new AutoClawArm(rh, "closed", "down"),
 //                new AutoMoveLift(rh, "middle"),
-                new AutoSpline(rh, false,3, 3, Math.toRadians(90), false),
+                new AutoSpline(rh, false,12, 12, Math.toRadians(90), false),
         };
 
         autoStack.createStack(states);
         autoStack.init();
-
-        rh.initialize(this);
-
-//        autoStack.init(this);
 
         // Tell the driver that initialization is complete.
         rh.telemetry.addData("Status", "Initialized");
