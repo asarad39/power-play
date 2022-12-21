@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.roadrunnerPackages.drive.SampleMecanumDrive;
 
 import java.util.List;
 
@@ -16,7 +18,10 @@ public class RobotHardware {
     // Create objects for all of the hardware subsystems of the robot
     private DriveTrain driveTrain = null;
     private Lift lift = null;
-    public TensorFlow tensorFlow = null;
+    private TensorFlow tensorFlow = null;
+    private Pose2d currentPose = null;
+
+    public SampleMecanumDrive sampleMec = null;
 
     public Gamepad gamepad1 = null;
     public Gamepad gamepad2 = null;
@@ -25,11 +30,24 @@ public class RobotHardware {
 
     public ElapsedTime time = new ElapsedTime();
 
+    // If no pose is passed, in we start at (0, 0, 0) for roadrunner
     public RobotHardware() {
 
         driveTrain = new DriveTrain();
         lift = new Lift();
         tensorFlow = new TensorFlow();
+        currentPose = new Pose2d();
+
+    }
+
+    // Overloaded ption for adding a starting pose when we create an autonomous program, if we want
+    // to use the official coordinate system with (0, 0) in the center of the field
+    public RobotHardware(Pose2d currentPose) {
+
+        driveTrain = new DriveTrain();
+        lift = new Lift();
+        tensorFlow = new TensorFlow();
+        this.currentPose = currentPose;
 
     }
 
@@ -42,6 +60,7 @@ public class RobotHardware {
         gamepad1 = op.gamepad1;
         gamepad2 = op.gamepad2;
         telemetry = op.telemetry;
+        sampleMec = new SampleMecanumDrive(op.hardwareMap);
     }
 
     // Drive in teleop
@@ -111,4 +130,12 @@ public class RobotHardware {
     }
     public static int getSleeve() { return RobotHardware.sleeve; }
     public boolean getCustom() { return tensorFlow.getCustom(); }
+
+    public Pose2d getCurrentPose() {
+        return currentPose;
+    }
+
+    public void setCurrentPose(Pose2d currentPose) {
+        this.currentPose = currentPose;
+    }
 }

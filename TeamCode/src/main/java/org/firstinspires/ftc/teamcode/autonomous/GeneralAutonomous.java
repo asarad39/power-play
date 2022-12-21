@@ -62,6 +62,7 @@ public class GeneralAutonomous extends OpMode
 //                new AutoDriveTime(rh, 3.0, "forward"),
                 new AutoClawArm(rh, "closed", "down"),
 //                new AutoMoveLift(rh, "middle"),
+                new AutoSpline(rh, false,3, 3, Math.toRadians(90), false),
         };
 
         autoStack.createStack(states);

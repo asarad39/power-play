@@ -23,7 +23,7 @@ public class AutoTensorFlow implements State {
 
     public void init() {
         startTime = rh.time.seconds();
-        custom = rh.tensorFlow.getCustom();
+        custom = rh.getCustom();
     }
 
     public boolean getIsDone() {
