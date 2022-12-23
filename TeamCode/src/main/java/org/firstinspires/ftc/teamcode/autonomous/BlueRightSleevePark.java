@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.autonomous;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -41,15 +42,14 @@ import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 
-@Autonomous(name="General Autonomous 2022", group="")
-public class GeneralAutonomous extends OpMode
+@Autonomous(name="BlueRightSleevePark", group="Blue Right")
+public class BlueRightSleevePark extends OpMode
 {
 
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
-    private RobotHardware rh = new RobotHardware();
-    //    private ParallelStack autoStack = new ParallelStack(rh);
+    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
     private SeriesStack autoStack = new SeriesStack(rh);
 
     @Override
@@ -59,19 +59,9 @@ public class GeneralAutonomous extends OpMode
 
         State[] states = {
 
-                // Examples:
-//                new AutoClawArm(rh, "open", "down"),
-//                new AutoTensorFlow(rh),
-//                new AutoDriveTime(rh, 3.0, "forward"),
-//                new AutoSeekColor(rh, "blue"),
-//                new AutoMoveLift(rh, "middle"),
-//                new AutoSpline(rh, false,5, 5, Math.toRadians(90), false),
-
-                // For mapping directions:
-//                new AutoSpline(rh, false,5, 0, Math.toRadians(0), false),
-//                new AutoSpline(rh, false,0, 5, Math.toRadians(0), false),
-//                new AutoSpline(rh, false,0, 0, Math.toRadians(90), false),
+                new AutoTensorFlow(rh),
         };
+
 
         autoStack.createStack(states);
         autoStack.init();
