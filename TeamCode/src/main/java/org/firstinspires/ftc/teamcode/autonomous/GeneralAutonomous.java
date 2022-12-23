@@ -59,12 +59,15 @@ public class GeneralAutonomous extends OpMode
 
         State[] states = {
 
-//                new AutoClawArm(rh, "open", "down"),
+                new AutoClawArm(rh, "open", "down"),
 //                new AutoTensorFlow(rh),
 //                new AutoDriveTime(rh, 3.0, "forward"),
-//                new AutoClawArm(rh, "closed", "down"),
+                new AutoSeekColor(rh, "blue"),
+                new AutoClawArm(rh, "open", "up"),
 //                new AutoMoveLift(rh, "middle"),
-                new AutoSpline(rh, false,12, 12, Math.toRadians(90), false),
+//                new AutoSpline(rh, false,12, 12, Math.toRadians(90), false),
+                new AutoSeekColor(rh, "red"),
+                new AutoClawArm(rh, "open", "down"),
         };
 
         autoStack.createStack(states);

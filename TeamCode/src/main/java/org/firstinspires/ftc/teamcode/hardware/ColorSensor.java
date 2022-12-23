@@ -14,10 +14,8 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-// Represents the lift of the robot in code
 public class ColorSensor {
 
-    // The system contains for DC motors
     private NormalizedColorSensor colorSensor = null;
 
     private float gain = 0;
@@ -66,36 +64,24 @@ public class ColorSensor {
         return (double) colors.blue;
     }
 
-//
-//    // Get the normalized colors from the sensor
-//    Color.colorToHSV(colors.toColor(), hsvValues);
-//
-//    /* Use telemetry to display feedback on the driver station. We show the red, green, and blue
-//     * normalized values from the sensor (in the range of 0 to 1), as well as the equivalent
-//     * HSV (hue, saturation and value) values. See http://web.archive.org/web/20190311170843/https://infohost.nmt.edu/tcc/help/pubs/colortheory/web/hsv.html
-//     * for an explanation of HSV color. */
-//
-//    // Update the hsvValues array by passing it to Color.colorToHSV()
-//
-//
-//            telemetry.addLine()
-//                    .addData("Red", "%.3f", colors.red)
-//                    .addData("Green", "%.3f", colors.green)
-//                    .addData("Blue", "%.3f", colors.blue);
-//            telemetry.addLine()
-//                    .addData("Hue", "%.3f", hsvValues[0])
-//                    .addData("Saturation", "%.3f", hsvValues[1])
-//                    .addData("Value", "%.3f", hsvValues[2]);
-//            telemetry.addData("Alpha", "%.3f", colors.alpha);
-//
-//    /* If this color sensor also has a distance sensor, display the measured distance.
-//     * Note that the reported distance is only useful at very close range, and is impacted by
-//     * ambient light and surface reflectivity. */
-//            if (colorSensor instanceof DistanceSensor) {
-//        telemetry.addData("Distance (cm)", "%.3f", ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM));
-//    }
-//
-//            telemetry.update();
+    public double getAlpha() {
 
+        colors = colorSensor.getNormalizedColors();
+        return (double) colors.alpha;
+    }
 
+    public float[] updateHSV() {
+
+        // Hue = hsvValues[0]
+        // Saturation = hsvValues[1]
+        // Value = hsvValues[2]
+
+        Color.colorToHSV(colors.toColor(), hsvValues);
+        return hsvValues;
+    }
+
+    public double getDistance() {
+
+        return ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM);
+    }
 }

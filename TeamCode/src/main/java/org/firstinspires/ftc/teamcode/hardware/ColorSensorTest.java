@@ -194,7 +194,7 @@ public class ColorSensorTest extends LinearOpMode {
              * for an explanation of HSV color. */
 
             // Update the hsvValues array by passing it to Color.colorToHSV()
-            Color.colorToHSV(colors.toColor(), hsvValues);
+
 
             telemetry.addLine()
                     .addData("Red", "%.3f", colors.red)

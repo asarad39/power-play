@@ -67,14 +67,23 @@ public class TeleopLift implements State {
 
         rh.liftServos(liftArmPosition, liftClawPosition);
 
-        rh.telemetry.addData("Touch is pressed", rh.getTouch());
+        rh.telemetry.addData("Red", rh.getRed());
+        rh.telemetry.addData("Blue", rh.getBlue());
+        rh.telemetry.addData("Green", rh.getRed());
+        rh.telemetry.addData("Distance", rh.getDistance());
+
+        rh.telemetry.addLine();
+
         rh.telemetry.addData("goHome", goHome);
         rh.telemetry.addData("liftMove", liftMove);
         rh.telemetry.addData("Lift Target Position", liftPID.getTargetPosition());
 
+        rh.telemetry.addLine();
+
         rh.telemetry.addData("Lift Clicks 1", rh.getLiftEncoder1());
         rh.telemetry.addData("Lift Clicks 2", rh.getLiftEncoder2());
 
+        rh.telemetry.addLine();
 
         rh.telemetry.addData("Arm Servo Pos", rh.getLiftClawEncoder());
         rh.telemetry.addData("Claw Servo Pos", rh.getLiftArmEncoder());

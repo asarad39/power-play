@@ -19,6 +19,7 @@ public class RobotHardware {
     private DriveTrain driveTrain = null;
     private LiftClawArm lift = null;
     private TensorFlow tensorFlow = null;
+    private ColorSensor colorSensor = null;
     private Pose2d currentPose = null;
 
     public SampleMecanumDrive sampleMec = null;
@@ -36,8 +37,9 @@ public class RobotHardware {
         driveTrain = new DriveTrain();
         lift = new LiftClawArm();
         tensorFlow = new TensorFlow();
-        currentPose = new Pose2d();
+        colorSensor = new ColorSensor();
 
+        currentPose = new Pose2d();
     }
 
     // Overloaded ption for adding a starting pose when we create an autonomous program, if we want
@@ -47,8 +49,9 @@ public class RobotHardware {
         driveTrain = new DriveTrain();
         lift = new LiftClawArm();
         tensorFlow = new TensorFlow();
-        this.currentPose = currentPose;
+        colorSensor = new ColorSensor();
 
+        this.currentPose = currentPose;
     }
 
     public void initialize(OpMode op) {
@@ -56,6 +59,7 @@ public class RobotHardware {
         driveTrain.initialize(op);
         lift.initialize(op);
         tensorFlow.initialize(op);
+        colorSensor.initialize(op);
 
         gamepad1 = op.gamepad1;
         gamepad2 = op.gamepad2;
@@ -97,7 +101,6 @@ public class RobotHardware {
     }
 
     // Lift returns
-    // lift height
     public int getLiftEncoder1() {
         return lift.getLiftEncoder1();
     }
@@ -119,7 +122,9 @@ public class RobotHardware {
     }
 
     // lift claw position
-    public boolean getTouch() { return lift.getTouch(); }
+    public boolean getTouch() {
+        return lift.getTouch();
+    }
 
     public List<Recognition> getRecognitions() throws Exception {
         return tensorFlow.getRecognitions();
@@ -128,8 +133,14 @@ public class RobotHardware {
     public static void setSleeve(int sleeve) {
         RobotHardware.sleeve = sleeve;
     }
-    public static int getSleeve() { return RobotHardware.sleeve; }
-    public boolean getCustom() { return tensorFlow.getCustom(); }
+
+    public static int getSleeve() {
+        return RobotHardware.sleeve;
+    }
+
+    public boolean getCustom() {
+        return tensorFlow.getCustom();
+    }
 
     public Pose2d getCurrentPose() {
         return currentPose;
@@ -137,5 +148,22 @@ public class RobotHardware {
 
     public void setCurrentPose(Pose2d currentPose) {
         this.currentPose = currentPose;
+    }
+
+    // Color sensor values
+    public double getRed() {
+        return colorSensor.getRed();
+    }
+
+    public double getGreen() {
+        return colorSensor.getGreen();
+    }
+
+    public double getBlue() {
+        return colorSensor.getBlue();
+    }
+
+    public double getDistance() {
+        return colorSensor.getDistance();
     }
 }
