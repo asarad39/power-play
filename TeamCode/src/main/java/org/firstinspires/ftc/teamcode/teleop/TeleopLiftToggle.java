@@ -7,7 +7,7 @@ import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 // State for driving using game controller
-public class TeleopLift implements State {
+public class TeleopLiftToggle implements State {
 
     RobotHardware rh = null;
     Telemetry telemetry;
@@ -20,7 +20,10 @@ public class TeleopLift implements State {
     private String level = null;
     private String lastLevel = null;
 
-    public TeleopLift(RobotHardware rh) {
+    private boolean mirrored = false;
+    private boolean lastMirrored = false;
+
+    public TeleopLiftToggle(RobotHardware rh) {
         this.rh = rh;
     }
 
@@ -28,10 +31,13 @@ public class TeleopLift implements State {
 
         rh.liftServos(0, 1);
         goHome = true;
+        level = "home";
+        lastLevel = "home";
     }
 
     @Override
     public boolean getIsDone() {
+
         return false;
     }
 
@@ -47,6 +53,7 @@ public class TeleopLift implements State {
         double maxLiftSpeed = 0.8;
 
         double liftSpeed = getLiftPowerPID(maxLiftSpeed);
+
         adjustLiftHeight();
         rh.setLiftTarget(liftPID.getTargetPosition());
 
@@ -68,9 +75,16 @@ public class TeleopLift implements State {
             rh.lift(liftMove);
         }
 
-        rh.liftServos(liftArmPosition, liftClawPosition);
+        level = getLevel();
+        mirrored = getMirrored();
 
         rh.telemetry.addData("Level", level);
+        rh.telemetry.addData("Last level", lastLevel);
+
+        rh.telemetry.addData("Mirrored", mirrored);
+        rh.telemetry.addData("Last mirrored", lastMirrored);
+
+        rh.liftServos(liftArmPosition, liftClawPosition);
 
         rh.telemetry.addLine();
 
@@ -96,17 +110,54 @@ public class TeleopLift implements State {
         rh.telemetry.addData("Claw Servo Pos", rh.getLiftArmEncoder());
     }
 
-    public double getLiftPowerDebug(double maxLiftSpeed) {
-        double liftMove;
+    private String getLevel() {
 
-        if (rh.gamepad1.dpad_up == true) {
-            liftMove = + maxLiftSpeed;
-        } else if (rh.gamepad1.dpad_down == true) {
-            liftMove = -0.5 * maxLiftSpeed;
+        String newLevel = this.level;
+
+        if (rh.gamepad2.a) {
+
+            if(lastLevel.equals("home")) {
+
+                newLevel = "high";
+
+            } else if(lastLevel.equals("high")) {
+
+                newLevel = "middle";
+
+            } else if(lastLevel.equals("middle")) {
+
+                newLevel = "low";
+
+            } else if(lastLevel.equals("low")) {
+
+                newLevel = "home";
+
+            }
         } else {
-            liftMove = 0;
+
+            lastLevel = level;
         }
-        return liftMove;
+
+        return newLevel;
+    }
+
+    public boolean getMirrored() {
+
+        boolean newMirrored = this.mirrored;
+
+        if (rh.gamepad1.right_bumper) {
+
+            if (lastMirrored == newMirrored) {
+
+                newMirrored = !newMirrored;
+            }
+
+        } else {
+
+            lastMirrored = mirrored;
+        }
+
+        return newMirrored;
     }
 
     public void adjustLiftHeight() {
@@ -123,29 +174,29 @@ public class TeleopLift implements State {
         return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoder1(), targetPosition, .01);
     }
 
-    public double getLiftPowerPID(double maxPower) {
-        double home = 0;
-//        double ground = 180;
-        double low = 500;
-        double middle = 1700;
-        double high = 2900;
+    public double getLiftPowerPID(double maxPower) { // TODO: Tune final positions
 
-        if (rh.gamepad1.a == true) {
-            liftPID.setTargetPosition(home);
-            liftPID.setStartTime(rh.time.milliseconds());
+        double pos = 0;
+
+        if (level.equals("home")) {
+
+            pos = 0;
+
+        } else if (level.equals("low")) {
+
+            pos = 500;
+
+        } else if (level.equals("middle")) {
+
+            pos = 1700;
+
+        } else if (level.equals("high")) {
+
+            pos = 2900;
         }
-        if (rh.gamepad1.b == true) {
-            liftPID.setTargetPosition(low);
-            liftPID.setStartTime(rh.time.milliseconds());
-        }
-        if (rh.gamepad1.y == true) {
-            liftPID.setTargetPosition(middle);
-            liftPID.setStartTime(rh.time.milliseconds());
-        }
-        if (rh.gamepad1.x == true) {
-            liftPID.setTargetPosition(high);
-            liftPID.setStartTime(rh.time.milliseconds());
-        }
+
+        liftPID.setTargetPosition(pos);
+        liftPID.setStartTime(rh.time.milliseconds());
 
         if (goHome == false) { // so the lift can move down while homing
             liftPID.checkForInvalid();
@@ -174,22 +225,19 @@ public class TeleopLift implements State {
         return liftClawPosition;
     }
 
+
     public double arm() {
 
-        double liftArmPosition = rh.getLiftArmEncoder();
+        double liftArmPosition = 0.0;
 
-        if (rh.gamepad1.right_bumper) {
-            if (lastArm == liftArmPosition) {
-                liftArmPosition = (liftArmPosition + 1) % 2;
-            }
+        if (level.equals("home")) {
+
+            liftArmPosition = 0.0;
+
         } else {
-            lastArm = rh.getLiftArmEncoder();
-        }
 
-        rh.telemetry.addData("liftArmPosition", liftArmPosition);
-        rh.telemetry.addData("lastArm", lastArm);
-        rh.telemetry.addData("armEncoder", rh.getLiftArmEncoder());
-        rh.telemetry.addLine();
+            liftArmPosition = 1.0;
+        }
 
         return liftArmPosition;
     }

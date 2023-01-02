@@ -35,7 +35,7 @@ public class AutoMoveLift implements State {
         double maxLiftSpeed = 0.8;
 
         double liftSpeed = getLiftPowerPID(maxLiftSpeed);
-        rh.liftTarget(liftPID.getTargetPosition());
+        rh.setLiftTarget(liftPID.getTargetPosition());
 
         double liftMove = getLiftPowerLgstcCrv(liftSpeed, liftPID.getTargetPosition());
 

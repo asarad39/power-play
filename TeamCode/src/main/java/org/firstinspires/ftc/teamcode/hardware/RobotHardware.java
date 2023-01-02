@@ -17,7 +17,10 @@ public class RobotHardware {
 
     // Create objects for all of the hardware subsystems of the robot
     private DriveTrain driveTrain = null;
+
     private LiftClawArm lift = null;
+//    private NewLiftSystem lift = null;
+
     private TensorFlow tensorFlow = null;
     private ColorSensor colorSensor = null;
     private Pose2d currentPose = null;
@@ -40,6 +43,7 @@ public class RobotHardware {
         colorSensor = new ColorSensor();
 
         currentPose = new Pose2d();
+//        lift = new NewLiftSystem();
     }
 
     // Overloaded ption for adding a starting pose when we create an autonomous program, if we want
@@ -52,6 +56,7 @@ public class RobotHardware {
         colorSensor = new ColorSensor();
 
         this.currentPose = currentPose;
+//        lift = new NewLiftSystem();
     }
 
     public void initialize(OpMode op) {
@@ -67,65 +72,102 @@ public class RobotHardware {
         sampleMec = new SampleMecanumDrive(op.hardwareMap);
     }
 
+    public Telemetry getTelemetry() {
+        return this.telemetry;
+    }
+
     // Drive in teleop
     public void drive(double powerFR, double powerFL, double powerBR, double powerBL) {
         driveTrain.setPower(powerFR, powerFL, powerBR, powerBL);
     }
 
-    // Lift in teleop
-    public void lift(double powerL) {
-        lift.setPower(powerL);
+    // Lift system methods
+    public void lift(double power) {
+        lift.setPower(power);
     }
-    public void liftTarget(double target) {
+
+    public void setLiftTarget(double target) {
         lift.setTarget(target);
     }
 
     public void liftServos(double positionArmL, double positionClawL) {
+
         lift.setLiftServos(positionArmL, positionClawL);
         lift.setLiftServoEncoders();
     }
 
-    public Telemetry getTelemetry() {
-        return this.telemetry;
-    }
+//    public void setServoPositions(double armPosition,
+//                                  double flipPosition,
+//                                  double rotatePosition,
+//                                  double clawPosition) {
+//
+//        lift.setServosPositions(armPosition, flipPosition, rotatePosition, clawPosition);
+//        lift.getServoPositions();
+//    }
 
-    // Drive returns
-    public int getLeftDriveEncoder() {
-        return driveTrain.getLeftEncoder();
-    }
-    public int getRightDriveEncoder() {
-        return driveTrain.getRightEncoder();
-    }
-    public int getBackDriveEncoder() {
-        return driveTrain.getBackEncoder();
-    }
+    // --------------------- old lift below
 
-    // Lift returns
     public int getLiftEncoder1() {
         return lift.getLiftEncoder1();
     }
+
     public int getLiftEncoder2() {
         return lift.getLiftEncoder2();
     }
 
-    // lift arm position
     public double getLiftArmEncoder() {
         return lift.getLiftArmEncoder();
     }
+
     public double getLiftClawEncoder() {
         return lift.getLiftClawEncoder();
     }
 
-    // lift reset encoders
     public void resetLiftEncoders() {
         lift.resetEncoders();
     }
 
-    // lift claw position
     public boolean getTouch() {
         return lift.getTouch();
     }
 
+    // -------------------- new lift below
+
+//    public int getLiftEncoderLeft() {
+//        return lift.getLiftEncoderLeft();
+//    }
+//
+//    public int getLiftEncoderRight() {
+//        return lift.getLiftEncoderRight();
+//    }
+//
+//    public double getArmPos() {
+//        return lift.getArmPos();
+//    }
+//
+//    public double getFlipPos() {
+//        return lift.getFlipPos();
+//    }
+//
+//    public double getRotatePos() {
+//        return lift.getRotatePos();
+//    }
+//
+//    public double getClawPos() {
+//        return lift.getClawPos();
+//    }
+//
+//    public void resetLiftEncoders() {
+//        lift.resetEncoders();
+//    }
+//
+//    public boolean getTouch() {
+//        return lift.getTouch();
+//    }
+
+    // ------------------------------
+
+    // prepare tensorflow for recognizing the cone sleeve
     public List<Recognition> getRecognitions() throws Exception {
         return tensorFlow.getRecognitions();
     }
@@ -142,6 +184,7 @@ public class RobotHardware {
         return tensorFlow.getCustom();
     }
 
+    // set roadrunner robot position
     public Pose2d getCurrentPose() {
         return currentPose;
     }

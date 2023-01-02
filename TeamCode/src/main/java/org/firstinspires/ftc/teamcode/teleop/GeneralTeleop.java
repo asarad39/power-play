@@ -55,8 +55,9 @@ public class GeneralTeleop extends OpMode
 
         State[] states = {
 
-                new TeleopMove(rh),
-                new TeleopLift(rh),
+//                new TeleopMove(rh),
+                new TeleopLiftToggle(rh),
+//                new TeleopNewLiftSystem(rh),
         };
 
         teleStack.createStack(states);
@@ -74,11 +75,6 @@ public class GeneralTeleop extends OpMode
             teleStack.update();
         }
     }
-
-
-
-
-
 
 
     /////////////////////////////////////////////////////////////////////////////////
