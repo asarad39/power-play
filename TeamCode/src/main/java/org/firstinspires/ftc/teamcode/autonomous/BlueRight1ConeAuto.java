@@ -29,27 +29,23 @@
 
 package org.firstinspires.ftc.teamcode.autonomous;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.autonomous.AutoClawArm;
-import org.firstinspires.ftc.teamcode.autonomous.AutoDriveTime;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 
-@Autonomous(name="General Autonomous 2022", group="")
-public class GeneralAutonomous extends OpMode
-{
-
+@Autonomous(name="Blue Right 1 Cone Park", group="Blue Right")
+public class BlueRight1ConeAuto extends OpMode  {
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
-    private RobotHardware rh = new RobotHardware();
-    //    private ParallelStack autoStack = new ParallelStack(rh);
+    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
     private SeriesStack autoStack = new SeriesStack(rh);
 
     @Override
@@ -57,23 +53,33 @@ public class GeneralAutonomous extends OpMode
 
         rh.initialize(this);
 
-        ParallelStack forwardAndLift = new ParallelStack(rh);
+        ParallelStack tfAndClaw = new ParallelStack(rh);
 
-        State[] fal = {
+        State[] tfac = {
 
-                new AutoMoveLift(rh, "middle"),
-                new AutoDriveTime(rh, 5, "forward"),
+                new AutoClawArm(rh, "open", "down"),
+                new AutoTensorFlow(rh),
         };
 
-        forwardAndLift.createStack(fal);
+        tfAndClaw.createStack(tfac);
+
+        ParallelStack liftAndSpline = new ParallelStack(rh);
+
+        State[] las = {
+
+                new AutoMoveLift(rh, "high"),
+                new AutoSpline(rh, true,-36, -12, Math.toRadians(45), false),
+        };
+
+        tfAndClaw.createStack(las);
 
         State[] states = {
 
+                tfAndClaw,
                 new AutoClawArm(rh, "closed", "down"),
-                forwardAndLift,
-                new AutoClawArm(rh, "closed", "up"),
+                liftAndSpline,
+                new AutoTFPark(rh, "blue", "right", true),
         };
-
 
         autoStack.createStack(states);
         autoStack.init();

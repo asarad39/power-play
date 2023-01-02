@@ -34,18 +34,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.autonomous.AutoClawArm;
-import org.firstinspires.ftc.teamcode.autonomous.AutoDriveTime;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
-import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 
-@Autonomous(name="BlueRightSleevePark", group="Blue Right")
-public class BlueRightSleevePark extends OpMode
-{
-
+@Autonomous(name="Blue Right Park", group="Blue Right")
+public class BlueRightParkAuto extends OpMode {
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
@@ -60,6 +55,7 @@ public class BlueRightSleevePark extends OpMode
         State[] states = {
 
                 new AutoTensorFlow(rh),
+                new AutoTFPark(rh, "blue", "right", true),
         };
 
 
