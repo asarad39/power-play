@@ -31,6 +31,7 @@ public class RobotHardware {
     public Gamepad gamepad2 = null;
     public Telemetry telemetry;
     private static int sleeve = 0;
+    private boolean debugSwitch = false;
 
     public ElapsedTime time = new ElapsedTime();
 

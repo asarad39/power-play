@@ -60,9 +60,9 @@ public class CustomTensorFlowTest extends LinearOpMode {
      */
 
     // Commented out lines that used built in asset - only custom objects
-    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
+//    private static final String TFOD_MODEL_ASSET =
     private static final String TFOD_MODEL_FILE  =
-            "/sdcard/FIRST/tflitemodels/Felix_PowerPlay.tflite";
+            "/sdcard/FIRST/tflitemodels/model_20221205_161828.tflite";
 
 
 //    private static final String[] LABELS = {
@@ -189,7 +189,7 @@ public class CustomTensorFlowTest extends LinearOpMode {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.75f;
+        tfodParameters.minResultConfidence = 0.25f;
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);

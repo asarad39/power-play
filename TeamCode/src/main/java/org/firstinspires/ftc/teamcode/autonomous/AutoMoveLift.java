@@ -16,6 +16,8 @@ public class AutoMoveLift implements State {
     private double startTime;
     private String goalString;
 
+    private boolean isDone = false;
+
     public AutoMoveLift(RobotHardware rh, String goalString) {
         this.rh = rh;
         this.goalString = goalString;
@@ -23,10 +25,21 @@ public class AutoMoveLift implements State {
 
     public void init() {
         startTime = rh.time.seconds();
+        double maxLiftSpeed = 0.8;
+
+        double liftSpeed = getLiftPowerPID(goalString, maxLiftSpeed);
     }
 
     public boolean getIsDone() {
-        return (15 > Math.abs(rh.getLiftEncoder1() - liftPID.getTargetPosition()));
+        return isDone;
+//        return false;
+    }
+
+
+    public void debug() {
+        rh.telemetry.addData("State Console", "AUTOLIFT");
+        rh.telemetry.addData("Goal Position", goalString);
+        rh.telemetry.addData("PID", liftPID.getTargetPosition());
     }
 
     public void update() {
@@ -34,12 +47,19 @@ public class AutoMoveLift implements State {
         // set lift movement speed
         double maxLiftSpeed = 0.8;
 
-        double liftSpeed = getLiftPowerPID(maxLiftSpeed);
+        double liftSpeed = getLiftPowerPID(goalString, maxLiftSpeed);
         rh.setLiftTarget(liftPID.getTargetPosition());
 
         double liftMove = getLiftPowerLgstcCrv(liftSpeed, liftPID.getTargetPosition());
 
         rh.lift(liftMove);
+
+        isDone = (15 > Math.abs(rh.getLiftEncoder1() - liftPID.getTargetPosition()));
+        this.debug();
+    }
+
+    public void setGoalString(String g) {
+        goalString = g;
     }
 
 
@@ -47,7 +67,7 @@ public class AutoMoveLift implements State {
         return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoder1(), targetPosition, .01);
     }
 
-    public double getLiftPowerPID(double maxPower) {
+    public double getLiftPowerPID(String goalString, double maxPower) {
         double home = 0;
         double low = 500;
         double middle = 1700;

@@ -60,7 +60,7 @@ public class TensorFlow {
 
         if (custom) {
 
-            LABELS = new String[]{"HHS Logo side", "Red Robot Side", "Green Bug Side"};
+            LABELS = new String[]{"Green Bug Side", "HHS Logo side", "Red Robot Side"};
 
         } else {
 

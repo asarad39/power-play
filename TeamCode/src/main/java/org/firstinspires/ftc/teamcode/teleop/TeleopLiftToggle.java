@@ -52,12 +52,12 @@ public class TeleopLiftToggle implements State {
         // set lift movement speed
         double maxLiftSpeed = 0.8;
 
-        double liftSpeed = getLiftPowerPID(maxLiftSpeed);
+        setPositionPID();
 
         adjustLiftHeight();
         rh.setLiftTarget(liftPID.getTargetPosition());
 
-        double liftMove = getLiftPowerLgstcCrv(liftSpeed, liftPID.getTargetPosition());
+        double liftMove = getLiftPowerLgstcCrv(maxLiftSpeed, liftPID.getTargetPosition());
 
         if (goHome == true) {
 
@@ -174,7 +174,7 @@ public class TeleopLiftToggle implements State {
         return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoder1(), targetPosition, .01);
     }
 
-    public double getLiftPowerPID(double maxPower) { // TODO: Tune final positions
+    public void setPositionPID() { // TODO: Tune final positions
 
         double pos = 0;
 
@@ -201,8 +201,6 @@ public class TeleopLiftToggle implements State {
         if (goHome == false) { // so the lift can move down while homing
             liftPID.checkForInvalid();
         }
-
-        return getLiftPowerLgstcCrv(maxPower, liftPID.getTargetPosition());
     }
 
     public double claw() {
