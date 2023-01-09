@@ -59,21 +59,8 @@ public class TeleopLiftToggle implements State {
 
         double liftMove = getLiftPowerLgstcCrv(maxLiftSpeed, liftPID.getTargetPosition());
 
-        if (goHome == true) {
+        rh.lift(liftMove);
 
-            rh.lift(0.3);
-            liftPID.setTargetPosition(-10000);
-
-            if (rh.getTouch() == true) {
-
-                rh.resetLiftEncoders(); // TODO: the problem!
-                goHome = false;
-            }
-
-        } else {
-
-            rh.lift(liftMove);
-        }
 
         level = getLevel();
         mirrored = getMirrored();

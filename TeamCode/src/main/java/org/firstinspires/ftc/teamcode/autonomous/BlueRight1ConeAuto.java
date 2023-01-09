@@ -58,7 +58,7 @@ public class BlueRight1ConeAuto extends OpMode  {
         State[] tfac = {
 
                 new AutoClawArm(rh, "open", "down"),
-                new AutoTensorFlow(rh),
+                new AutoTensorFlow(rh, false),
         };
 
         tfAndClaw.createStack(tfac);

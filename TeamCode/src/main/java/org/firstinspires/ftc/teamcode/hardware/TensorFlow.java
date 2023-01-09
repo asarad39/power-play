@@ -87,8 +87,9 @@ public class TensorFlow {
         }
     }
 
-    public static boolean getCustom() {
-        return custom;
+    public static void setCustom(boolean c) {
+
+        custom = c;
     }
 
 

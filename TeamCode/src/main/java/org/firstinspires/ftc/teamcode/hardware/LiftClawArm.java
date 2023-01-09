@@ -24,6 +24,8 @@ public class LiftClawArm {
     private double liftArmEncoder = 0;
     private double liftClawEncoder = 0;
 
+    private boolean goHome =  true;
+
     public void initialize(OpMode op) {
 
         // Links the code to the ports on the robot
@@ -49,8 +51,8 @@ public class LiftClawArm {
     public void resetEncoders() {
         liftMotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         liftMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void setTarget(double target) {
@@ -59,12 +61,32 @@ public class LiftClawArm {
     }
 
     public void setPower(double powerL) {
-        //TODO: swap sign if going backwards
+
         liftMotor1.setPower(powerL);
         liftMotor2.setPower(powerL);
 
         liftEncoder1 = liftMotor1.getCurrentPosition();
         liftEncoder2 = liftMotor2.getCurrentPosition();
+
+    }
+
+    public void moveMotorsHome() {
+
+        liftMotor1.setPower(-0.3);
+        liftMotor2.setPower(-0.3);
+
+        if (touch.isPressed()) {
+
+            goHome = false;
+            liftMotor1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+
+    }
+
+    public boolean getGoHome() {
+
+        return goHome;
     }
 
     public void setLiftServos(double positionArmL, double positionClawL) {

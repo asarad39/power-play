@@ -16,14 +16,15 @@ public class AutoTensorFlow implements State {
     private int twoCount = 0;
     private int threeCount = 0;
 
-    public AutoTensorFlow(RobotHardware rh) {
+    public AutoTensorFlow(RobotHardware rh, boolean custom) {
 
         this.rh = rh;
+        this.custom = custom;
     }
 
     public void init() {
         startTime = rh.time.seconds();
-        custom = rh.getCustom();
+        rh.setCustom(this.custom);
     }
 
     public boolean getIsDone() {
@@ -47,7 +48,7 @@ public class AutoTensorFlow implements State {
 
     public void update() {
 
-        rh.telemetry.addData("custom", rh.getCustom());
+//        rh.telemetry.addData("custom", rh.setCustom());
 
         for (int i = 0; i < 1000; i++) {
 

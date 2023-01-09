@@ -84,7 +84,16 @@ public class RobotHardware {
 
     // Lift system methods
     public void lift(double power) {
-        lift.setPower(power);
+
+        if (lift.getGoHome()) {
+
+            lift.moveMotorsHome();
+
+        } else {
+
+            lift.setPower(power);
+
+        }
     }
 
     public void setLiftTarget(double target) {
@@ -181,8 +190,9 @@ public class RobotHardware {
         return RobotHardware.sleeve;
     }
 
-    public boolean getCustom() {
-        return tensorFlow.getCustom();
+    public void setCustom(boolean c) {
+
+        tensorFlow.setCustom(c);
     }
 
     // set roadrunner robot position
