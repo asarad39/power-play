@@ -7,7 +7,7 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-public class AutoTFPark implements State {
+public class AutoTFParkRR implements State {
 
     RobotHardware rh = null;
     Trajectory traj = null;
@@ -27,7 +27,7 @@ public class AutoTFPark implements State {
 
     private int sleeve = 0;
 
-    public AutoTFPark(RobotHardware rh, String colorString, String sideString, boolean track) {
+    public AutoTFParkRR(RobotHardware rh, String colorString, String sideString, boolean track) {
 
         this.colorString = colorString;
         this.sideString = sideString;

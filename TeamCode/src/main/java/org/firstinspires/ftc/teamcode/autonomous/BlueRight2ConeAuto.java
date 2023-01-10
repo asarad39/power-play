@@ -78,7 +78,7 @@ public class BlueRight2ConeAuto extends OpMode {
                 tfAndClaw,
                 new AutoClawArm(rh, "closed", "down"),
                 liftAndSpline,
-                new AutoTFPark(rh, "blue", "right", true),
+                new AutoTFParkRR(rh, "blue", "right", true),
         };
 
         autoStack.createStack(states);

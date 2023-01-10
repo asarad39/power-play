@@ -50,7 +50,7 @@ public class GeneralAutonomous extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
     //    private ParallelStack autoStack = new ParallelStack(rh);
-    private ParallelStack autoStack = new ParallelStack(rh);
+    private SeriesStack autoStack = new SeriesStack(rh);
 
     @Override
     public void init() {
@@ -60,8 +60,8 @@ public class GeneralAutonomous extends OpMode
         ParallelStack forwardAndLift = new ParallelStack(rh);
 
         State[] fal = {
-                new AutoMoveLift(rh, "middle"),
-                new AutoDriveTime(rh, 2, "forward"),
+//                new AutoMoveLift(rh, "middle"),
+
 
 //                new AutoDriveTime(rh, 2, "forward"),
 
@@ -73,18 +73,27 @@ public class GeneralAutonomous extends OpMode
         State[] states = {
 
 //                new AutoClawArm(rh, "closed", "down"),
-                forwardAndLift,
+//                forwardAndLift,
 //                new AutoMoveLift(rh, "middle"),
+//                new AutoDriveTime(rh, 4, "forward", 0.2),
+//                new AutoDriveTime(rh, 4, "right", 0.2),
+//                new AutoDriveTime(rh, 4, "backward", 0.2),
+//                new AutoDriveTime(rh, 4, "left", 0.2),
+//                new AutoDriveTime(rh, 4, "clockwise", 0.2),
+//                new AutoDriveTime(rh, 4, "counter", 0.2),
 //                new AutoClawArm(rh, "closed", "down"),
 //                new AutoMoveLift(rh, "home")
 //                new AutoClawArm(rh, "closed", "down"),
-
 //                new AutoClawArm(rh, "closed", "up"),
+
+                new AutoTensorFlow(rh, false),
+                new AutoDriveTime(rh, 3, "forward", 0.2),
+                new AutoTFParkNoRR(rh)
 
         };
 
 
-        autoStack.createStack(fal);
+        autoStack.createStack(states);
         autoStack.init();
 
         // Tell the driver that initialization is complete.

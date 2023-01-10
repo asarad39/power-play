@@ -220,4 +220,8 @@ public class RobotHardware {
     public double getDistance() {
         return colorSensor.getDistance();
     }
+
+    public int getLeftEncoder() { return driveTrain.getLeftEncoder(); }
+    public int getRightEncoder() { return driveTrain.getRightEncoder(); }
+    public int getBackEncoder() { return driveTrain.getBackEncoder(); }
 }

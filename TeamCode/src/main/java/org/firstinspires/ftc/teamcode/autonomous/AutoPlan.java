@@ -93,7 +93,7 @@ public class AutoPlan extends OpMode {
 
         }
 
-        autoStack.stack.add(new AutoTFPark(rh, teamColor, teamSide, true));
+        autoStack.stack.add(new AutoTFParkRR(rh, teamColor, teamSide, true));
 
         autoStack.init();
 

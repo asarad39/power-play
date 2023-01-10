@@ -55,7 +55,7 @@ public class BlueRightParkAuto extends OpMode {
         State[] states = {
 
                 new AutoTensorFlow(rh, false),
-                new AutoTFPark(rh, "blue", "right", true),
+                new AutoTFParkRR(rh, "blue", "right", true),
         };
 
 
