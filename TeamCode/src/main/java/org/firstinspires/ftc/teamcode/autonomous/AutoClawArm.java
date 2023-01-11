@@ -31,13 +31,13 @@ public class AutoClawArm implements State {
 
     public void update() {
 
-        rh.liftServos(arm(), claw());
+//        rh.liftServos(arm(), claw());
 
     }
 
     public double claw() {
 
-        double liftClawPosition = rh.getLiftClawEncoder();
+        double liftClawPosition = rh.getClawPos();
 
         if (clawString.equals("open")) {
             liftClawPosition = 0;
@@ -52,7 +52,7 @@ public class AutoClawArm implements State {
 
     public double arm() {
 
-        double liftArmPosition = rh.getLiftClawEncoder();
+        double liftArmPosition = rh.getClawPos();
 
         if (armString.equals("up")) {
             liftArmPosition = 1;

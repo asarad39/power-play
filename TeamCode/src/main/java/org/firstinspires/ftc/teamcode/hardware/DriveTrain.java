@@ -26,9 +26,9 @@ public class DriveTrain {
     }
 
     public void setPower(double powerFR, double powerFL, double powerBR, double powerBL) {
-        motorFR.setPower(powerFR);
+        motorFR.setPower(-powerFR);
         motorFL.setPower(powerFL);
-        motorBR.setPower(powerBR);
+        motorBR.setPower(-powerBR);
         motorBL.setPower(powerBL);
 
         leftEncoder = motorBR.getCurrentPosition();

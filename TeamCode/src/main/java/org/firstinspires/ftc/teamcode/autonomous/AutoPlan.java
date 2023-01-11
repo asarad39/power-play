@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
@@ -80,16 +81,25 @@ public class AutoPlan {
         // states initial setup based on start position
         if (teamColor.equals("blue") && teamSide.equals("right")) {
 
-            Collections.addAll(states,
-                    /*parallel*/
+            ParallelStack driveLift = new ParallelStack(rh);
+            driveLift.createStack(new State[] {
                     new AutoSpline(rh, track, -36, 0, Math.toRadians(45), false),
-                    new AutoMoveLift(rh, "high"),
-                    /*series*/
-                    new AutoClawArm(rh, "closed", "down"),
-                    new AutoClawArm(rh, "open", "down"),
-                    /*parallel*/
+                    new AutoMoveLift(rh, "high")
+            });
+
+            ParallelStack clawLift = new ParallelStack(rh);
+            clawLift.createStack(new State[] {
                     new AutoClawArm(rh, "open", "down"),
                     new AutoMoveLift(rh, "home")
+            });
+
+            Collections.addAll(states,
+
+                    driveLift,
+
+                    new AutoClawArm(rh, "closed", "down"),
+                    new AutoClawArm(rh, "open", "down")
+
             );
 
         } else if (teamColor.equals("red") && teamSide.equals("right")) {

@@ -18,11 +18,11 @@ public class RobotHardware {
     // Create objects for all of the hardware subsystems of the robot
     private DriveTrain driveTrain = null;
 
-    private LiftClawArm lift = null;
-//    private NewLiftSystem lift = null;
+//    private LiftClawArm lift = null;
+    public NewLiftSystem lift = null;
 
     private TensorFlow tensorFlow = null;
-    private ColorSensor colorSensor = null;
+//    private ColorSensor colorSensor = null;
     private Pose2d currentPose = null;
 
     public SampleMecanumDrive sampleMec = null;
@@ -39,12 +39,12 @@ public class RobotHardware {
     public RobotHardware() {
 
         driveTrain = new DriveTrain();
-        lift = new LiftClawArm();
+//        lift = new LiftClawArm();
         tensorFlow = new TensorFlow();
-        colorSensor = new ColorSensor();
+//        colorSensor = new ColorSensor();
 
         currentPose = new Pose2d();
-//        lift = new NewLiftSystem();
+        lift = new NewLiftSystem();
     }
 
     // Overloaded ption for adding a starting pose when we create an autonomous program, if we want
@@ -52,12 +52,12 @@ public class RobotHardware {
     public RobotHardware(Pose2d currentPose) {
 
         driveTrain = new DriveTrain();
-        lift = new LiftClawArm();
+//        lift = new LiftClawArm();
         tensorFlow = new TensorFlow();
-        colorSensor = new ColorSensor();
+//        colorSensor = new ColorSensor();
 
         this.currentPose = currentPose;
-//        lift = new NewLiftSystem();
+        lift = new NewLiftSystem();
     }
 
     public void initialize(OpMode op) {
@@ -65,7 +65,7 @@ public class RobotHardware {
         driveTrain.initialize(op);
         lift.initialize(op);
         tensorFlow.initialize(op);
-        colorSensor.initialize(op);
+//        colorSensor.initialize(op);
 
         gamepad1 = op.gamepad1;
         gamepad2 = op.gamepad2;
@@ -100,71 +100,37 @@ public class RobotHardware {
         lift.setTarget(target);
     }
 
-    public void liftServos(double positionArmL, double positionClawL) {
-
-        lift.setLiftServos(positionArmL, positionClawL);
-        lift.setLiftServoEncoders();
-    }
-
-//    public void setServoPositions(double armPosition,
-//                                  double flipPosition,
-//                                  double rotatePosition,
-//                                  double clawPosition) {
+//    public void liftServos(double positionArmL, double positionClawL) {
 //
-//        lift.setServosPositions(armPosition, flipPosition, rotatePosition, clawPosition);
-//        lift.getServoPositions();
+//        lift.setLiftServos(positionArmL, positionClawL);
+//        lift.setLiftServoEncoders();
 //    }
+
+    public void setServoPositions(double armPosition,
+                                  double flipPosition,
+                                  double rotatePosition,
+                                  double clawPosition) {
+
+        lift.setServosPositions(armPosition, flipPosition, rotatePosition, clawPosition);
+        lift.getServoPositions();
+    }
 
     // --------------------- old lift below
 
-    public int getLiftEncoder1() {
-        return lift.getLiftEncoder1();
-    }
-
-    public int getLiftEncoder2() {
-        return lift.getLiftEncoder2();
-    }
-
-    public double getLiftArmEncoder() {
-        return lift.getLiftArmEncoder();
-    }
-
-    public double getLiftClawEncoder() {
-        return lift.getLiftClawEncoder();
-    }
-
-    public void resetLiftEncoders() {
-        lift.resetEncoders();
-    }
-
-    public boolean getTouch() {
-        return lift.getTouch();
-    }
-
-    // -------------------- new lift below
-
-//    public int getLiftEncoderLeft() {
-//        return lift.getLiftEncoderLeft();
+//    public int getLiftEncoder1() {
+//        return lift.getLiftEncoder1();
 //    }
 //
-//    public int getLiftEncoderRight() {
-//        return lift.getLiftEncoderRight();
+//    public int getLiftEncoder2() {
+//        return lift.getLiftEncoder2();
 //    }
 //
-//    public double getArmPos() {
-//        return lift.getArmPos();
+//    public double getLiftArmEncoder() {
+//        return lift.getLiftArmEncoder();
 //    }
 //
-//    public double getFlipPos() {
-//        return lift.getFlipPos();
-//    }
-//
-//    public double getRotatePos() {
-//        return lift.getRotatePos();
-//    }
-//
-//    public double getClawPos() {
-//        return lift.getClawPos();
+//    public double getLiftClawEncoder() {
+//        return lift.getLiftClawEncoder();
 //    }
 //
 //    public void resetLiftEncoders() {
@@ -174,6 +140,40 @@ public class RobotHardware {
 //    public boolean getTouch() {
 //        return lift.getTouch();
 //    }
+
+    // -------------------- new lift below
+
+    public int getLiftEncoderLeft() {
+        return lift.getLiftEncoderLeft();
+    }
+
+    public int getLiftEncoderRight() {
+        return lift.getLiftEncoderRight();
+    }
+
+    public double getArmPos() {
+        return lift.getArmPos();
+    }
+
+    public double getFlipPos() {
+        return lift.getFlipPos();
+    }
+
+    public double getRotatePos() {
+        return lift.getRotatePos();
+    }
+
+    public double getClawPos() {
+        return lift.getClawPos();
+    }
+
+    public void resetLiftEncoders() {
+        lift.resetEncoders();
+    }
+
+    public boolean getTouch() {
+        return lift.getTouch();
+    }
 
     // ------------------------------
 
@@ -205,21 +205,21 @@ public class RobotHardware {
     }
 
     // Color sensor values
-    public double getRed() {
-        return colorSensor.getRed();
-    }
-
-    public double getGreen() {
-        return colorSensor.getGreen();
-    }
-
-    public double getBlue() {
-        return colorSensor.getBlue();
-    }
-
-    public double getDistance() {
-        return colorSensor.getDistance();
-    }
+//    public double getRed() {
+//        return colorSensor.getRed();
+//    }
+//
+//    public double getGreen() {
+//        return colorSensor.getGreen();
+//    }
+//
+//    public double getBlue() {
+//        return colorSensor.getBlue();
+//    }
+//
+//    public double getDistance() {
+//        return colorSensor.getDistance();
+//    }
 
     public int getLeftEncoder() { return driveTrain.getLeftEncoder(); }
     public int getRightEncoder() { return driveTrain.getRightEncoder(); }

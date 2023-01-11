@@ -38,10 +38,10 @@ public class AutoSeekColor implements State {
 
     public void update() {
 
-        red = rh.getRed();
-        blue = rh.getBlue();
-        green = rh.getGreen();
-        distance = rh.getDistance();
+//        red = rh.getRed();
+//        blue = rh.getBlue();
+//        green = rh.getGreen();
+//        distance = rh.getDistance();
 
 //        // TODO: uncomment
 //        if (rh.time.seconds() > startTime + seconds) {

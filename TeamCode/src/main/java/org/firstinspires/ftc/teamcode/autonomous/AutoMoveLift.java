@@ -54,7 +54,7 @@ public class AutoMoveLift implements State {
 
         rh.lift(liftMove);
 
-        isDone = (15 > Math.abs(rh.getLiftEncoder1() - liftPID.getTargetPosition()));
+        isDone = (15 > Math.abs(rh.getLiftEncoderRight() - liftPID.getTargetPosition()));
         this.debug();
     }
 
@@ -64,7 +64,7 @@ public class AutoMoveLift implements State {
 
 
     public double getLiftPowerLgstcCrv(double maxPower, double targetPosition) {
-        return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoder1(), targetPosition, .01);
+        return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoderRight(), targetPosition, .01);
     }
 
     public double getLiftPowerPID(String goalString, double maxPower) {

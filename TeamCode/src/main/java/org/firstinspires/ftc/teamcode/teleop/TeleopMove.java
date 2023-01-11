@@ -26,10 +26,10 @@ public class TeleopMove implements State {
         double moveY = rh.gamepad2.left_stick_y;
         double moveRotate = rh.gamepad2.right_stick_x;
 
-        double powerFR = + moveX + moveY + moveRotate;
-        double powerFL = + moveX - moveY + moveRotate;
-        double powerBR = - moveX + moveY + moveRotate;
-        double powerBL = - moveX - moveY + moveRotate;
+        double powerFR = - moveX + moveY + moveRotate;
+        double powerFL = - moveX - moveY + moveRotate;
+        double powerBR = + moveX + moveY + moveRotate;
+        double powerBL = + moveX - moveY + moveRotate;
 
         double divisor = findPowerDivisor(powerFR, powerFL, powerBR, powerBL);
 
