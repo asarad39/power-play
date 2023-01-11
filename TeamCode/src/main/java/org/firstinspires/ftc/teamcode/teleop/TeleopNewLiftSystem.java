@@ -29,10 +29,12 @@ public class TeleopNewLiftSystem implements State {
 
     public void init() {
 
-        rh.setServoPositions(0, 1, 0, 0);
+        rh.setServoPositions(1, 0, 0, 1);
         goHome = true;
         level = "home";
         lastLevel = "home";
+        mirrored = false;
+        lastMirrored = false;
     }
 
     @Override
@@ -49,6 +51,11 @@ public class TeleopNewLiftSystem implements State {
         double flipPos = getFlip();
         double rotatePos = getRotate();
         double clawPos = getClaw();
+
+//        double armPos = 0;
+//        double flipPos = 1;
+//        double rotatePos = 0;
+//        double clawPos = 1;
 
         // set lift movement speed
         double maxLiftSpeed = 0.8;
