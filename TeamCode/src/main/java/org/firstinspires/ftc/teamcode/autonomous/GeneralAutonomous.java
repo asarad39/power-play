@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.autonomous;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -49,8 +50,10 @@ public class GeneralAutonomous extends OpMode
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
+//    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
     //    private ParallelStack autoStack = new ParallelStack(rh);
     private SeriesStack autoStack = new SeriesStack(rh);
+    private AutoPlan autoPlan = null;
 
     @Override
     public void init() {
@@ -70,25 +73,16 @@ public class GeneralAutonomous extends OpMode
 
         forwardAndLift.createStack(fal);
 
+        autoPlan = new AutoPlan(rh, "blue", "right", false, 2, false);
+
         State[] states = {
 
-//                new AutoClawArm(rh, "closed", "down"),
-//                forwardAndLift,
-//                new AutoMoveLift(rh, "middle"),
-//                new AutoDriveTime(rh, 4, "forward", 0.2),
-//                new AutoDriveTime(rh, 4, "right", 0.2),
-//                new AutoDriveTime(rh, 4, "backward", 0.2),
-//                new AutoDriveTime(rh, 4, "left", 0.2),
-//                new AutoDriveTime(rh, 4, "clockwise", 0.2),
-//                new AutoDriveTime(rh, 4, "counter", 0.2),
-//                new AutoClawArm(rh, "closed", "down"),
-//                new AutoMoveLift(rh, "home")
-//                new AutoClawArm(rh, "closed", "down"),
-//                new AutoClawArm(rh, "closed", "up"),
+                autoPlan.getStack(),
 
-                new AutoTensorFlow(rh, false),
-                new AutoDriveTime(rh, 3, "forward", 0.2),
-                new AutoTFParkNoRR(rh)
+//                new AutoTensorFlow(rh, false),
+//                new AutoDriveTime(rh, 3, "forward", 0.2),
+//                new AutoTFParkNoRR(rh)
+
 
         };
 

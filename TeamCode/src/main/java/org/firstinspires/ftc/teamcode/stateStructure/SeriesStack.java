@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.stateStructure;
 
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
+import java.util.ArrayList;
+
 public class SeriesStack extends StackList implements State {
 
     boolean isDone = false;
@@ -15,8 +17,14 @@ public class SeriesStack extends StackList implements State {
     }
 
     public void createStack(State[] states) {
-        for (int i=0; i<states.length; i++) {
+        for (int i = 0; i < states.length; i++) {
             stack.add(i, states[i]);
+        }
+    }
+
+    public void createStack(ArrayList<State> states) {
+        for (int i = 0; i < states.size(); i++) {
+            stack.add(i, states.get(i));
         }
     }
 

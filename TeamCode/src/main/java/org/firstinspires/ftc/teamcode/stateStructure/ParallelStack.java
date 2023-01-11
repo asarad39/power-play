@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.stateStructure;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
+import java.util.ArrayList;
+
 public class ParallelStack extends StackList implements State {
 
     Telemetry telemetry;
@@ -16,8 +18,14 @@ public class ParallelStack extends StackList implements State {
     }
 
     public void createStack(State[] states) {
-        for (int i = 0; i<states.length; i++) {
+        for (int i = 0; i < states.length; i++) {
             stack.add(i, states[i]);
+        }
+    }
+
+    public void createStack(ArrayList<State> states) {
+        for (int i = 0; i < states.size(); i++) {
+            stack.add(i, states.get(i));
         }
     }
 

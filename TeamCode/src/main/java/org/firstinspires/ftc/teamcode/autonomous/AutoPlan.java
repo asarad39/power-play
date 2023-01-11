@@ -29,61 +29,68 @@
 
 package org.firstinspires.ftc.teamcode.autonomous;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.util.ElapsedTime;
-
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-@Autonomous(name="Auto layout", group="Auto")
-public class AutoPlan extends OpMode {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+public class AutoPlan {
 
     // Declare OpMode members
-    private ElapsedTime runtime = new ElapsedTime();
-    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
-    private SeriesStack autoStack = new SeriesStack(rh);
-
-    private String teamColor = "blue"; // "blue" or "red"
-    private String teamSide = "right"; // "right" or "left"
+    private RobotHardware rh = null;
+    private String teamColor = null; // "blue" or "red"
+    private String teamSide = null; // "right" or "left"
     private boolean customSleeve = false; // true if custom sleeve is used
-    private int numCones = 1; // number of cones to score    // 0 -> 0 cones    // 1 -> 1 cone    // 2 -> many cones
+    private boolean track = false;
+    private int numCones = 0; // number of cones to score    // 0 -> 0 cones    // 1 -> 1 cone    // 2 -> many cones
                               // has no effect
 
-    @Override
-    public void init() {
+    private SeriesStack autoStack = null;
 
-        rh.initialize(this);
+    public AutoPlan(RobotHardware rh,
+                    String teamColor,
+                    String teamSide,
+                    boolean customSleeve,
+                    int numCones,
+                    boolean track) {
 
-        State[] initialStates = {
-//                new AutoTensorFlow(rh, customSleeve),
-                new AutoClawArm(rh, "open", "down"),
-                new AutoClawArm(rh, "closed", "down"),
-                new AutoClawArm(rh, "closed", "up"),
-        };
+        this.rh = rh;
+        this.teamColor = teamColor;
+        this.teamSide = teamSide;
+        this.customSleeve = customSleeve;
+        this.track = track;
+        this.numCones = numCones;
+        this.autoStack = new SeriesStack(rh);
+    }
+    public SeriesStack getStack() {
 
-        autoStack.createStack(initialStates);
+        ArrayList<State> states = new ArrayList<State> (
 
-        State[] states = {};
+                Arrays.asList(
+                        new AutoTensorFlow(rh, customSleeve),
+                        new AutoClawArm(rh, "open", "down"),
+                        new AutoClawArm(rh, "closed", "down"),
+                        new AutoClawArm(rh, "closed", "up")
+                )
+        );
+
         // states initial setup based on start position
         if (teamColor.equals("blue") && teamSide.equals("right")) {
-            states = new State[]{
+
+            Collections.addAll(states,
                     /*parallel*/
-                    new AutoSpline(rh, true, -36, 0, Math.toRadians(45), false),
+                    new AutoSpline(rh, track, -36, 0, Math.toRadians(45), false),
                     new AutoMoveLift(rh, "high"),
                     /*series*/
-                    new AutoSpline(rh, true, -33, 0, Math.toRadians(45), false),
-                    new AutoClawArm(rh, "open", "up"),
-                    /*parallel*/
-                    new AutoSpline(rh, true, -36, 0, Math.toRadians(45), false),
+                    new AutoClawArm(rh, "closed", "down"),
                     new AutoClawArm(rh, "open", "down"),
-                    new AutoMoveLift(rh, "home"),
-            };
-
-            autoStack.createStack(states);
+                    /*parallel*/
+                    new AutoClawArm(rh, "open", "down"),
+                    new AutoMoveLift(rh, "home")
+            );
 
         } else if (teamColor.equals("red") && teamSide.equals("right")) {
 
@@ -93,21 +100,16 @@ public class AutoPlan extends OpMode {
 
         }
 
-        autoStack.stack.add(new AutoTFParkRR(rh, teamColor, teamSide, true));
+        autoStack.stack.add(
+                new AutoTFParkRR(rh, teamColor, teamSide, track)
+        );
 
-        autoStack.init();
+////        For testing:
+//        autoStack.stack.add(
+//                new AutoDriveTime(rh, 3, "forward", 0.3)
+//        );
 
-        // Tell the driver that initialization is complete.
-        rh.telemetry.addData("Status", "Initialized");
-    }
-
-    @Override
-    public void loop() {
-        rh.telemetry.addData("autoStack", autoStack.getIsDone());
-        rh.telemetry.addData("sleeve", RobotHardware.getSleeve());
-
-        if (!autoStack.getIsDone()) {
-            autoStack.update();
-        }
+        autoStack.createStack(states);
+        return autoStack;
     }
 }
