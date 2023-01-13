@@ -97,7 +97,16 @@ public class RobotHardware {
     }
 
     public void setLiftTarget(double target) {
-        lift.setTarget(target);
+
+        if (lift.getGoHome()) {
+
+            lift.setTarget(300);
+
+        } else {
+
+            lift.setTarget(target);
+
+        }
     }
 
 //    public void liftServos(double positionArmL, double positionClawL) {
@@ -165,10 +174,6 @@ public class RobotHardware {
 
     public double getClawPos() {
         return lift.getClawPos();
-    }
-
-    public void resetLiftEncoders() {
-        lift.resetEncoders();
     }
 
     public boolean getTouch() {

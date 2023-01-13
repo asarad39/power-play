@@ -80,14 +80,13 @@ public class NewLiftSystem {
 
     public void moveMotorsHome() {
 
-        liftMotorLeft.setPower(-0.3);
-        liftMotorRight.setPower(-0.3);
+        liftMotorLeft.setPower(0.6);
+        liftMotorRight.setPower(0.6);
 
         if (touch.isPressed()) {
 
             goHome = false;
-            liftMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            resetEncoders();
         }
 
     }
