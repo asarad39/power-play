@@ -29,7 +29,7 @@ public class NewLiftSystem {
     private double rotatePos = 0;
     private double clawPos = 0;
 
-    private boolean goHome =  true;
+    private int goHome = 2;
 
     public void initialize(OpMode op) {
 
@@ -83,17 +83,19 @@ public class NewLiftSystem {
         liftMotorLeft.setPower(0.6);
         liftMotorRight.setPower(0.6);
 
-        if (touch.isPressed()) {
+        if (touch.isPressed() && goHome == 2) {
+            goHome = 0;
+            resetEncoders();
 
-            goHome = false;
+        } else if (getLiftEncoderLeft() < -30 && goHome == 1) {
+            goHome = 0;
             resetEncoders();
         }
 
     }
 
-    public boolean getGoHome() {
-
-        return this.goHome;
+    public int getGoHome() {
+        return goHome;
     }
 
     public int getLiftEncoderLeft() {

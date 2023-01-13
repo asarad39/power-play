@@ -85,7 +85,7 @@ public class RobotHardware {
     // Lift system methods
     public void lift(double power) {
 
-        if (lift.getGoHome()) {
+        if (lift.getGoHome() != 0) {
 
             lift.moveMotorsHome();
 
@@ -98,9 +98,13 @@ public class RobotHardware {
 
     public void setLiftTarget(double target) {
 
-        if (lift.getGoHome()) {
+        if (lift.getGoHome() == 2) {
 
             lift.setTarget(300);
+
+        } else if (lift.getGoHome() == 1) {
+
+            lift.setTarget(-50);
 
         } else {
 

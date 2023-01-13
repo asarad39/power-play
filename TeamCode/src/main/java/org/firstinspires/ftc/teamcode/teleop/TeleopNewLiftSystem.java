@@ -23,7 +23,7 @@ public class TeleopNewLiftSystem implements State {
     private String level = null;
     private String lastLevel = null;
 
-    private boolean goHome;
+    private int goHome;
 
     private double armPos = 0;
     private double flipPos = 0;
@@ -61,13 +61,13 @@ public class TeleopNewLiftSystem implements State {
          * arm = [0, 0.5] -> flipAmdRotate = 1
          **/
 
-        armPos = 0.475;
-        flipPos = 0.5;
-        rotatePos = 1;
+        armPos = 1;
+        flipPos = 0;
+        rotatePos = 0;
         clawPos = 0.16;
 
         rh.setServoPositions(armPos, flipPos, rotatePos, clawPos);
-        goHome = true;
+        goHome = 2;
         level = "home";
         lastLevel = "home";
         mirrored = false;
@@ -84,9 +84,9 @@ public class TeleopNewLiftSystem implements State {
 
         goHome = rh.lift.getGoHome();
 
-//        double armPos = getArm();
-//        double flipPos = getFlip();
-//        double rotatePos = getRotate();
+        double armPos = getArm();
+        double flipPos = getFlip();
+        double rotatePos = getRotate();
         double clawPos = getClaw();
 
         // set lift movement speed
@@ -97,7 +97,7 @@ public class TeleopNewLiftSystem implements State {
         double liftMove = getLiftPowerLogistic(liftSpeed, liftPID.getTargetPosition());
 
         level = getLevel();
-        mirrored = getMirrored();
+//        mirrored = getMirrored();
 
         adjustLiftHeight();
         adjustServo();
@@ -137,7 +137,7 @@ public class TeleopNewLiftSystem implements State {
 
         String newLevel = this.level;
 
-        if (rh.gamepad1.dpad_up) { // toggle lift up
+        if (rh.gamepad1.y) { // toggle lift up
 
             if(lastLevel.equals("home")) {
 
@@ -155,7 +155,7 @@ public class TeleopNewLiftSystem implements State {
 
             liftTargetSetBefore = false;
 
-        } else if (rh.gamepad1.dpad_down){
+        } else if (rh.gamepad1.b){
 
             if(lastLevel.equals("low")) {
 
@@ -204,11 +204,11 @@ public class TeleopNewLiftSystem implements State {
 
         double adjustmentSize = 20;
 
-        if (rh.gamepad1.y) {
+        if (rh.gamepad1.dpad_up) {
 
             liftPID.adjustTargetPosition(adjustmentSize);
 
-        } else if (rh.gamepad1.b) {
+        } else if (rh.gamepad1.dpad_down) {
 
             liftPID.adjustTargetPosition(-adjustmentSize);
         }
@@ -261,12 +261,17 @@ public class TeleopNewLiftSystem implements State {
 
         liftPID.setStartTime(rh.time.milliseconds());
 
-        if (goHome == false) { // so the lift can move down while homing
+        if (goHome == 0) { // so the lift can move down while homing
             liftPID.checkForInvalid();
         }
 
         return getLiftPowerLogistic(maxPower, liftPID.getTargetPosition());
     }
+
+    /**
+     *
+     * @return
+     */
 
     public double getArm() { //TODO: find actual positions
 
@@ -274,19 +279,19 @@ public class TeleopNewLiftSystem implements State {
 
         if (level.equals("home") && mirrored) {
 
-            liftArmPosition = 1.0;
+            liftArmPosition = 0.0;
 
         } else if (level.equals("home")) {
 
-            liftArmPosition = 0.0;
+            liftArmPosition = 1.0;
 
         } else if (mirrored) {
 
-            liftArmPosition = 0.75;
+            liftArmPosition = 0.282;
 
         } else {
 
-            liftArmPosition = 0.25;
+            liftArmPosition = 0.668;
 
         }
 
