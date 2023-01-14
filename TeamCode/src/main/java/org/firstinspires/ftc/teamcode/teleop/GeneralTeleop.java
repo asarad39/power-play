@@ -39,7 +39,7 @@ import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 // Teleop program that uses TeleopMove state to drive using robot controller
 
-@TeleOp(name="General Teleop 2022", group="Iterative Opmode")
+@TeleOp(name="General Teleop 2022")
 public class GeneralTeleop extends OpMode
 {
 

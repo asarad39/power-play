@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -38,9 +39,9 @@ import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-
-@Autonomous(name="General Autonomous 2022")
-public class GeneralAutonomous extends OpMode
+@Disabled
+@Autonomous(name="Right One Cone Autonomous 2022", group="0")
+public class RightOneConeAutonomous extends OpMode
 {
 
 
@@ -65,7 +66,11 @@ public class GeneralAutonomous extends OpMode
 
         SeriesStack driveSequence = new SeriesStack(rh);
         State[] forDriveSequence = {
-                new AutoDriveTime(rh, 4.5, "forward", 0.2),
+                new AutoDriveTime(rh, 1, "forward", 0.2),
+                new AutoDriveTime(rh, 2, "left", 0.2),
+                new AutoNewClaw(rh,"open", "up", false),
+                new AutoDriveTime(rh, 2, "right", 0.2),
+                new AutoDriveTime(rh, 3.5, "forward", 0.2),
                 new AutoTFParkNoRR(rh)
         };
         driveSequence.createStack(forDriveSequence);

@@ -21,10 +21,11 @@ public class AutoTFParkNoRR implements State {
     private double startTime;
     private double moveX = 0;
     private double moveY = 0;
+    private double moveRotate = 0;
     private int sleeve = 0;
     private double power;
 
-    private double seconds = 2.5;
+    private double seconds = 0;
 
     private boolean isDone = false;
 
@@ -41,14 +42,17 @@ public class AutoTFParkNoRR implements State {
         if (sleeve == 3) {
 
             moveX = power;
+            seconds = 3.5;
 
         } else if (sleeve == 2) {
 
             moveX = 0;
+            seconds = 0;
 
         } else if (sleeve == 1) {
 
             moveX = -power;
+            seconds = 3.5;
 
         } else {
             throw new IllegalArgumentException("sleeve is not valid");
@@ -59,10 +63,10 @@ public class AutoTFParkNoRR implements State {
 
     public void update() {
 
-        double powerFR = - moveX;
-        double powerFL = + moveX;
-        double powerBR = + moveX;
-        double powerBL = - moveX;
+        double powerFR = + moveX + moveY - moveRotate;
+        double powerFL = + moveX - moveY - moveRotate;
+        double powerBR = - moveX + moveY - moveRotate;
+        double powerBL = - moveX - moveY - moveRotate;
 
         rh.drive(powerFR, powerFL, powerBR, powerBL);
     }

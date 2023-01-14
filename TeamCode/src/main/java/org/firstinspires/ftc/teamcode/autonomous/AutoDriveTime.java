@@ -41,9 +41,9 @@ public class AutoDriveTime implements State {
         double moveRotate = 0;
 
         if (direction.equals("forward")) {
-            moveY = -power;
-        } else if (direction.equals("backward")) {
             moveY = power;
+        } else if (direction.equals("backward")) {
+            moveY = -power;
         } else if (direction.equals("right")) {
             moveX = power;
         } else if (direction.equals("left")) {
@@ -56,10 +56,10 @@ public class AutoDriveTime implements State {
             throw new IllegalArgumentException("nonexistent move direction");
         }
 
-        double powerFR = - moveX + moveY + moveRotate;
-        double powerFL = + moveX + moveY - moveRotate;
-        double powerBR = + moveX + moveY + moveRotate;
-        double powerBL = - moveX + moveY - moveRotate;
+        double powerFR = + moveX - moveY + moveRotate;
+        double powerFL = + moveX + moveY + moveRotate;
+        double powerBR = - moveX - moveY + moveRotate;
+        double powerBL = - moveX + moveY + moveRotate;
 
         rh.drive(powerFR, powerFL, powerBR, powerBL);
 
