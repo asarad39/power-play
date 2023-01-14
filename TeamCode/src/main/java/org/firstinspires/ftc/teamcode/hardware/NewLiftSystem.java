@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 // Represents the lift of the robot in code
 public class NewLiftSystem {
@@ -31,6 +32,10 @@ public class NewLiftSystem {
 
     private int goHome = 2;
 
+    private ElapsedTime runtime = new ElapsedTime();
+    double startTime = 0;
+    boolean runOnce = true;
+
     public void initialize(OpMode op) {
 
         // Links the code to the ports on the robot
@@ -53,6 +58,8 @@ public class NewLiftSystem {
         flipServo = op.hardwareMap.get(Servo.class, "flip");
         rotateServo = op.hardwareMap.get(Servo.class, "rotate");
         clawServo = op.hardwareMap.get(Servo.class, "claw");
+
+        runOnce = true;
     }
 
     public void resetEncoders() {
@@ -80,14 +87,19 @@ public class NewLiftSystem {
 
     public void moveMotorsHome() {
 
+        if(runOnce = true) {
+            startTime = runtime.seconds();
+            runOnce = false;
+        }
+
         liftMotorLeft.setPower(0.6);
         liftMotorRight.setPower(0.6);
 
         if (touch.isPressed() && goHome == 2) {
-            goHome = 0;
+            goHome = 1;
             resetEncoders();
 
-        } else if (getLiftEncoderLeft() < -30 && goHome == 1) {
+        } else if (runtime.seconds() - startTime >= 3 && goHome == 1) {
             goHome = 0;
             resetEncoders();
         }

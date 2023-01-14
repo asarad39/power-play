@@ -18,6 +18,11 @@ public class TeleopNewLiftSystem implements State {
 
     private boolean mirrored = false;
     private boolean lastMirrored = false;
+
+    private boolean startMirror = false;
+    private boolean mirrorCheck = false;
+    private boolean endMirror = false;
+
     private boolean liftTargetSetBefore = false;
 
     private String level = null;

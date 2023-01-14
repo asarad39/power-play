@@ -104,7 +104,7 @@ public class RobotHardware {
 
         } else if (lift.getGoHome() == 1) {
 
-            lift.setTarget(-50);
+            lift.setTarget(-100);
 
         } else {
 
