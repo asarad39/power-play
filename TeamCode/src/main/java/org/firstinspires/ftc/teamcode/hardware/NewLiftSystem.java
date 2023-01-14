@@ -32,9 +32,7 @@ public class NewLiftSystem {
 
     private int goHome = 2;
 
-    private ElapsedTime runtime = new ElapsedTime();
-    double startTime = 0;
-    boolean runOnce = true;
+    private ElapsedTime runtime;
 
     public void initialize(OpMode op) {
 
@@ -59,7 +57,7 @@ public class NewLiftSystem {
         rotateServo = op.hardwareMap.get(Servo.class, "rotate");
         clawServo = op.hardwareMap.get(Servo.class, "claw");
 
-        runOnce = true;
+        runtime = new ElapsedTime();
     }
 
     public void resetEncoders() {
@@ -87,19 +85,15 @@ public class NewLiftSystem {
 
     public void moveMotorsHome() {
 
-        if(runOnce = true) {
-            startTime = runtime.seconds();
-            runOnce = false;
-        }
-
         liftMotorLeft.setPower(0.6);
         liftMotorRight.setPower(0.6);
 
         if (touch.isPressed() && goHome == 2) {
             goHome = 1;
+            runtime.reset();
             resetEncoders();
 
-        } else if (runtime.seconds() - startTime >= 3 && goHome == 1) {
+        } else if (runtime.seconds() >= 2 && goHome == 1) {
             goHome = 0;
             resetEncoders();
         }
