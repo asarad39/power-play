@@ -12,15 +12,22 @@ public class AutoNewClaw implements State {
     private double startTime;
     private String clawString = null; // "open" or "closed"
     private String armString = null; // "up" or "down"
+    private boolean init = false;
 
-    public AutoNewClaw(RobotHardware rh, String clawString, String armString) {
+    public AutoNewClaw(RobotHardware rh, String clawString, String armString, boolean init) {
         this.rh = rh;
         this.clawString = clawString;
         this.armString = armString;
+        this.init = init;
     }
 
     public void init() {
         startTime = rh.time.seconds();
+
+        // close the claw with the arm down
+        if (init) {
+            rh.setServoPositions(1, 0, 0, 0.16);
+        }
     }
 
     public boolean getIsDone() {

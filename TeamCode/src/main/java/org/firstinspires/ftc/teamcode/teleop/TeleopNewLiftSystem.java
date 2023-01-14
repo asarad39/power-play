@@ -20,7 +20,6 @@ public class TeleopNewLiftSystem implements State {
     private boolean canMirror = false;
 
     private boolean armMirror1 = false;
-    private boolean armMirror2 = false;
     private boolean flipMirror = false;
     private boolean endMirror = false;
     private boolean rotateMirror = false;
@@ -29,6 +28,7 @@ public class TeleopNewLiftSystem implements State {
 
     private String level = null;
     private String lastLevel = null;
+    private boolean vertical = false;
 
     private int goHome;
 
@@ -51,7 +51,7 @@ public class TeleopNewLiftSystem implements State {
          * arm:
          *      0 = down back
          *      0.282 = lifted (back)
-         *      0.523 = vertical (transition)
+         *      0.48 = vertical (transition)
          *      0.668 = lifted (front)
          *      1 = down front
          * flip:
@@ -67,21 +67,22 @@ public class TeleopNewLiftSystem implements State {
          **/
 
 //        front down default
-        armPos = 1;
-        flipPos = 0;
-        rotatePos = 0;
-        clawPos = 0;
+//        armPos = 1;
+//        flipPos = 0;
+//        rotatePos = 0;
+//        clawPos = 0;
 
 //        custom
-//        armPos = 0.523;
-//        flipPos = 1;
-//        rotatePos = 0;
-//        clawPos = 0.16;
+        armPos = 0.48;
+        flipPos = 0.5;
+        rotatePos = 1;
+        clawPos = 0.16;
 
         rh.setServoPositions(armPos, flipPos, rotatePos, clawPos);
         goHome = 2;
         level = "home";
         lastLevel = "home";
+        vertical = true;
         
         mirrored = false;
         canMirror = true;
@@ -89,7 +90,6 @@ public class TeleopNewLiftSystem implements State {
         armMirror1 = false;
         flipMirror = false;
         rotateMirror = false;
-        armMirror2 = false;
         endMirror = true;
     }
 
@@ -165,7 +165,7 @@ public class TeleopNewLiftSystem implements State {
 
         if (rh.gamepad1.y) { // toggle lift up
 
-            if(lastLevel.equals("home") || lastLevel.equals("vertical")) {
+            if(lastLevel.equals("home")) {
 
                 newLevel = "low";
 
@@ -179,11 +179,12 @@ public class TeleopNewLiftSystem implements State {
 
             }
 
+            vertical = false;
             liftTargetSetBefore = false;
 
         } else if (rh.gamepad1.b) { // toggle lift up
 
-            if(lastLevel.equals("low") || lastLevel.equals("vertical")) {
+            if(lastLevel.equals("low")) {
 
                 newLevel = "home";
 
@@ -197,19 +198,19 @@ public class TeleopNewLiftSystem implements State {
 
             }
 
+            vertical = false;
             liftTargetSetBefore = false;
 
         } else if (rh.gamepad1.a) { // home the lift
 
             newLevel = "home";
 
+            vertical = false;
             liftTargetSetBefore = false;
 
         } else if (rh.gamepad1.x) { // home the lift
 
-            newLevel = "vertical";
-
-            liftTargetSetBefore = false;
+            vertical = true;
 
         } else {
 
@@ -221,10 +222,10 @@ public class TeleopNewLiftSystem implements State {
 
     public void getMirrored() {
 
-        if (rh.gamepad1.right_bumper && canMirror) {
+        if (rh.gamepad1.right_bumper && canMirror && vertical) {
 
                 endMirror = false;
-                mirrorSeconds = currentSeconds;
+//                mirrorSeconds = currentSeconds;
 
                 armMirror1 = true;
                 canMirror = false;
@@ -267,7 +268,7 @@ public class TeleopNewLiftSystem implements State {
 
         double pos = 0;
 
-        if (level.equals("home") || level.equals("vertical")) {
+        if (level.equals("home")) {
 
             pos = 0;
 
@@ -314,49 +315,25 @@ public class TeleopNewLiftSystem implements State {
 
         if (armMirror1 && !mirrored) {
 
-            for (double i = 1; i >= 0.523; i -= 0.00000002) {
+            for (double i = 0.48; i >= 0.0; i -= 0.00000002) {
 
                 liftArmPosition = i;
             }
+
             flipMirror = true;
-            armMirror1 = false;
 
         } else if (armMirror1 && mirrored) {
 
-            for (double i = 0; i <= 0.523; i += 0.00000002) {
+            for (double i = 0.48; i <= 1; i += 0.00000002) {
 
                 liftArmPosition = i;
             }
+
             flipMirror = true;
-            armMirror1 = false;
 
-        } else if (armMirror2 && !mirrored) {
+        } else if (vertical) {
 
-            for (double i = 0.523; i >= 0.0; i -= 0.00000002) {
-
-                liftArmPosition = i;
-            }
-            mirrored = true;
-            endMirror = true;
-            armMirror2 = false;
-            flipMirror = false;
-            rotateMirror = false;
-
-            canMirror = true;
-
-        } else if (armMirror2 && mirrored) {
-
-            for (double i = 0.523; i <= 1; i += 0.00000002) {
-
-                liftArmPosition = i;
-            }
-            mirrored = false;
-            endMirror = true;
-            armMirror2 = false;
-            flipMirror = false;
-            rotateMirror = false;
-
-            canMirror = true;
+            liftArmPosition = 0.48;
 
         } else if (level.equals("home") && mirrored) {
 
@@ -365,10 +342,6 @@ public class TeleopNewLiftSystem implements State {
         } else if (level.equals("home") && !mirrored) {
 
             liftArmPosition = 1.0;
-
-        } else if (level.equals("vertical")) {
-
-            liftArmPosition = 0.523;
 
         } else if (mirrored) {
 
@@ -394,7 +367,7 @@ public class TeleopNewLiftSystem implements State {
 
         if (flipMirror && !mirrored) {
 
-            for (double i = 0; i <= 1; i += 0.0000002) {
+            for (double i = 0.5; i <= 1; i += 0.0000002) {
 
                 flipPosition = i;
             }
@@ -403,14 +376,14 @@ public class TeleopNewLiftSystem implements State {
 
         } else if (flipMirror && mirrored) {
 
-            for (double i = 1; i >= 0.0; i -= 0.0000002) {
+            for (double i = 0.5; i >= 0.0; i -= 0.0000002) {
 
                 flipPosition = i;
             }
 
             rotateMirror = true;
 
-        } else if (level.equals("vertical")) {
+        } else if (vertical) {
 
             flipPosition = 0.5;
 
@@ -439,12 +412,40 @@ public class TeleopNewLiftSystem implements State {
         if (rotateMirror && !mirrored) {
 
             rotatePosition = 1.0;
-            armMirror2 = true;
+
+            mirrored = true;
+
+            endMirror = true;
+            armMirror1 = false;
+            flipMirror = false;
+            rotateMirror = false;
+            vertical = false;
+
+            if(level.equals("home")) {
+                liftTargetSetBefore = false;
+                level = "low";
+            }
+
+            canMirror = true;
 
         } else if (rotateMirror && mirrored) {
 
             rotatePosition = 0.0;
-            armMirror2 = true;
+
+            mirrored = false;
+
+            endMirror = true;
+            armMirror1 = false;
+            flipMirror = false;
+            rotateMirror = false;
+            vertical = false;
+
+            if(level.equals("home")) {
+                    liftTargetSetBefore = false;
+                    level = "low";
+            }
+
+            canMirror = true;
 
         } else if (mirrored) {
 
@@ -463,7 +464,7 @@ public class TeleopNewLiftSystem implements State {
 
         double clawPosition = rh.getClawPos();
 
-        if (level.equals("vertical")) {
+        if (vertical) {
 
             clawPosition = 0.16;
 

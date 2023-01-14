@@ -62,7 +62,7 @@ public class GeneralAutonomous extends OpMode
         ParallelStack scanAndOpen = new ParallelStack(rh);
         State[] forScanAndOpen = {
                 new AutoTensorFlow(rh, false),
-                new AutoNewClaw(rh,"open", "down"),
+                new AutoNewClaw(rh,"open", "down", true),
         };
         scanAndOpen.createStack(forScanAndOpen);
 
@@ -76,13 +76,13 @@ public class GeneralAutonomous extends OpMode
         ParallelStack driveAndUp = new ParallelStack(rh);
         State[] forDriveAndUp = {
                 driveSequence,
-                new AutoNewClaw(rh,"closed", "up"),
+                new AutoNewClaw(rh,"closed", "up", false),
         };
         driveAndUp.createStack(forDriveAndUp);
 
         State[] forAutoStack = {
                 scanAndOpen,
-                new AutoNewClaw(rh, "closed", "down"),
+                new AutoNewClaw(rh, "closed", "down", false),
                 driveAndUp,
         };
 
