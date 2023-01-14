@@ -53,41 +53,40 @@ public class GeneralAutonomous extends OpMode
 //    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
     //    private ParallelStack autoStack = new ParallelStack(rh);
     private SeriesStack autoStack = new SeriesStack(rh);
-    private AutoPlan autoPlan = null;
 
     @Override
     public void init() {
 
         rh.initialize(this);
 
-        ParallelStack forwardAndLift = new ParallelStack(rh);
-
-        State[] fal = {
-//                new AutoMoveLift(rh, "middle"),
-
-
-//                new AutoDriveTime(rh, 2, "forward"),
-
-//                new AutoClawArm(rh, "closed", "up"),
-        };
-
-        forwardAndLift.createStack(fal);
-
-//        autoPlan = new AutoPlan(rh, "blue", "right", false, 2, false);
-
-        State[] states = {
-
-//                autoPlan.getStack(),
-
+        ParallelStack scanAndOpen = new ParallelStack(rh);
+        State[] forScanAndOpen = {
                 new AutoTensorFlow(rh, false),
+                new AutoNewClaw(rh,"open", "down"),
+        };
+        scanAndOpen.createStack(forScanAndOpen);
+
+        SeriesStack driveSequence = new SeriesStack(rh);
+        State[] forDriveSequence = {
                 new AutoDriveTime(rh, 3, "forward", 0.2),
                 new AutoTFParkNoRR(rh)
+        };
+        driveSequence.createStack(forDriveSequence);
 
+        ParallelStack driveAndUp = new ParallelStack(rh);
+        State[] forDriveAndUp = {
+                driveSequence,
+                new AutoNewClaw(rh,"closed", "up"),
+        };
+        driveAndUp.createStack(forDriveAndUp);
 
+        State[] forAutoStack = {
+                scanAndOpen,
+                new AutoNewClaw(rh, "closed", "down"),
+                driveAndUp,
         };
 
-
-        autoStack.createStack(states);
+        autoStack.createStack(forAutoStack);
         autoStack.init();
 
         // Tell the driver that initialization is complete.

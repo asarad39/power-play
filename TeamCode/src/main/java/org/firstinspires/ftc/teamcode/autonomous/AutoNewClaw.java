@@ -9,8 +9,6 @@ public class AutoNewClaw implements State {
 
     RobotHardware rh = null;
 
-    private double lastClaw = 0;
-    private double lastArm = 0;
     private double startTime;
     private String clawString = null; // "open" or "closed"
     private String armString = null; // "up" or "down"
@@ -31,18 +29,22 @@ public class AutoNewClaw implements State {
 
     public void update() {
 
-//        rh.liftServos(arm(), claw());
+        rh.setServoPositions(arm(), 0, 0, claw());
 
     }
 
     public double claw() {
 
-        double liftClawPosition = rh.getClawPos();
+        double liftClawPosition = 0;
 
         if (clawString.equals("open")) {
-            liftClawPosition = 0;
+
+            liftClawPosition = 0.0;
+
         } else if (clawString.equals("closed")) {
-            liftClawPosition = 1;
+
+            liftClawPosition = 0.16;
+
         } else {
             throw new IllegalArgumentException("nonexistent claw position name");
         }
@@ -52,12 +54,12 @@ public class AutoNewClaw implements State {
 
     public double arm() {
 
-        double liftArmPosition = rh.getClawPos();
+        double liftArmPosition = 0;
 
         if (armString.equals("up")) {
-            liftArmPosition = 1;
+            liftArmPosition = 0.668;
         } else if (armString.equals("down")) {
-            liftArmPosition = 0;
+            liftArmPosition = 1;
         } else {
             throw new IllegalArgumentException("nonexistent arm position name");
         }
