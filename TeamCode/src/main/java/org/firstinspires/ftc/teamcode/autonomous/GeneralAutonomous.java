@@ -73,15 +73,15 @@ public class GeneralAutonomous extends OpMode
 
         forwardAndLift.createStack(fal);
 
-        autoPlan = new AutoPlan(rh, "blue", "right", false, 2, false);
+//        autoPlan = new AutoPlan(rh, "blue", "right", false, 2, false);
 
         State[] states = {
 
-                autoPlan.getStack(),
+//                autoPlan.getStack(),
 
-//                new AutoTensorFlow(rh, false),
-//                new AutoDriveTime(rh, 3, "forward", 0.2),
-//                new AutoTFParkNoRR(rh)
+                new AutoTensorFlow(rh, false),
+                new AutoDriveTime(rh, 3, "forward", 0.2),
+                new AutoTFParkNoRR(rh)
 
 
         };
