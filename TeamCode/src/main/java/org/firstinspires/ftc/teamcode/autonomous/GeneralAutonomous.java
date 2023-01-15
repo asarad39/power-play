@@ -65,7 +65,7 @@ public class GeneralAutonomous extends OpMode
 
         SeriesStack driveSequence = new SeriesStack(rh);
         State[] forDriveSequence = {
-                new AutoDriveTime(rh, 4.5, "forward", 0.2),
+                new AutoDriveTime(rh, 4.0, "forward", 0.2),
                 new AutoTFParkNoRR(rh)
         };
         driveSequence.createStack(forDriveSequence);
@@ -98,5 +98,7 @@ public class GeneralAutonomous extends OpMode
         if (!autoStack.getIsDone()) {
             autoStack.update();
         }
+
+        rh.telemetry.update();
     }
 }
