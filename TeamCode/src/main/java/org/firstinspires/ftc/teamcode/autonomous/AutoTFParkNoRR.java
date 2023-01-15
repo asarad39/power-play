@@ -42,7 +42,7 @@ public class AutoTFParkNoRR implements State {
         if (sleeve == 3) {
 
             moveX = power;
-            seconds = 3.5;
+            seconds = 2.75;
 
         } else if (sleeve == 2) {
 
@@ -52,7 +52,7 @@ public class AutoTFParkNoRR implements State {
         } else if (sleeve == 1) {
 
             moveX = -power;
-            seconds = 3.5;
+            seconds = 2.75;
 
         } else {
             throw new IllegalArgumentException("sleeve is not valid");
