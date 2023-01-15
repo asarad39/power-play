@@ -280,11 +280,11 @@ public class TeleopNewLiftSystem implements State {
 
         } else if (level.equals("middle")) {
 
-            pos = 3460;
+            pos = 3310;
 
         } else if (level.equals("high")) {
 
-            pos = 5100;
+            pos = 5075;
         }
 
         if (!liftTargetSetBefore) {
