@@ -79,7 +79,7 @@ public class TeleopNewLiftSystem implements State {
         rotatePos = 1;
         clawPos = 0.2;
 
-        rh.setServoPositions(armPos, flipPos, rotatePos, clawPos);
+//        rh.setServoPositions(armPos, flipPos, rotatePos, clawPos);
         goHome = 2;
         level = "home";
         lastLevel = "home";

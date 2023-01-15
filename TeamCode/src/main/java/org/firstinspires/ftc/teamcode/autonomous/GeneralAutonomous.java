@@ -73,7 +73,7 @@ public class GeneralAutonomous extends OpMode
         ParallelStack driveAndUp = new ParallelStack(rh);
         State[] forDriveAndUp = {
                 driveSequence,
-                new AutoNewClaw(rh,"closed", "up", false),
+//                new AutoNewClaw(rh,"closed", "up", false),
         };
         driveAndUp.createStack(forDriveAndUp);
 
