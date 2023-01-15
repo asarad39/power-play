@@ -111,7 +111,7 @@ public class TeleopNewLiftSystem implements State {
         double clawPos = getClaw();
 
         // set lift movement speed
-        double maxLiftSpeed = 0.8;
+        double maxLiftSpeed = 0.95;
 
         double liftSpeed = getLiftPowerPID(maxLiftSpeed);
 
@@ -284,7 +284,7 @@ public class TeleopNewLiftSystem implements State {
 
         } else if (level.equals("high")) {
 
-            pos = 5300;
+            pos = 5100;
         }
 
         if (!liftTargetSetBefore) {

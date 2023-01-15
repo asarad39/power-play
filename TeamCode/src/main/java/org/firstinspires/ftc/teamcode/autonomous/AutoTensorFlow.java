@@ -15,6 +15,7 @@ public class AutoTensorFlow implements State {
     private int oneCount = 0;
     private int twoCount = 0;
     private int threeCount = 0;
+    private boolean beginTime = true;
 
     public AutoTensorFlow(RobotHardware rh, boolean custom) {
 
@@ -23,13 +24,12 @@ public class AutoTensorFlow implements State {
     }
 
     public void init() {
-        startTime = rh.time.seconds();
         rh.setCustom(this.custom);
     }
 
     public boolean getIsDone() {
 
-        if (rh.time.seconds() > startTime + 3) {
+        if (rh.time.seconds() > startTime + 6) {
 
             if (oneCount >= twoCount && oneCount >= threeCount) {
                 RobotHardware.setSleeve(1);
@@ -47,7 +47,10 @@ public class AutoTensorFlow implements State {
     }
 
     public void update() {
-
+        if (beginTime) {
+            startTime = rh.time.seconds();
+            beginTime = false;
+        }
 //        rh.telemetry.addData("custom", rh.setCustom());
 
         for (int i = 0; i < 1000; i++) {
@@ -91,5 +94,9 @@ public class AutoTensorFlow implements State {
                 e.printStackTrace();
             }
         }
+
+        rh.telemetry.addData("oneCount", oneCount);
+        rh.telemetry.addData("twoCount", twoCount);
+        rh.telemetry.addData("threeCount", threeCount);
     }
 }
