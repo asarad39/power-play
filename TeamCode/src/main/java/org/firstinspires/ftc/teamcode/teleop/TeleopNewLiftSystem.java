@@ -316,7 +316,7 @@ public class TeleopNewLiftSystem implements State {
 
         } else if (level.equals("high")) {
 
-            pos = 4775;
+            pos = 4975;
 
         } else if (level.equals("topStack")) {
 
