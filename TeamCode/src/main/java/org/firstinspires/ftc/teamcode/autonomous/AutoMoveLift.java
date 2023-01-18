@@ -69,9 +69,9 @@ public class AutoMoveLift implements State {
 
     public double getLiftPowerPID(String goalString, double maxPower) {
         double home = 0;
-        double low = 500;
-        double middle = 1700;
-        double high = 2900;
+        double low = 1460;
+        double middle = 3310;
+        double high = 5075;
 
         if (goalString.equals("home")) {
             liftPID.setTargetPosition(home);

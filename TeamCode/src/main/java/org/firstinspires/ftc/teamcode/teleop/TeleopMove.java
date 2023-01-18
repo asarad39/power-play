@@ -18,9 +18,10 @@ public class TeleopMove implements State {
     public void update() {
 
         // Calculate the motor powers and send them to the DC motors
-        double minSpeed = 0.4;
+        double baseSpeed = 0.4;
+        double minSpeed = 0.2;
         double maxSpeed = 0.8;
-        double scalar = minSpeed + ((maxSpeed - minSpeed) * rh.gamepad2.right_trigger) - (0.6 * rh.gamepad2.left_trigger * minSpeed);
+        double scalar = baseSpeed + maxSpeed * rh.gamepad2.right_trigger - minSpeed * rh.gamepad2.left_trigger;
 
         double moveX = rh.gamepad2.left_stick_x;
         double moveY = rh.gamepad2.left_stick_y;

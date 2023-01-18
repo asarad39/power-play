@@ -25,6 +25,7 @@ public class TeleopNewLiftSystem implements State {
     private boolean rotateMirror = false;
 
     private boolean liftTargetSetBefore = false;
+    private boolean canJump = false;
 
     private String level = null;
     private String lastLevel = null;
@@ -92,6 +93,8 @@ public class TeleopNewLiftSystem implements State {
         flipMirror = false;
         rotateMirror = false;
         endMirror = true;
+
+        canJump = true;
     }
 
     @Override
@@ -111,7 +114,7 @@ public class TeleopNewLiftSystem implements State {
         double clawPos = getClaw();
 
         // set lift movement speed
-        double maxLiftSpeed = 0.95;
+        double maxLiftSpeed = 1.0;
 
         double liftSpeed = getLiftPowerPID(maxLiftSpeed);
 
@@ -123,6 +126,8 @@ public class TeleopNewLiftSystem implements State {
 
         adjustLiftHeight();
 //        adjustServo();
+
+        jumpLiftHeight();
 
         rh.setLiftTarget(liftPID.getTargetPosition());
         rh.lift(liftMove);
@@ -213,6 +218,13 @@ public class TeleopNewLiftSystem implements State {
 
             vertical = true;
 
+        } else if (rh.gamepad1.dpad_left) {
+
+            newLevel = "topStack";
+
+            vertical = false;
+            liftTargetSetBefore = false;
+
         } else {
 
             lastLevel = level;
@@ -245,6 +257,26 @@ public class TeleopNewLiftSystem implements State {
         } else if (rh.gamepad1.dpad_down) {
 
             liftPID.adjustTargetPosition(-adjustmentSize);
+        }
+    }
+
+    public void jumpLiftHeight() {
+
+        double adjustmentSize = 900;
+
+        double clawPosition = rh.getClawPos();
+
+        if (rh.gamepad1.dpad_right) {
+
+            if (canJump) {
+
+                liftPID.adjustTargetPosition(adjustmentSize);
+                canJump = false;
+
+            }
+
+        } else {
+            canJump = true;
         }
     }
 
@@ -284,7 +316,11 @@ public class TeleopNewLiftSystem implements State {
 
         } else if (level.equals("high")) {
 
-            pos = 5075;
+            pos = 4775;
+
+        } else if (level.equals("topStack")) {
+
+            pos = 995;
         }
 
         if (!liftTargetSetBefore) {
@@ -337,11 +373,11 @@ public class TeleopNewLiftSystem implements State {
 
             liftArmPosition = 0.48;
 
-        } else if (level.equals("home") && mirrored) {
+        } else if ((level.equals("home") || level.equals("topStack")) && mirrored) {
 
             liftArmPosition = 0.0;
 
-        } else if (level.equals("home") && !mirrored) {
+        } else if ((level.equals("home") || level.equals("topStack")) && !mirrored) {
 
             liftArmPosition = 1.0;
 

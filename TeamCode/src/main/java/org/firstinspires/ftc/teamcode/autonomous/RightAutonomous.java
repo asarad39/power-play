@@ -30,7 +30,6 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -39,16 +38,16 @@ import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-//@Disabled
-@Autonomous(name="One Cone Autonomous 2022")
-public class RightOneConeAutonomous extends OpMode
+
+@Autonomous(name="Right Autonomous 2022")
+public class RightAutonomous extends OpMode
 {
 
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
-//    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
+    //    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
     //    private ParallelStack autoStack = new ParallelStack(rh);
     private SeriesStack autoStack = new SeriesStack(rh);
 
@@ -61,31 +60,28 @@ public class RightOneConeAutonomous extends OpMode
         State[] forScanAndOpen = {
                 new AutoTensorFlow(rh, false),
                 new AutoNewClaw(rh,"closed", "down", true),
-                new AutoNewClaw(rh,"closed", "up", true),
         };
         scanAndOpen.createStack(forScanAndOpen);
 
         SeriesStack driveSequence = new SeriesStack(rh);
         State[] forDriveSequence = {
-//                new AutoDriveTime(rh, 1, "forward", 0.2),
-                new AutoDriveTime(rh, 2, "left", 0.4),
-//                new AutoNewClaw(rh,"open", "up", false),
-//                new AutoDriveTime(rh, 2, "right", 0.2),
-//                new AutoDriveTime(rh, 3.5, "forward", 0.2),
-//                new AutoTFParkNoRR(rh)
+                new AutoDriveTime(rh, 5.0, "right", 0.2),
+                new AutoDriveTime(rh, 4.5, "left", 0.2),
+                new AutoDriveTime(rh, 4.0, "forward", 0.2),
+                new AutoTFParkNoRR(rh)
         };
         driveSequence.createStack(forDriveSequence);
 
         ParallelStack driveAndUp = new ParallelStack(rh);
         State[] forDriveAndUp = {
                 driveSequence,
-                new AutoNewClaw(rh,"closed", "up", false),
-                new AutoMoveLift(rh, "low"),
+//                new AutoNewClaw(rh,"closed", "up", false),
         };
         driveAndUp.createStack(forDriveAndUp);
 
         State[] forAutoStack = {
                 scanAndOpen,
+                new AutoNewClaw(rh, "closed", "down", false),
                 driveAndUp,
         };
 
@@ -104,5 +100,7 @@ public class RightOneConeAutonomous extends OpMode
         if (!autoStack.getIsDone()) {
             autoStack.update();
         }
+
+        rh.telemetry.update();
     }
 }
