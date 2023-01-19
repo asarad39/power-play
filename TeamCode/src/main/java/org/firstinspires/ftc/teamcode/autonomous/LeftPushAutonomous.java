@@ -39,8 +39,8 @@ import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 
-@Autonomous(name="Right Autonomous 2022")
-public class RightAutonomous extends OpMode
+@Autonomous(name="Left Push Autonomous 2022")
+public class LeftPushAutonomous extends OpMode
 {
 
 
@@ -56,33 +56,25 @@ public class RightAutonomous extends OpMode
 
         rh.initialize(this);
 
-        ParallelStack scanAndOpen = new ParallelStack(rh);
-        State[] forScanAndOpen = {
-                new AutoTensorFlow(rh, false),
-                new AutoNewClaw(rh,"closed", "down", true),
-        };
-        scanAndOpen.createStack(forScanAndOpen);
-
         SeriesStack driveSequence = new SeriesStack(rh);
         State[] forDriveSequence = {
-                new AutoDriveTime(rh, 5.0, "right", 0.2),
-                new AutoDriveTime(rh, 4.5, "left", 0.2),
+                new AutoDriveTime(rh, 5.5, "left", 0.2),
+                new AutoDriveTime(rh, 5.5, "right", 0.2),
                 new AutoDriveTime(rh, 4.0, "forward", 0.2),
                 new AutoTFParkNoRR(rh)
         };
         driveSequence.createStack(forDriveSequence);
-
-        ParallelStack driveAndUp = new ParallelStack(rh);
-        State[] forDriveAndUp = {
-                driveSequence,
-//                new AutoNewClaw(rh,"closed", "up", false),
-        };
-        driveAndUp.createStack(forDriveAndUp);
+//
+//        ParallelStack driveAndUp = new ParallelStack(rh);
+//        State[] forDriveAndUp = {
+//                driveSequence,
+//        };
+//        driveAndUp.createStack(forDriveAndUp);
 
         State[] forAutoStack = {
-                scanAndOpen,
+                new AutoTensorFlow(rh, false),
                 new AutoNewClaw(rh, "closed", "down", false),
-                driveAndUp,
+                driveSequence,
         };
 
         autoStack.createStack(forAutoStack);
