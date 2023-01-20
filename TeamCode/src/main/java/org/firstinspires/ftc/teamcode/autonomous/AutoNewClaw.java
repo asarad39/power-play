@@ -50,7 +50,7 @@ public class AutoNewClaw implements State {
 
         } else if (clawString.equals("closed")) {
 
-            liftClawPosition = 0.16;
+            liftClawPosition = 0.2;
 
         } else {
             throw new IllegalArgumentException("nonexistent claw position name");

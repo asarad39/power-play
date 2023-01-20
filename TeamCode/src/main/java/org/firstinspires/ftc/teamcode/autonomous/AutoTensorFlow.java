@@ -60,15 +60,15 @@ public class AutoTensorFlow implements State {
 
                     if (custom) {
 
-                        if (recognition.getLabel().equals("HHS Logo side")) {
+                        if (recognition.getLabel().equals("HHS")) {
 
                             oneCount++;
 
-                        } else if (recognition.getLabel().equals("Red Robot Side")) {
+                        } else if (recognition.getLabel().equals("robot")) {
 
                             twoCount++;
 
-                        } else if (recognition.getLabel().equals("Green Bug Side")) {
+                        } else if (recognition.getLabel().equals("bug")) {
 
                             threeCount++;
                         }

@@ -62,7 +62,7 @@ public class CustomTensorFlowTest extends LinearOpMode {
     // Commented out lines that used built in asset - only custom objects
 //    private static final String TFOD_MODEL_ASSET =
     private static final String TFOD_MODEL_FILE  =
-            "/sdcard/FIRST/tflitemodels/model_20221205_161828.tflite";
+            "/sdcard/FIRST/tflitemodels/model_ALL_v1.tflite";
 
 
 //    private static final String[] LABELS = {
@@ -72,9 +72,9 @@ public class CustomTensorFlowTest extends LinearOpMode {
 //    };
 
     private static final String[] LABELS = {
-            "Green Bug Side",
-            "HHS Logo side",
-            "Red Robot Side"
+            "HHS",
+            "bug",
+            "robot"
     };
 
     /*

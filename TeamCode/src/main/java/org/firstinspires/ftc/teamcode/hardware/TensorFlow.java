@@ -32,7 +32,7 @@ public class TensorFlow {
 
     private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
     private static final String TFOD_MODEL_FILE  =
-            "/sdcard/FIRST/tflitemodels/Felix_PowerPlay.tflite";
+            "/sdcard/FIRST/tflitemodels/model_ALL_v1.tflite";
 
     private static String[] LABELS = null;
 
@@ -60,7 +60,7 @@ public class TensorFlow {
 
         if (custom) {
 
-            LABELS = new String[]{"Green Bug Side", "HHS Logo side", "Red Robot Side"};
+            LABELS = new String[]{"HHS", "bug", "robot"};
 
         } else {
 
@@ -130,7 +130,7 @@ public class TensorFlow {
         int tfodMonitorViewId = op.hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", op.hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.75f;
+        tfodParameters.minResultConfidence = 0.60f;
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);

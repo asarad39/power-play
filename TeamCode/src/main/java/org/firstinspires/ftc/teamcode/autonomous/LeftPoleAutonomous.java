@@ -39,7 +39,7 @@ import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 //@Disabled
-@Autonomous(name="Right Pole Autonomous 2022")
+@Autonomous(name="Left Pole Autonomous 2022")
 public class LeftPoleAutonomous extends OpMode
 {
 
@@ -58,33 +58,52 @@ public class LeftPoleAutonomous extends OpMode
 
         ParallelStack scanAndOpen = new ParallelStack(rh);
         State[] forScanAndOpen = {
-                new AutoTensorFlow(rh, false),
+//                new AutoTensorFlow(rh, true),
                 new AutoNewClaw(rh,"closed", "down", true),
-                new AutoNewClaw(rh,"closed", "up", true),
         };
         scanAndOpen.createStack(forScanAndOpen);
 
-        SeriesStack driveSequence = new SeriesStack(rh);
-        State[] forDriveSequence = {
-                new AutoDriveTime(rh, 2, "right", 0.2),
-                new AutoDriveTime(rh, 1, "forward", 0.2),
-//                new AutoNewClaw(rh,"open", "left", false),
-//                new AutoDriveTime(rh, 2, "right", 0.2),
-//                new AutoDriveTime(rh, 3, "forward", 0.2),
-//                new AutoTFParkNoRR(rh)
+        SeriesStack driveSequence1 = new SeriesStack(rh);
+        State[] forDriveSequence1 = {
+                new AutoNewClaw(rh,"closed", "up", false),
+                new AutoDriveTime(rh, 1.35, "forward", 0.2),
+                new AutoDriveTime(rh, 3.25, "right", 0.2),
+                new AutoNewClaw(rh,"open", "up", false),
+                new AutoDriveTime(rh, 3.25, "left", 0.2),
         };
-        driveSequence.createStack(forDriveSequence);
+        driveSequence1.createStack(forDriveSequence1);
 
-        ParallelStack driveAndUp = new ParallelStack(rh);
-        State[] forDriveAndUp = {
-                driveSequence,
+        ParallelStack driveAndUp1 = new ParallelStack(rh);
+        State[] forDriveAndUp1 = {
+                driveSequence1,
                 new AutoMoveLift(rh, "low"),
+
         };
-        driveAndUp.createStack(forDriveAndUp);
+        driveAndUp1.createStack(forDriveAndUp1);
+
+        SeriesStack driveSequence2 = new SeriesStack(rh);
+        State[] forDriveSequence2 = {
+                new AutoNewClaw(rh,"open", "down", false),
+                new AutoDriveTime(rh, 3, "forward", 0.2),
+                new AutoTFParkNoRR(rh)
+        };
+        driveSequence2.createStack(forDriveSequence2);
+
+        ParallelStack driveAndUp2 = new ParallelStack(rh);
+        State[] forDriveAndUp2 = {
+                driveSequence2,
+                new AutoMoveLift(rh, "home"),
+
+        };
+        driveAndUp2.createStack(forDriveAndUp2);
+
 
         State[] forAutoStack = {
+
+                new AutoTensorFlow(rh, true),
                 scanAndOpen,
-                driveAndUp,
+                driveAndUp1,
+                driveAndUp2,
         };
 
         autoStack.createStack(forAutoStack);

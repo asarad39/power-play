@@ -64,7 +64,7 @@ public class TeleopNewLiftSystem implements State {
          *      0 = for the front
          *      1 = for the back
          * claw:
-         *      0.2 = closed
+         *      0.23 = closed
          *      0 = open
          **/
 
@@ -78,7 +78,7 @@ public class TeleopNewLiftSystem implements State {
         armPos = 0.48;
         flipPos = 0.5;
         rotatePos = 1;
-        clawPos = 0.2;
+        clawPos = 0.23;
 
 //        rh.setServoPositions(armPos, flipPos, rotatePos, clawPos);
         goHome = 2;
@@ -504,14 +504,14 @@ public class TeleopNewLiftSystem implements State {
 
         if (vertical) {
 
-            clawPosition = 0.2;
+            clawPosition = 0.23;
 
         } else if (rh.gamepad1.left_bumper) {
 
             if (lastClaw == clawPosition) {
                 if (clawPosition == 0.0) {
 
-                    clawPosition = 0.2;
+                    clawPosition = 0.23;
 
                 } else {
 

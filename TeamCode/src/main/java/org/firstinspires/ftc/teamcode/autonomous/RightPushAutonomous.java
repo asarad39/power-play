@@ -72,7 +72,7 @@ public class RightPushAutonomous extends OpMode
 //        driveAndUp.createStack(forDriveAndUp);
 
         State[] forAutoStack = {
-                new AutoTensorFlow(rh, false),
+                new AutoTensorFlow(rh, true),
                 new AutoNewClaw(rh, "closed", "down", false),
                 driveSequence,
         };
