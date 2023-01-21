@@ -66,7 +66,7 @@ public class LeftPoleAutonomous extends OpMode
         SeriesStack driveSequence1 = new SeriesStack(rh);
         State[] forDriveSequence1 = {
                 new AutoNewClaw(rh,"closed", "up", false),
-                new AutoDriveTime(rh, 1.25, "forward", 0.2),
+                new AutoDriveTime(rh, 1.28, "forward", 0.2),
                 new AutoDriveTime(rh, 3.15, "right", 0.2),
                 new AutoNewClaw(rh,"open", "up", false),
                 new AutoDriveTime(rh, 3.15, "left", 0.2),
@@ -84,7 +84,7 @@ public class LeftPoleAutonomous extends OpMode
         SeriesStack driveSequence2 = new SeriesStack(rh);
         State[] forDriveSequence2 = {
                 new AutoNewClaw(rh,"open", "down", false),
-                new AutoDriveTime(rh, 2.9, "forward", 0.2),
+                new AutoDriveTime(rh, 3.1, "forward", 0.2),
                 new AutoTFParkNoRR(rh)
         };
         driveSequence2.createStack(forDriveSequence2);

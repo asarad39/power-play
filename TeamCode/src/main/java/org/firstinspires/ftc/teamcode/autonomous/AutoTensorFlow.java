@@ -29,7 +29,7 @@ public class AutoTensorFlow implements State {
 
     public boolean getIsDone() {
 
-        if (!beginTime && rh.time.seconds() > startTime + 3) {
+        if (!beginTime && rh.time.seconds() > startTime + 1.5) {
 
             if (oneCount >= twoCount && oneCount >= threeCount) {
                 RobotHardware.setSleeve(1);
