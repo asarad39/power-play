@@ -218,12 +218,12 @@ public class TeleopNewLiftSystem implements State {
 
             vertical = true;
 
-        } else if (rh.gamepad1.dpad_left) {
-
-            newLevel = "topStack";
-
-            vertical = false;
-            liftTargetSetBefore = false;
+//        } else if (rh.gamepad1.dpad_left) {
+//
+//            newLevel = "topStack";
+//
+//            vertical = false;
+//            liftTargetSetBefore = false;
 
         } else {
 

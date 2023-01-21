@@ -69,7 +69,7 @@ public class AutoMoveLift implements State {
 
     public double getLiftPowerPID(String goalString, double maxPower) {
         double home = 0;
-        double low = 1460;
+        double low = 1360;
         double middle = 3310;
         double high = 5075;
 

@@ -60,7 +60,7 @@ public class RightPushAutonomous extends OpMode
         State[] forDriveSequence = {
                 new AutoDriveTime(rh, 5.5, "right", 0.2),
                 new AutoDriveTime(rh, 5.5, "left", 0.2),
-                new AutoDriveTime(rh, 4.0, "forward", 0.2),
+                new AutoDriveTime(rh, 3.8, "forward", 0.2),
                 new AutoTFParkNoRR(rh)
         };
         driveSequence.createStack(forDriveSequence);
