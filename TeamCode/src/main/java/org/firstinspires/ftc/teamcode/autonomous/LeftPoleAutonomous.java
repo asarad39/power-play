@@ -67,9 +67,9 @@ public class LeftPoleAutonomous extends OpMode
         State[] forDriveSequence1 = {
                 new AutoNewClaw(rh,"closed", "up", false),
                 new AutoDriveTime(rh, 1.28, "forward", 0.2),
-                new AutoDriveTime(rh, 3.15, "right", 0.2),
+                new AutoDriveTime(rh, 3.25, "right", 0.2),
                 new AutoNewClaw(rh,"open", "up", false),
-                new AutoDriveTime(rh, 3.15, "left", 0.2),
+                new AutoDriveTime(rh, 3.25, "left", 0.2),
         };
         driveSequence1.createStack(forDriveSequence1);
 
