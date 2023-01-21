@@ -31,7 +31,7 @@ public class AutoNewClaw implements State {
     }
 
     public boolean getIsDone() {
-        return (rh.time.seconds() > 3 + startTime);
+        return (rh.time.seconds() > 0.75 + startTime);
     }
 
     public void update() {

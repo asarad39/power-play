@@ -55,7 +55,9 @@ public class AutoTFParkNoRR implements State {
             seconds = 3.0;
 
         } else {
-            throw new IllegalArgumentException("sleeve is not valid");
+
+            moveX = 0;
+            seconds = 0;
         }
 
         startTime = rh.time.seconds();
