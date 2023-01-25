@@ -12,9 +12,10 @@ public class DriveTrain {
     private DcMotor motorFL = null;
     private DcMotor motorBL = null;
 
-    private int leftEncoder = 0;
-    private int rightEncoder = 0;
-    private int backEncoder = 0;
+    private int encoderOnBR = 0;
+    private int encoderOnFR = 0;
+    private int encoderOnBL = 0;
+    private int encoderOnFL = 0;
 
     public void initialize(OpMode op) {
 
@@ -31,13 +32,15 @@ public class DriveTrain {
         motorBR.setPower(-powerBR);
         motorBL.setPower(powerBL);
 
-        leftEncoder = motorBR.getCurrentPosition();
-        rightEncoder = motorFR.getCurrentPosition();
-        backEncoder = motorFL.getCurrentPosition();
+        encoderOnBR = motorBR.getCurrentPosition();
+        encoderOnFR = motorFR.getCurrentPosition();
+        encoderOnBL = motorBL.getCurrentPosition();
+        encoderOnFL = motorFL.getCurrentPosition();
     }
 
-    public int getLeftEncoder() { return leftEncoder; }
-    public int getRightEncoder() { return rightEncoder; }
-    public int getBackEncoder() { return backEncoder; }
+    public int getEncoderBL() { return -encoderOnBR; }
+    public int getEncoderFL() { return -encoderOnFR; }
+    public int getEncoderBR() { return -encoderOnBL; }
+    public int getEncoderFR() { return -encoderOnFL; }
 
 }

@@ -42,9 +42,10 @@ public class AutoDriveClicks implements State {
 
     public void update() {
 
-        currentLeftClicks = rh.getLeftEncoder();
-        currentRightClicks = rh.getRightEncoder();
-        currentBackClicks = rh.getBackEncoder();
+        // TODO: correct when we are actually using clicks!
+//        currentLeftClicks = rh.getLeftEncoder();
+//        currentRightClicks = rh.getRightEncoder();
+//        currentBackClicks = rh.getBackEncoder();
 
         double moveX = 0;
         double moveY = 0;
