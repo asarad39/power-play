@@ -85,8 +85,8 @@ public class NewLiftSystem {
 
     public void moveMotorsHome() {
 
-        liftMotorLeft.setPower(0.6);
-        liftMotorRight.setPower(0.6);
+        liftMotorLeft.setPower(0.1);
+        liftMotorRight.setPower(0.1);
 
         if (touch.isPressed() && goHome == 2) {
             goHome = 1;

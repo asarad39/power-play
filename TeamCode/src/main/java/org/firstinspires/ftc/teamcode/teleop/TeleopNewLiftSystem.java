@@ -81,7 +81,7 @@ public class TeleopNewLiftSystem implements State {
         clawPos = 0.23;
 
 //        rh.setServoPositions(armPos, flipPos, rotatePos, clawPos);
-        goHome = 2;
+        goHome = 0;
         level = "home";
         lastLevel = "home";
         vertical = true;
@@ -114,7 +114,7 @@ public class TeleopNewLiftSystem implements State {
         double clawPos = getClaw();
 
         // set lift movement speed
-        double maxLiftSpeed = 1.0;
+        double maxLiftSpeed = 0.2;
 
         double liftSpeed = getLiftPowerPID(maxLiftSpeed);
 
@@ -248,7 +248,7 @@ public class TeleopNewLiftSystem implements State {
 
     public void adjustLiftHeight() {
 
-        double adjustmentSize = 20;
+        double adjustmentSize = 5;
 
         if (rh.gamepad1.dpad_up) {
 

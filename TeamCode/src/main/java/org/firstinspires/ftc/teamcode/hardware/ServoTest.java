@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * This OpMode scans a single servo back and forward until Stop is pressed.
@@ -49,20 +50,25 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 @TeleOp(name = "Concept: Scan Servo")
-@Disabled
 
 public class ServoTest extends LinearOpMode {
 
+    private ElapsedTime runtime = new ElapsedTime();
+    private RobotHardware rh = new RobotHardware();
+
     private Servo servo;
-    private double servoPos;
+//    private double servoPos;
+    ServoControl testServo;
 
     @Override
     public void runOpMode() {
+        rh.initialize(this);
 
         // Connect to servo (Assume Robot Left Hand)
         // Change the text in quotes to match any servo name on your robot.
 
-        servo = hardwareMap.get(Servo.class, "servo");
+        servo = hardwareMap.get(Servo.class, "test");
+        testServo = new ServoControl(rh, servo, 0.007);
 
         waitForStart();
 
@@ -70,18 +76,28 @@ public class ServoTest extends LinearOpMode {
         // Scan servo till stop pressed.
         while(opModeIsActive()){
 
-            servoPos = servo.getPosition();
-
             if(gamepad1.a) {
-                servo.setPosition(1);
+                testServo.setTargetPosition(1);
+            }
+
+            if(gamepad1.x) {
+                testServo.setTargetPosition(.7);
+            }
+
+            if(gamepad1.y) {
+                testServo.setTargetPosition(0.3);
             }
 
             if(gamepad1.b) {
-                servo.setPosition(0);
+                testServo.setTargetPosition(0);
             }
 
+            telemetry.addData("Servo position", testServo.getCurrentPosition());
+            telemetry.addData("Servo target", testServo.getTargetPosition());
+            telemetry.addData("Servo moving", testServo.isMoving());
 
-            telemetry.addData("Servo", servoPos);
+            testServo.move();
+
             telemetry.update();
         }
 
