@@ -47,8 +47,8 @@ public class NewLiftSystem {
         liftMotorRight.setTargetPosition(0);
         resetEncoders();
 
-        liftMotorLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         liftMotorLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        liftMotorRight.setDirection(DcMotorSimple.Direction.FORWARD);
 
         touch = op.hardwareMap.get(TouchSensor.class, "touch");
 

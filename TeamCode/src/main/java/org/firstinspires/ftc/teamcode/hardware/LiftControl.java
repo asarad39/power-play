@@ -1,30 +1,70 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.PID;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 public class LiftControl {
 
-    RobotHardware rh;
-//    PID liftPID = new PID(5700); // for new robot
+//    RobotHardware rh;
+
+    private TouchSensor touch = null;
+
+    //    PID liftPID = new PID(5700); // for new robot
     public DcMotor left;
     public DcMotor right;
 
+    boolean homing = true;
+
     final int[] positions = {0, 100, 200, 300, 400};
+    final int minPosition = 0;
+    final int maxPosition = 500;
     int posIndex;
     int offset;
+    private Telemetry telemetry;
 
-    public LiftControl(RobotHardware rh) {
-        this.rh = rh;
-    }
 
-    public void initialize() {
+
+    public void initialize(OpMode op) {
+        // Get telemetry object from opMode for debugging
+        this.telemetry = op.telemetry;
+
         posIndex = 0;
         offset = 0;
         // get DcMotors
         // set encoders
+        left = op.hardwareMap.get(DcMotor.class, "liftMotorLeft");
+        right = op.hardwareMap.get(DcMotor.class, "liftMotorRight");
+
+        left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        right.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        left.setTargetPosition(0);
+        right.setTargetPosition(0);
+        resetEncoders();
+
+        left.setDirection(DcMotorSimple.Direction.REVERSE);
+        right.setDirection(DcMotorSimple.Direction.FORWARD);
+
+
+        touch = op.hardwareMap.get(TouchSensor.class, "touch");
+    }
+
+    public boolean getTouch() {
+        return touch.isPressed();
+    }
+
+    public void resetEncoders() {
+
+        left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     public void setPosition() {
@@ -35,17 +75,28 @@ public class LiftControl {
         // Calculate max/min position
         int newPosition = positions[posIndex] + offset;
 
-        int min = 0;
-        int max = 500;
+        telemetry.addData("naive final goal position", newPosition);
 
-        if (true) { // for homing
-            if (newPosition < min) {
-                newPosition = min;
-            }
-            if (newPosition > max) {
-                newPosition = max;
+        // contain position inside the range
+        if (newPosition < minPosition) {
+            newPosition = minPosition;
+        }
+        if (newPosition > maxPosition) {
+            newPosition = maxPosition;
+        }
+
+
+        if (homing) {
+            newPosition = maxPosition;
+            if (getTouch()) {
+                resetEncoders();
+                homing = false;
             }
         }
+        telemetry.addData("final goal position", newPosition);
+        telemetry.addData("touching", getTouch());
+        telemetry.addData("Homing", homing);
+
 
         left.setTargetPosition(newPosition);
         right.setTargetPosition(newPosition);
@@ -64,6 +115,7 @@ public class LiftControl {
         }
         // d is either 1 or -1
         posIndex = (posIndex + d) % positions.length;
+        telemetry.addData("adjusting", d);
         offset = 0;
         this.setPosition();
     }

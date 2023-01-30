@@ -67,8 +67,7 @@ public class ServoTest extends LinearOpMode {
         // Connect to servo (Assume Robot Left Hand)
         // Change the text in quotes to match any servo name on your robot.
 
-        servo = hardwareMap.get(Servo.class, "test");
-        testServo = new ServoControl(rh, servo, 0.007);
+        testServo = new ServoControl("test", 0.007);
 
         waitForStart();
 

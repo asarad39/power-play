@@ -18,8 +18,8 @@ public class RobotHardware {
     // Create objects for all of the hardware subsystems of the robot
     private DriveTrain driveTrain = null;
 
-//    private LiftClawArm lift = null;
     public NewLiftSystem lift = null;
+    public LiftControl liftNew = null;
 
     private TensorFlow tensorFlow = null;
 //    private ColorSensor colorSensor = null;
@@ -39,12 +39,13 @@ public class RobotHardware {
     public RobotHardware() {
 
         driveTrain = new DriveTrain();
-//        lift = new LiftClawArm();
+        lift = new NewLiftSystem();
         tensorFlow = new TensorFlow();
 //        colorSensor = new ColorSensor();
 
         currentPose = new Pose2d();
-        lift = new NewLiftSystem();
+
+        liftNew = new LiftControl();
     }
 
     // Overloaded ption for adding a starting pose when we create an autonomous program, if we want
@@ -52,12 +53,12 @@ public class RobotHardware {
     public RobotHardware(Pose2d currentPose) {
 
         driveTrain = new DriveTrain();
-//        lift = new LiftClawArm();
+        lift = new NewLiftSystem();
         tensorFlow = new TensorFlow();
 //        colorSensor = new ColorSensor();
 
         this.currentPose = currentPose;
-        lift = new NewLiftSystem();
+        liftNew = new LiftControl();
     }
 
     public void initialize(OpMode op) {
@@ -65,6 +66,7 @@ public class RobotHardware {
         driveTrain.initialize(op);
         lift.initialize(op);
         tensorFlow.initialize(op);
+        liftNew.initialize(op);
 //        colorSensor.initialize(op);
 
         gamepad1 = op.gamepad1;
@@ -82,7 +84,8 @@ public class RobotHardware {
         driveTrain.setPower(powerFR, powerFL, powerBR, powerBL);
     }
 
-    // Lift system methods
+    //TODO
+//     Lift system methods
     public void lift(double power) {
 
         if (lift.getGoHome() != 0) {
@@ -123,9 +126,9 @@ public class RobotHardware {
                                   double flipPosition,
                                   double rotatePosition,
                                   double clawPosition) {
-
-        lift.setServosPositions(armPosition, flipPosition, rotatePosition, clawPosition);
-        lift.getServoPositions();
+// TODO
+//        lift.setServosPositions(armPosition, flipPosition, rotatePosition, clawPosition);
+//        lift.getServoPositions();
     }
 
     // --------------------- old lift below
@@ -156,6 +159,7 @@ public class RobotHardware {
 
     // -------------------- new lift below
 
+//    TODO
     public int getLiftEncoderLeft() {
         return lift.getLiftEncoderLeft();
     }

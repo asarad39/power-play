@@ -1,19 +1,19 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
-import com.qualcomm.robotcore.hardware.Servo;
-import java.lang.Math;
-// Represents the lift of the robot in code
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.PID;
+import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 public class ArmControl {
-
-    RobotHardware rh;
-
-    public ArmControl(RobotHardware rh) {
-
-    }
 
     public boolean isMoving() {
         return false;
     }
+
 
 }
