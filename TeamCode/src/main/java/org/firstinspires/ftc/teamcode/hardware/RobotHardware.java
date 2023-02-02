@@ -16,7 +16,7 @@ import java.util.List;
 public class RobotHardware {
 
     // Create objects for all of the hardware subsystems of the robot
-    private DriveTrain driveTrain = null;
+    public DriveTrain driveTrain = null;
 
     public NewLiftSystem lift = null;
     public LiftControl liftNew = null;

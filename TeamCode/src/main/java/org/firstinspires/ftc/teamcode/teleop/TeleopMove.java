@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
@@ -13,24 +15,29 @@ public class TeleopMove implements State {
         this.rh = rh;
     }
 
-    public void init() {}
+    public void init() {
+
+//        rh.driveTrain.setCoast(); // Uncomment if we want the robot to coast with 0 motor power
+    }
 
     public void update() {
 
         // Calculate the motor powers and send them to the DC motors
-        double baseSpeed = 0.4;
+        double baseSpeed = 0.8; // 0.4;
         double minSpeed = 0.2;
-        double maxSpeed = 0.8;
-        double scalar = baseSpeed + maxSpeed * rh.gamepad2.right_trigger - minSpeed * rh.gamepad2.left_trigger;
+        double maxSpeed = 1.0; // 0.8;
+        double scalar = baseSpeed
+                + ((maxSpeed - baseSpeed) * rh.gamepad2.right_trigger)
+                - ((baseSpeed - minSpeed)  * rh.gamepad2.left_trigger);
 
         double moveX = rh.gamepad2.left_stick_x;
         double moveY = rh.gamepad2.left_stick_y;
         double moveRotate = rh.gamepad2.right_stick_x;
 
-        double powerFR = - moveX - moveY + moveRotate;
-        double powerFL = - moveX + moveY + moveRotate;
-        double powerBR = + moveX - moveY + moveRotate;
-        double powerBL = + moveX + moveY + moveRotate;
+        double powerFR = (- moveX - moveY + moveRotate) / 3;
+        double powerFL = (- moveX + moveY + moveRotate) / 3;
+        double powerBR = (+ moveX - moveY + moveRotate) / 3;
+        double powerBL = (+ moveX + moveY + moveRotate) / 3;
 
         double divisor = findPowerDivisor(powerFR, powerFL, powerBR, powerBL);
 
@@ -46,6 +53,11 @@ public class TeleopMove implements State {
         rh.telemetry.addData("Encoder FL", rh.getEncoderFL());
         rh.telemetry.addData("Encoder BR", rh.getEncoderBR());
         rh.telemetry.addData("Encoder FR", rh.getEncoderFR());
+
+        rh.telemetry.addData("Encoder BL", powerBL);
+        rh.telemetry.addData("Encoder FL", powerFL);
+        rh.telemetry.addData("Encoder BR", powerBR);
+        rh.telemetry.addData("Encoder FR", powerFR);
     }
 
     public double findPowerDivisor(double a, double b, double c, double d) {

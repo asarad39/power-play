@@ -93,7 +93,8 @@ public class NewLiftSystem {
             runtime.reset();
             resetEncoders();
 
-        } else if (runtime.seconds() >= 2 && goHome == 1) {
+            // making runtime longer makes it worse
+        } else if (runtime.seconds() >= 0 && goHome == 1) {
             goHome = 0;
             resetEncoders();
         }
