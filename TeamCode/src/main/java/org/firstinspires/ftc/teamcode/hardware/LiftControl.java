@@ -68,7 +68,7 @@ public class LiftControl {
     }
 
     public void setPosition() {
-        // TODO: Calculate power before setting motor speed
+        // TODO: Calculate power before setting motor speed - pwer corve
         left.setPower(0.1);
         right.setPower(0.1);
 

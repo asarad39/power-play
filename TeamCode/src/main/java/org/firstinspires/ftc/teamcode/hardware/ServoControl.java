@@ -28,8 +28,8 @@ public class ServoControl {
         this.stepSize = stepSize;
     }
 
-    public ServoControl(String servo) {
-        this.servoName = servo;
+    public ServoControl(String servoName) {
+        this.servoName = servoName;
         this.stepSize = maxStepSize;
     }
 

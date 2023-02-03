@@ -13,7 +13,7 @@ import java.util.List;
 
 // Represents the hardware of our robot in code
 
-public class RobotHardware {
+public class RobotHardwareOldLiftSystem {
 
     // Create objects for all of the hardware subsystems of the robot
     public DriveTrain driveTrain = null;
@@ -42,10 +42,10 @@ public class RobotHardware {
     public ElapsedTime time = new ElapsedTime();
 
     // If no pose is passed, in we start at (0, 0, 0) for roadrunner
-    public RobotHardware() {
+    public RobotHardwareOldLiftSystem() {
 
         driveTrain = new DriveTrain();
-        lift = new NewLiftSystem();
+//        lift = new NewLiftSystem();
         tensorFlow = new TensorFlow();
 
 
@@ -58,7 +58,7 @@ public class RobotHardware {
 
     // Overloaded ption for adding a starting pose when we create an autonomous program, if we want
     // to use the official coordinate system with (0, 0) in the center of the field
-    public RobotHardware(Pose2d currentPose) {
+    public RobotHardwareOldLiftSystem(Pose2d currentPose) {
 
         driveTrain = new DriveTrain();
         lift = new NewLiftSystem();
@@ -204,11 +204,11 @@ public class RobotHardware {
     }
 
     public static void setSleeve(int sleeve) {
-        RobotHardware.sleeve = sleeve;
+        RobotHardwareOldLiftSystem.sleeve = sleeve;
     }
 
     public static int getSleeve() {
-        return RobotHardware.sleeve;
+        return RobotHardwareOldLiftSystem.sleeve;
     }
 
     public void setCustom(boolean c) {

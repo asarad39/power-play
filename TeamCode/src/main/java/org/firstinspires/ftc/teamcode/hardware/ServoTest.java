@@ -35,6 +35,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.autonomous.AutoClawArm;
+import org.firstinspires.ftc.teamcode.autonomous.AutoTensorFlow;
+import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
+import org.firstinspires.ftc.teamcode.stateStructure.State;
+
 /**
  * This OpMode scans a single servo back and forward until Stop is pressed.
  * The code is structured as a LinearOpMode
@@ -49,12 +54,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@TeleOp(name = "Concept: Scan Servo")
+@TeleOp(name = "Servo Test Teleop")
 
 public class ServoTest extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
+    private SeriesStack stack = null;
 
     private Servo servo;
 //    private double servoPos;
@@ -63,11 +69,21 @@ public class ServoTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         rh.initialize(this);
+//        stack = new SeriesStack(rh);
+//
+//        State[] states = {
+//
+//                new AutoClawArm(rh, "open", "down"),
+//                new AutoTensorFlow(rh, false),
+//        };
+
+//        stack.createStack(states);
 
         // Connect to servo (Assume Robot Left Hand)
         // Change the text in quotes to match any servo name on your robot.
 
-        testServo = new ServoControl("test", 0.007);
+        testServo = new ServoControl("claw", 0.007);
+        testServo.initialize(this);
 
         waitForStart();
 
@@ -84,7 +100,7 @@ public class ServoTest extends LinearOpMode {
             }
 
             if(gamepad1.y) {
-                testServo.setTargetPosition(0.3);
+                testServo.setTargetPosition(0.23);
             }
 
             if(gamepad1.b) {

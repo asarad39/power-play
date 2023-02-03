@@ -6,10 +6,13 @@ import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 public class ServoState implements State {
 
-    ServoControl arm = new ServoControl("arm");
-    ServoControl flip = new ServoControl("flip");
-    ServoControl rotate = new ServoControl("rotate");
-    ServoControl claw = new ServoControl("claw");
+    ServoControl servoControl = null;
+    String servoName = null;
+    double targetPosition = 0;
+
+    public ServoState(RobotHardware rh, String servoName, double targetPosition) {
+//        servoControl =
+    }
 
     public void update() {
 
