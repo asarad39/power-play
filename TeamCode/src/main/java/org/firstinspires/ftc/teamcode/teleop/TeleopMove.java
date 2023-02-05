@@ -54,10 +54,10 @@ public class TeleopMove implements State {
         rh.telemetry.addData("Encoder BR", rh.getEncoderBR());
         rh.telemetry.addData("Encoder FR", rh.getEncoderFR());
 
-        rh.telemetry.addData("Encoder BL", powerBL);
-        rh.telemetry.addData("Encoder FL", powerFL);
-        rh.telemetry.addData("Encoder BR", powerBR);
-        rh.telemetry.addData("Encoder FR", powerFR);
+        rh.telemetry.addData("Power BL", powerBL);
+        rh.telemetry.addData("Power FL", powerFL);
+        rh.telemetry.addData("Power BR", powerBR);
+        rh.telemetry.addData("Power FR", powerFR);
     }
 
     public double findPowerDivisor(double a, double b, double c, double d) {

@@ -54,10 +54,11 @@ import static org.firstinspires.ftc.teamcode.roadrunnerPackages.drive.DriveConst
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
+
     public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(8, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(8, 0, 0);
 
-    public static double LATERAL_MULTIPLIER = 1.31835;
+    public static double LATERAL_MULTIPLIER = 1.31835 * (60.0 / 55.5) * (60.0 / 59.0);
 
     public static double VX_WEIGHT = 1;
     public static double VY_WEIGHT = 1;
@@ -273,6 +274,14 @@ public class SampleMecanumDrive extends MecanumDrive {
         List<Double> wheelPositions = new ArrayList<>();
         for (DcMotorEx motor : motors) {
             wheelPositions.add(encoderTicksToInches(motor.getCurrentPosition()));
+        }
+        return wheelPositions;
+    }
+
+    public List<Integer> getWheelPositionClicks() {
+        List<Integer> wheelPositions = new ArrayList<>();
+        for (DcMotorEx motor : motors) {
+            wheelPositions.add(motor.getCurrentPosition());
         }
         return wheelPositions;
     }
