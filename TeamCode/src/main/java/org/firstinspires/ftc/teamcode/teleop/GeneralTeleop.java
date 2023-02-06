@@ -59,7 +59,7 @@ public class GeneralTeleop extends OpMode
 //                new TeleopLiftToggle(rh),
 //                new TeleopLift(rh),
 
-                new TeleopNewLiftSystem(rh),
+//                new TeleopNewLiftSystem(rh), // for drive testing
         };
 
         teleStack.createStack(states);

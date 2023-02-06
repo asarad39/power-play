@@ -32,8 +32,8 @@ public class PID {
         targetPosition += adjustment;
     }
 
-    public void checkForInvalid() {
-        if (targetPosition < 0) {
+    public void checkForInvalid(double minPos) {
+        if (targetPosition < minPos) {
             targetPosition = 0;
         }
         if (targetPosition > maxHeight) {

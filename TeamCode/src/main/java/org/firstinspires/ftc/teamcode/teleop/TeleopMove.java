@@ -5,10 +5,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
+import java.util.Arrays;
+
 // State for driving using game controller
 public class TeleopMove implements State {
 
     RobotHardware rh = null;
+    double[] inputs = {0.0, 0.0 , 0.0};
 
     public TeleopMove(RobotHardware rh) {
 
@@ -26,11 +29,12 @@ public class TeleopMove implements State {
         double baseSpeed = 0.8; // 0.4;
         double minSpeed = 0.2;
         double maxSpeed = 1.0; // 0.8;
-        double scalar = baseSpeed
-                + ((maxSpeed - baseSpeed) * rh.gamepad2.right_trigger)
-                - ((baseSpeed - minSpeed)  * rh.gamepad2.left_trigger);
+        double scalar = getAdaptiveScalar();
+//                baseSpeed
+//                + ((maxSpeed - baseSpeed) * rh.gamepad2.right_trigger)
+//                - ((baseSpeed - minSpeed)  * rh.gamepad2.left_trigger);
 
-        double moveX = rh.gamepad2.left_stick_x;
+        double moveX = getAdjustedLeftStickX(); // rh.gamepad2.left_stick_x;
         double moveY = rh.gamepad2.left_stick_y;
         double moveRotate = rh.gamepad2.right_stick_x;
 
@@ -48,6 +52,10 @@ public class TeleopMove implements State {
         powerBL = powerBL * scalar / divisor;
 
         rh.drive(powerFR, powerFL, powerBR, powerBL);
+        updateInputs();
+
+        rh.telemetry.addData("Adaptive Scalar", getAdaptiveScalar());
+        rh.telemetry.addData("Inputs", Arrays.toString(inputs));
 
         rh.telemetry.addData("Encoder BL", rh.getEncoderBL());
         rh.telemetry.addData("Encoder FL", rh.getEncoderFL());
@@ -68,6 +76,47 @@ public class TeleopMove implements State {
         if(Math.abs(c)>maxPower) maxPower = Math.abs(c);
         if(Math.abs(d)>maxPower) maxPower = Math.abs(d);
         return maxPower;
+    }
+
+    // Make the robot move faster as one or more the inputs approaches 1
+    public double getAdaptiveScalar() {
+
+        double sum = 0.0;
+        double terms = 0.0;
+
+        for (double input : inputs) {
+
+            if (input != 0.0) {
+
+                sum += input;
+                terms++;
+            }
+        }
+
+        return sum / terms;
+    }
+
+    public void updateInputs() {
+
+        inputs[0] = Math.abs(getAdjustedLeftStickX());
+        inputs[1] = Math.abs(rh.gamepad2.left_stick_y);
+        inputs[2] = Math.abs(rh.gamepad2.right_stick_x);
+    }
+
+    public double getAdjustedLeftStickX() {
+
+        double raw = rh.gamepad2.left_stick_x;
+        double sign = raw / Math.abs(raw);
+        double abs = Math.abs(raw);
+
+        if (abs <= 0.1) { // tested to the extreme, it works!
+
+            return 0.0;
+
+        } else{
+
+            return (((1.0 - 0.0) / (1.0 - 0.1)) * (abs - 0.1)) * sign;
+        }
     }
 
     @Override

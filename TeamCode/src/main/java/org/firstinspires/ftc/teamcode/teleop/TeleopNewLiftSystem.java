@@ -41,6 +41,7 @@ public class TeleopNewLiftSystem implements State {
     
     private double currentSeconds = 0;
     private double mirrorSeconds = 0;
+    double maxLiftSpeed = 0.0;
 
     public TeleopNewLiftSystem(RobotHardware rh) {
         this.rh = rh;
@@ -114,7 +115,7 @@ public class TeleopNewLiftSystem implements State {
         double clawPos = getClaw();
 
         // set lift movement speed
-        double maxLiftSpeed = 0.2;
+//        double maxLiftSpeed = 0.5;
 
         double liftSpeed = getLiftPowerPID(maxLiftSpeed);
 
@@ -134,6 +135,7 @@ public class TeleopNewLiftSystem implements State {
 
         rh.setServoPositions(armPos, flipPos, rotatePos, clawPos);
 
+        rh.telemetry.addData("MaxLiftSpeed", maxLiftSpeed);
         rh.telemetry.addData("Level", level);
         rh.telemetry.addData("Last level", lastLevel);
 
@@ -168,6 +170,8 @@ public class TeleopNewLiftSystem implements State {
     private String getLevel() {
 
         String newLevel = this.level;
+        double upSpeed = 0.8;
+        double downSpeed = 0.4;
 
         if (rh.gamepad1.y) { // toggle lift up
 
@@ -188,7 +192,9 @@ public class TeleopNewLiftSystem implements State {
             vertical = false;
             liftTargetSetBefore = false;
 
-        } else if (rh.gamepad1.b) { // toggle lift up
+            maxLiftSpeed = upSpeed;
+
+        } else if (rh.gamepad1.b) { // toggle lift down
 
             if(lastLevel.equals("low")) {
 
@@ -207,12 +213,16 @@ public class TeleopNewLiftSystem implements State {
             vertical = false;
             liftTargetSetBefore = false;
 
+            maxLiftSpeed = downSpeed;
+
         } else if (rh.gamepad1.a) { // home the lift
 
             newLevel = "home";
 
             vertical = false;
             liftTargetSetBefore = false;
+
+            maxLiftSpeed = downSpeed;
 
         } else if (rh.gamepad1.x) { // home the lift
 
@@ -295,32 +305,33 @@ public class TeleopNewLiftSystem implements State {
 //    }
 
     public double getLiftPowerLogistic(double maxPower, double targetPosition) {
-        return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoderLeft(), targetPosition, .01);
+        return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoderLeft(), targetPosition, .015);
     }
 
     public double getLiftPowerPID(double maxPower) {
 
         double pos = 0;
+        double homePos = -18;
 
         if (level.equals("home")) {
 
-            pos = 0;
+            pos = homePos;
 
         } else if (level.equals("low")) {
 
-            pos = 1460;
+            pos = 1460.0 / (19.2 / 3.7);
 
         } else if (level.equals("middle")) {
 
-            pos = 3310;
+            pos = 3310.0 / (19.2 / 3.7);
 
         } else if (level.equals("high")) {
 
-            pos = 4975;
+            pos = 4975.0 / (19.2 / 3.7);
 
         } else if (level.equals("topStack")) {
 
-            pos = 995;
+            pos = 995.0 / (19.2 / 3.7);
         }
 
         if (!liftTargetSetBefore) {
@@ -331,7 +342,7 @@ public class TeleopNewLiftSystem implements State {
         liftPID.setStartTime(rh.time.milliseconds());
 
         if (goHome == 0) { // so the lift can move down while homing
-            liftPID.checkForInvalid();
+            liftPID.checkForInvalid(homePos);
         }
 
         return getLiftPowerLogistic(maxPower, liftPID.getTargetPosition());
