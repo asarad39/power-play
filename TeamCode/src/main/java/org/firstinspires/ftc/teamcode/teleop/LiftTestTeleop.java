@@ -57,23 +57,30 @@ public class LiftTestTeleop extends OpMode
 
     @Override
     public void loop() {
+
+//                "front down",
+//                "front up",
+//                "front vertical",
+//                "back vertical",
+//                "back up",
+//                "back down",
         // offset
-        int offsetSize = 2;
-        if (gamepad1.dpad_down) {
-            rh.liftNew.adjustOffset(-offsetSize);
-        } else if (gamepad1.dpad_up) {
-            rh.liftNew.adjustOffset(offsetSize);
-        }
+//        int offsetSize = 2;
+//        if (gamepad1.dpad_down) {
+//            rh.liftNew.adjustOffset(-offsetSize);
+//        } else if (gamepad1.dpad_up) {
+//            rh.liftNew.adjustOffset(offsetSize);
+//        }
 
         // position
         if (gamepad1.a) {
-            rh.liftNew.adjustPosition(LiftControl.Positions.UP);
+            rh.armNew.setPosition("back down");
         }
         if (gamepad1.b) {
-            rh.liftNew.adjustPosition(LiftControl.Positions.DOWN);
+            rh.armNew.setPosition("back up");
         }
+        rh.armNew.armUpdate();
 
-        rh.liftNew.setPosition();
     }
 
 

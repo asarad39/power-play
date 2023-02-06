@@ -9,7 +9,6 @@ public class SeriesStack extends StackList implements State {
     boolean isDone = false;
     RobotHardware rh = null;
 
-
     public SeriesStack(RobotHardware rh) {
 
         super();

@@ -51,13 +51,13 @@ public class ServoControl {
     public void move() {
         if (Math.abs(currentPosition - targetPosition) < stepSize) {
             currentPosition = targetPosition;
-            telemetry.addLine("Arrived");
+//            telemetry.addLine("Arrived");
         } else if (currentPosition - targetPosition > 0) {
             currentPosition -= stepSize;
-            telemetry.addLine("Decreasing");
+//            telemetry.addLine("Decreasing");
         } else {
             currentPosition += stepSize;
-            telemetry.addLine("Increasing");
+//            telemetry.addLine("Increasing");
         }
         servo.setPosition(currentPosition);
     }

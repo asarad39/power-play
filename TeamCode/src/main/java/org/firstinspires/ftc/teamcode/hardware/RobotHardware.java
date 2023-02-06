@@ -20,6 +20,7 @@ public class RobotHardware {
 
     public NewLiftSystem lift = null;
     public LiftControl liftNew = null;
+    public ArmControl armNew = null;
 
     private TensorFlow tensorFlow = null;
 //    private ColorSensor colorSensor = null;
@@ -32,12 +33,6 @@ public class RobotHardware {
     public Telemetry telemetry;
     private static int sleeve = 0;
     private boolean debugSwitch = false;
-
-    private ServoControl arm = null;
-    private ServoControl flip = null;
-    private ServoControl claw = null;
-    private ServoControl rotate = null;
-    private ServoControl tiny = null;
 
     public ElapsedTime time = new ElapsedTime();
 
@@ -54,6 +49,7 @@ public class RobotHardware {
         currentPose = new Pose2d();
 
         liftNew = new LiftControl();
+        armNew = new ArmControl();
     }
 
     // Overloaded ption for adding a starting pose when we create an autonomous program, if we want
@@ -75,6 +71,8 @@ public class RobotHardware {
         lift.initialize(op);
         tensorFlow.initialize(op);
         liftNew.initialize(op);
+        armNew.initialize(op, this);
+
 //        colorSensor.initialize(op);
 
         gamepad1 = op.gamepad1;
@@ -106,6 +104,24 @@ public class RobotHardware {
 
         }
     }
+
+    //TODO ARM and LIFT CONTROL
+    public void setArmServoGoal(double target) {
+        armNew.arm.setTargetPosition(target);
+    }
+    public void setRotateServoGoal(double target) {
+        armNew.rotate.setTargetPosition(target);
+    }
+    public void setFlipServoGoal(double target) {
+        armNew.flip.setTargetPosition(target);
+    }
+    public void setClawServoGoal(double target) {
+        armNew.claw.setTargetPosition(target);
+    }
+    public void setTinyServoGoal(double target) {
+        armNew.tiny.setTargetPosition(target);
+    }
+
 
     public void setLiftTarget(double target) {
 
