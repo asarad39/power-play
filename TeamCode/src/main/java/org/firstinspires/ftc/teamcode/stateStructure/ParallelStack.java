@@ -37,7 +37,7 @@ public class ParallelStack extends StackList implements State {
 
     public void update() {
 
-        rh.telemetry.addData("stack size", stack.size());
+//        rh.telemetry.addData("stack size", stack.size());
 
         if (stack.size() == 0) {
 

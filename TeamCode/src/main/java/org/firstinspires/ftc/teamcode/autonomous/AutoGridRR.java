@@ -10,35 +10,24 @@ import org.firstinspires.ftc.teamcode.roadrunnerPackages.drive.SampleMecanumDriv
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 // State for driving using game controller
-public class AutoSpline implements State {
+public class AutoGridRR implements State {
 
     RobotHardware rh = null;
     Trajectory traj = null;
 
-    private double x;
-    private double y;
-    private double theta;
-    private boolean backwards;
+    private double distance;
     private boolean track = false;
+    private String direction = null;
 
     private boolean isDone = false;
     private Pose2d startPose = null;
     private Pose2d endPose = null;
 
-    public AutoSpline(RobotHardware rh,
-                      boolean track,
-                      double x,
-                      double y,
-                      double theta,
-                      boolean backwards) {
+    public AutoGridRR(RobotHardware rh, boolean track, String direction, double distance) {
 
         this.rh = rh;
-        this.x = x;
-        this.y = y;
-
-        // any angle must be in radians. Angles go counterclockwise!
-        this.theta = theta;
-        this.backwards = backwards;
+        this.direction = direction;
+        this.distance = distance;
         this.track = track;
     }
 
@@ -53,10 +42,33 @@ public class AutoSpline implements State {
 
         rh.sampleMec.setPoseEstimate(startPose);
 
-        traj = rh.sampleMec.trajectoryBuilder(startPose, backwards)
-                // Also works for forward, strafe, etc.
-                .splineTo(new Vector2d(x, y), theta)
-                .build();
+        if (direction.equals("forward")) {
+
+            traj = rh.sampleMec.trajectoryBuilder(startPose)
+                    .forward(distance)
+                    .build();
+
+        } else if (direction.equals("back")) {
+
+            traj = rh.sampleMec.trajectoryBuilder(startPose)
+                    .back(distance)
+                    .build();
+
+        } else if (direction.equals("right")) {
+
+            traj = rh.sampleMec.trajectoryBuilder(startPose)
+                    .strafeRight(distance)
+                    .build();
+
+        } else if (direction.equals("left")) {
+
+            traj = rh.sampleMec.trajectoryBuilder(startPose)
+                    .strafeLeft(distance)
+                    .build();
+
+        } else {
+            throw new IllegalArgumentException("nonexistent direction name");
+        }
 
         rh.sampleMec.followTrajectoryAsync(traj);
     }

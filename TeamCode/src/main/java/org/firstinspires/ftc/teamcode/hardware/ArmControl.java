@@ -1,23 +1,44 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
-import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 public class ArmControl {
 
     RobotHardware rh = null;
 
     Telemetry telemetry = null;
-    SeriesStack armStack = new SeriesStack(rh);
+    SeriesStack armStack = null;
 
     ServoControl arm = null;
     ServoControl flip = null;
     ServoControl rotate = null;
     ServoControl claw = null;
     ServoControl tiny = null;
+
+    double[] armPositions = {
+            1,
+            0.668,
+            0.48,
+            0.48,
+            0.282,
+            0,
+    };
+    private final String[] positions = {
+            "front down",
+            "front up",
+            "front vertical",
+            "back vertical",
+            "back up",
+            "back down",
+    };
+
+    private int currentIndex = 0;
+
 
     public void initialize(OpMode op, RobotHardware rh) {
         // Get telemetry object from opMode for debugging
@@ -35,77 +56,56 @@ public class ArmControl {
         rotate.initialize(op);
         claw.initialize(op);
         tiny.initialize(op);
+
+        armStack = new SeriesStack(rh);
+        int goal = getGoalIndex("front down");
+        currentIndex = positions.length - 1 - goal;
+        setPosition(goal);
     }
 
     public boolean isMoving() {
         return (0 < armStack.size());
     }
 
-    private final String[] positions = {
-            "front down",
-            "front up",
-            "front vertical",
-//            "back vertical",
-            "back up",
-            "back down",
-    };
-    private int currentIndex = 4;
 
-    State[] frontToBackVerticalStack = {
-//            new ClawMove("Up"),
-//            new RotateClaw,
-//            new ClawMove("Back"),
-    };
-    SeriesStack frontToBackVertical = new SeriesStack(rh);
-//    frontToBackVertical.createStack(frontToBackVerticalStack);
 
-    // increases index when running
-    private final State[] frontToBack = {
-            new ArmMove(rh, "FrontDown"),
-            new ArmMove(rh, "FrontUp"),
-            new ArmMove(rh, "Vertical"),
-//            frontToBackVertical,
-            new ArmMove(rh, "BackUp"),
-            new ArmMove(rh, "BackDown"),
-    };
+    public void setPosition(int targetIndex) {
 
-    State[] backToFrontVerticalStack = {
-//            new ClawMove("Up"),
-//            new RotateClaw,
-//            new ClawMove("Back"),
-    };
-    SeriesStack backToFrontVertical = new SeriesStack(rh);
-//    backToFrontVertical.createStack(backToFrontVerticalStack);
 
-    // decreases index when running
-    private final State[] backToFront = {
-            new ArmMove(rh, "FrontDown"),
-            new ArmMove(rh, "FrontUp"),
-            backToFrontVertical,
-            new ArmMove(rh, "Vertical"),
-            new ArmMove(rh, "BackUp"),
-            new ArmMove(rh, "BackDown"),
-    };
+        if (!isMoving()) {
+            // check if the arm will pass vertical
+            if ((currentIndex <= 2) == (targetIndex >= 3)) {
 
-    public void setPosition(String target) {
+                armStack.stack.add(new ArmMove(rh, armPositions[2]));
+                armStack.stack.add(new ClawMove(rh, 0.5));
 
-        int targetIndex = getTargetIndex(target);
 
-        if (currentIndex < targetIndex) {
-            for (int i = currentIndex + 1; i <= targetIndex; i++) {
-                armStack.stack.add(frontToBack[i]);
+                ParallelStack armParallel = new ParallelStack(rh);
+
+                double target = (targetIndex / 3);
+
+                armParallel.stack.add(new RotateMove(rh, target));
+                armParallel.stack.add(new ClawMove(rh, 1 - target));
+                armParallel.stack.add(new ArmMove(rh, armPositions[targetIndex]));
+
+                armStack.stack.add(armParallel);
+
+            } else {
+
+                armStack.stack.add(new ArmMove(rh, armPositions[targetIndex]));
+
             }
-        } else if (currentIndex > targetIndex) {
-            for (int i = currentIndex - 1; i >= targetIndex; i--) {
-                armStack.stack.add(backToFront[i]);
-            }
-        } else {}
+
+            armStack.init();
+
+            currentIndex = targetIndex;
+        }
 
     }
 
-    public int getTargetIndex(String target) {
+    public int getGoalIndex(String goal) {
         for (int i = 0; i < positions.length; i++) {
-            if (target.equals(positions[i])) {
+            if (goal.equals(positions[i])) {
                 return i;
             }
         }
@@ -116,5 +116,32 @@ public class ArmControl {
         if (armStack.size() > 0) {
             armStack.update();
         }
+    }
+
+    boolean clawClosed = false;
+    boolean canClaw = true;
+
+    public void moveClaw(boolean changeClaw) {
+        if (changeClaw) {
+
+            if (canClaw) {
+
+                clawClosed = !clawClosed;
+                canClaw = false;
+
+            }
+
+        } else {
+            canClaw = true;
+        }
+    }
+
+    public void clawUpdate() {
+        if (clawClosed || isMoving()) {
+            claw.setTargetPosition(0.23);
+        } else {
+            claw.setTargetPosition(0);
+        }
+        claw.move();
     }
 }

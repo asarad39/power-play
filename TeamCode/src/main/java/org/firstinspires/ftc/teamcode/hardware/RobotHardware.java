@@ -63,6 +63,7 @@ public class RobotHardware {
 
         this.currentPose = currentPose;
         liftNew = new LiftControl();
+        armNew = new ArmControl();
     }
 
     public void initialize(OpMode op) {

@@ -36,6 +36,7 @@ public class AutoTFParkRR implements State {
         this.theta = theta;
         this.backwards = backwards;
         this.track = track;
+        this.rh = rh;
     }
 
     public void init() {
@@ -59,19 +60,16 @@ public class AutoTFParkRR implements State {
 
                     x = 24.0;
                     y = 60.0;
-                    theta = Math.toRadians(1.0);
 
                 } else if (sleeve == 2) {
 
                     x = 24.0;
                     y = 36.0;
-                    theta = Math.toRadians(1.0);
 
                 } else if (sleeve == 1) {
 
                     x = 24.0;
                     y = 12.0;
-                    theta = Math.toRadians(1.0);
 
                 } else {
                     throw new IllegalArgumentException("sleeve is not valid");
@@ -82,19 +80,16 @@ public class AutoTFParkRR implements State {
 
                     x = 24.0;
                     y = -12.0;
-                    theta = Math.toRadians(1.0);
 
                 } else if (sleeve == 2) {
 
                     x = 24.0;
                     y = -36.0;
-                    theta = Math.toRadians(1.0);
 
                 } else if (sleeve == 1) {
 
                     x = 24.0;
                     y = -60.0;
-                    theta = Math.toRadians(1.0);
 
                 } else {
                     throw new IllegalArgumentException("sleeve is not valid");
@@ -111,19 +106,16 @@ public class AutoTFParkRR implements State {
 
                     x = -24.0;
                     y = -60.0;
-                    theta = Math.toRadians(1.0);
 
                 } else if (sleeve == 2) {
 
                     x = -24.0;
                     y = -36.0;
-                    theta = Math.toRadians(1.0);
 
                 } else if (sleeve == 1) {
 
                     x = -24.0;
                     y = -12.0;
-                    theta = Math.toRadians(1.0);
 
                 } else {
                     throw new IllegalArgumentException("sleeve is not valid");
@@ -134,19 +126,16 @@ public class AutoTFParkRR implements State {
 
                     x = -24.0;
                     y = 12.0;
-                    theta = Math.toRadians(1.0);
 
                 } else if (sleeve == 2) {
 
                     x = -24.0;
                     y = 36.0;
-                    theta = Math.toRadians(1.0);
 
                 } else if (sleeve == 1) {
 
                     x = -24.0;
                     y = 60.0;
-                    theta = Math.toRadians(1.0);
 
                 } else {
                     throw new IllegalArgumentException("sleeve is not valid");
@@ -161,22 +150,27 @@ public class AutoTFParkRR implements State {
 
         traj = rh.sampleMec.trajectoryBuilder(startPose, backwards)
                 // Also works for forward, strafe, etc.
-                .splineTo(new Vector2d(x, y), theta)
+                .lineTo(new Vector2d(x, y))
                 .build();
+
+        rh.sampleMec.followTrajectoryAsync(traj);
     }
 
     public void update() {
 
-        // The OpMode will not move on until the robot has finished the trajectory
-        rh.sampleMec.followTrajectory(traj);
-        endPose = traj.end();
-        isDone = true;
+        rh.sampleMec.update();
     }
 
     public boolean getIsDone() {
 
         // Updates the robot's current position to that created by the trajectory
-        rh.setCurrentPose(endPose);
-        return isDone;
+
+        if (rh.sampleMec.isBusy()) {
+            return false;
+        } else {
+            endPose = traj.end();
+            rh.setCurrentPose(endPose);
+            return true;
+        }
     }
 }

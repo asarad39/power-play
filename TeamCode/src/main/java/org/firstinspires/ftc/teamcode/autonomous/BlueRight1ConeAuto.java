@@ -41,8 +41,7 @@ import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 
-@Disabled
-@Autonomous(name="Blue Right 1 Cone Park", group="Blue Right")
+@Autonomous(name="Blue Right Spline Cone Park", group="Blue Right")
 public class BlueRight1ConeAuto extends OpMode  {
 
     // Declare OpMode members
@@ -59,8 +58,8 @@ public class BlueRight1ConeAuto extends OpMode  {
 
         State[] tfac = {
 
-                new AutoClawArm(rh, "open", "down"),
-                new AutoTensorFlow(rh, false),
+//                new AutoClawArm(rh, "open", "down"),
+//                new AutoTensorFlow(rh, false),
         };
 
         tfAndClaw.createStack(tfac);
@@ -69,18 +68,26 @@ public class BlueRight1ConeAuto extends OpMode  {
 
         State[] las = {
 
-                new AutoMoveLift(rh, "high"),
-                new AutoSpline(rh, true,-36, -12, Math.toRadians(45), false),
+//                new AutoMoveLift(rh, "high"),
         };
 
         tfAndClaw.createStack(las);
 
         State[] states = {
+//                new AutoSpline(rh, true,-36, -12, Math.toRadians(45), false),
 
-                tfAndClaw,
-                new AutoClawArm(rh, "closed", "down"),
-                liftAndSpline,
+//                tfAndClaw,
+//                new AutoClawArm(rh, "closed", "down"),
+//                liftAndSpline,
+//                new AutoTensorFlow(rh, false),
+//
+
+                new AutoTensorFlow(rh, false),
+                new AutoGridRR(rh, true, "forward", 24),
                 new AutoTFParkRR(rh, "blue", "right", true),
+
+//                new AutoGridRR(rh, true, "left", 24),
+
         };
 
         autoStack.createStack(states);

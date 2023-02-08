@@ -35,7 +35,7 @@ public class ServoControl {
 
     public void initialize(OpMode op) {
 //        this.rh = rh;
-        this.telemetry = op.telemetry;
+//        this.telemetry = op.telemetry;
 
         this.servo = op.hardwareMap.get(Servo.class, servoName);
 

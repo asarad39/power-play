@@ -72,15 +72,27 @@ public class LiftTestTeleop extends OpMode
 //            rh.liftNew.adjustOffset(offsetSize);
 //        }
 
+
         // position
         if (gamepad1.a) {
-            rh.armNew.setPosition("back down");
+            rh.armNew.setPosition(0);
         }
         if (gamepad1.b) {
-            rh.armNew.setPosition("back up");
+            rh.armNew.setPosition(1);
         }
-        rh.armNew.armUpdate();
+        if (gamepad1.x) {
+            rh.armNew.setPosition(4);
+        }
+        if (gamepad1.y) {
+            rh.armNew.setPosition(5);
+        }
 
+        rh.armNew.moveClaw(gamepad1.right_bumper);
+        rh.armNew.clawUpdate();
+
+
+
+        rh.armNew.armUpdate();
     }
 
 

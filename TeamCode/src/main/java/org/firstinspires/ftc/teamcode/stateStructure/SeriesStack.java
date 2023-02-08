@@ -36,9 +36,9 @@ public class SeriesStack extends StackList implements State {
         State s = stack.get(0);
         s.update();
 
-        rh.telemetry.addData("stack size", stack.size());
+//        rh.telemetry.addData("stack size", stack.size());
 //        rh.telemetry.addData("isDone [0]", this.getStack().get(0).getIsDone());
-        rh.telemetry.addData("isDone stack[0]", stack.get(0).getIsDone());
+//        rh.telemetry.addData("isDone stack[0]", stack.get(0).getIsDone());
 
         if (s.getIsDone() == true) {
             stack.remove(0);
