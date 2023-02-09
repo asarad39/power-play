@@ -27,61 +27,54 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.autonomous;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.hardware.LiftControl;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
+import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-// Teleop program that uses TeleopMove state to drive using robot controller
+@Disabled
 
-@TeleOp(name="Lift Test Teleop")
-public class LiftTestTeleop extends OpMode
-{
+@Autonomous(name="Park")
+public class ParkAuto extends OpMode {
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
-//    private ParallelStack teleStack = new ParallelStack(rh);
+    private SeriesStack autoStack = new SeriesStack(rh);
 
     @Override
     public void init() {
 
         rh.initialize(this);
+
+        State[] states = {
+
+                new AutoTensorFlow(rh, false),
+                new AutoTFParkRR(rh, "blue", "right", true),
+        };
+
+
+        autoStack.createStack(states);
+        autoStack.init();
+
+        // Tell the driver that initialization is complete.
+        rh.telemetry.addData("Status", "Initialized");
     }
 
     @Override
     public void loop() {
+        rh.telemetry.addData("autoStack", autoStack.getIsDone());
+        rh.telemetry.addData("sleeve", RobotHardware.getSleeve());
 
-        // offset
-        int offsetSize = 2;
-
-        if (gamepad1.dpad_down) {
-            rh.liftNew.adjustOffset(-offsetSize);
-        } else if (gamepad1.dpad_up) {
-            rh.liftNew.adjustOffset(offsetSize);
-        } else if (gamepad1.a) {
-//            rh.liftNew.adjustPosition(LiftControl.Positions.DOWN);
+        if (!autoStack.getIsDone()) {
+            autoStack.update();
         }
-
-        rh.liftNew.adjustPosition(LiftControl.Positions.UP, gamepad1.y);
-        rh.liftNew.setPosition();
-    }
-
-
-    /////////////////////////////////////////////////////////////////////////////////
-
-    @Override
-    public void stop() {
-    }
-    @Override
-    public void init_loop() {
-    }
-    @Override
-    public void start() {
-        runtime.reset();
     }
 }

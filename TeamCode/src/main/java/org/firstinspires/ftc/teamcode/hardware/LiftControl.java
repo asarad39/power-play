@@ -21,14 +21,28 @@ public class LiftControl {
 
     boolean homing = true;
 
-    final int[] positions = {0, 100, 200, 300, 400};
+//    final int[] positions = {0, 100, 200, 300, 400};
+    
+    // low to high
+    final int[] positions = {
+            -18,
+            243, // (int) (1460.0 / (19.2 / 3.7)),
+            552, // (int) (3310.0 / (19.2 / 3.7)),
+            829, // (int) (4975.0 / (19.2 / 3.7)),
+            };
+// TODO: scale motor powers before we change clicks, the motors are not currently reaching targets
+
+
     final int minPosition = 0;
-    final int maxPosition = 500;
+
+//    final int maxPosition = 500;
+    final int maxPosition = (int) (4975.0 / (19.2 / 3.7));
+
     int posIndex;
     int offset;
     private Telemetry telemetry;
 
-
+    boolean canLift = true;
 
     public void initialize(OpMode op) {
         // Get telemetry object from opMode for debugging
@@ -69,8 +83,6 @@ public class LiftControl {
 
     public void setPosition() {
         // TODO: Calculate power before setting motor speed - pwer corve
-        left.setPower(0.1);
-        right.setPower(0.1);
 
         // Calculate max/min position
         int newPosition = positions[posIndex] + offset;
@@ -85,18 +97,28 @@ public class LiftControl {
             newPosition = maxPosition;
         }
 
-
         if (homing) {
+
+            left.setPower(0.1);
+            right.setPower(0.1);
+
             newPosition = maxPosition;
             if (getTouch()) {
                 resetEncoders();
                 homing = false;
             }
+
         }
+
+        left.setPower(0.2);
+        right.setPower(0.2);
+
+        telemetry.addData("posIndex", posIndex);
         telemetry.addData("final goal position", newPosition);
+        telemetry.addData("clicks", left.getCurrentPosition());
+
         telemetry.addData("touching", getTouch());
         telemetry.addData("Homing", homing);
-
 
         left.setTargetPosition(newPosition);
         right.setTargetPosition(newPosition);
@@ -107,17 +129,36 @@ public class LiftControl {
         DOWN
     }
     // liftcontrol.adjustPosition(LiftControl.Positions.UP)
-    public void adjustPosition(Positions p) {
+
+    public void adjustPosition(Positions p, boolean change) {
+
         int d = 0;
+
         switch(p) {
-            case UP: d = 1;
-            case DOWN: d = -1;
+
+            case UP:
+                d = 1;
+                break;
+
+            case DOWN:
+                d = -1;
+                break;
         }
-        // d is either 1 or -1
-        posIndex = (posIndex + d) % positions.length;
-        telemetry.addData("adjusting", d);
-        offset = 0;
-        this.setPosition();
+
+        if (change) {
+
+            if (canLift) {
+
+                posIndex = (posIndex + d) % positions.length;
+                telemetry.addData("adjusting", d);
+                offset = 0;
+                canLift = false;
+                this.setPosition();
+            }
+
+        } else {
+            canLift = true;
+        }
     }
 
     public void adjustOffset(int o) {

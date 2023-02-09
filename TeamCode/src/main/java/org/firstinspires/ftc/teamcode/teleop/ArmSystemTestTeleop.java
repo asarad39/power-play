@@ -27,54 +27,75 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.teleop;
 
-import com.acmerobotics.roadrunner.geometry.Pose2d;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.hardware.LiftControl;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
-import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
-import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-@Disabled
+// Teleop program that uses TeleopMove state to drive using robot controller
 
-@Autonomous(name="Blue Right Park", group="Blue Right")
-public class BlueRightParkAuto extends OpMode {
+@TeleOp(name="Arm System Test Teleop")
+public class ArmSystemTestTeleop extends OpMode
+{
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
-    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
-    private SeriesStack autoStack = new SeriesStack(rh);
+    private RobotHardware rh = new RobotHardware();
+//    private ParallelStack teleStack = new ParallelStack(rh);
 
     @Override
     public void init() {
 
         rh.initialize(this);
-
-        State[] states = {
-
-                new AutoTensorFlow(rh, false),
-                new AutoTFParkRR(rh, "blue", "right", true),
-        };
-
-
-        autoStack.createStack(states);
-        autoStack.init();
-
-        // Tell the driver that initialization is complete.
-        rh.telemetry.addData("Status", "Initialized");
     }
 
     @Override
     public void loop() {
-        rh.telemetry.addData("autoStack", autoStack.getIsDone());
-        rh.telemetry.addData("sleeve", RobotHardware.getSleeve());
 
-        if (!autoStack.getIsDone()) {
-            autoStack.update();
+        // position
+        if (gamepad1.a) {
+            rh.armNew.setPosition(0);
         }
+        if (gamepad1.b) {
+            rh.armNew.setPosition(1);
+        }
+        if (gamepad1.x) {
+            rh.armNew.setPosition(4);
+        }
+        if (gamepad1.y) {
+            rh.armNew.setPosition(5);
+        }
+
+        if (gamepad1.dpad_down) {
+            rh.liftNew.adjustOffset(-2);
+        } else if (gamepad1.dpad_up) {
+            rh.liftNew.adjustOffset(2);
+        }
+
+        rh.armNew.moveClaw(gamepad1.left_bumper);
+
+        rh.armNew.clawUpdate();
+        rh.armNew.armUpdate();
+
+        rh.liftNew.adjustPosition(LiftControl.Positions.UP, gamepad1.right_bumper);
+        rh.liftNew.setPosition();
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void stop() {
+    }
+    @Override
+    public void init_loop() {
+    }
+    @Override
+    public void start() {
+        runtime.reset();
     }
 }
