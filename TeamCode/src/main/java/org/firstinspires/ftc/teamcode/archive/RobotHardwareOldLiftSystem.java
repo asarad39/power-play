@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.hardware;
+package org.firstinspires.ftc.teamcode.archive;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -7,6 +7,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.hardware.DriveTrain;
+import org.firstinspires.ftc.teamcode.hardware.LiftControl;
+import org.firstinspires.ftc.teamcode.hardware.ServoControl;
+import org.firstinspires.ftc.teamcode.hardware.TensorFlow;
 import org.firstinspires.ftc.teamcode.roadrunnerPackages.drive.SampleMecanumDrive;
 
 import java.util.List;

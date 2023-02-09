@@ -27,8 +27,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.archive;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -38,6 +39,7 @@ import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
 // Teleop program that uses TeleopMove state to drive using robot controller
 
+@Disabled
 @TeleOp(name="Combined Test Teleop")
 public class CombinedLiftArmTestTeleop extends OpMode
 {

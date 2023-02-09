@@ -1,10 +1,8 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.archive;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Mathematics;
 import org.firstinspires.ftc.teamcode.PID;
-import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
-import org.firstinspires.ftc.teamcode.hardware.RobotHardwareOldLiftSystem;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 // State for driving using game controller
