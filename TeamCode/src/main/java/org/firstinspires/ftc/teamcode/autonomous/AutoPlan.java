@@ -83,7 +83,7 @@ public class AutoPlan {
 
             ParallelStack driveLift = new ParallelStack(rh);
             driveLift.createStack(new State[] {
-                    new AutoSpline(rh, track, -36, 0, Math.toRadians(45), false),
+                    new AutoSplineRR(rh, track, -36, 0, Math.toRadians(45), false),
                     new AutoMoveLift(rh, "high")
             });
 

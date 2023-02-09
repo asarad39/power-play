@@ -19,7 +19,6 @@ public class AutoGridRR implements State {
     private boolean track = false;
     private String direction = null;
 
-    private boolean isDone = false;
     private Pose2d startPose = null;
     private Pose2d endPose = null;
 
