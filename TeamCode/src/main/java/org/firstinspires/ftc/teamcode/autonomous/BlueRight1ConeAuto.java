@@ -84,7 +84,7 @@ public class BlueRight1ConeAuto extends OpMode  {
 
                 new AutoTensorFlow(rh, false),
                 new AutoGridRR(rh, true, "forward", 24),
-                new AutoTFParkRR(rh, "blue", "right", true),
+                new AutoTFParkRRSimple(rh),
 
 //                new AutoGridRR(rh, true, "left", 24),
 

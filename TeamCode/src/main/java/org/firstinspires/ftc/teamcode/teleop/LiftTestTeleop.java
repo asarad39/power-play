@@ -56,19 +56,40 @@ public class LiftTestTeleop extends OpMode
     @Override
     public void loop() {
 
-        // offset
-        int offsetSize = 2;
-
-        if (gamepad1.dpad_down) {
-            rh.liftNew.adjustOffset(-offsetSize);
-        } else if (gamepad1.dpad_up) {
-            rh.liftNew.adjustOffset(offsetSize);
-        } else if (gamepad1.a) {
-//            rh.liftNew.adjustPosition(LiftControl.Positions.DOWN);
+//        if (gamepad1.a) {
+//            rh.armNew.setPosition(0);
+//        }
+//        if (gamepad1.b) {
+//            rh.armNew.setPosition(1);
+//        }
+        if (gamepad1.x) {
+//            rh.armNew.flip.setTargetPosition(1);
+        } else if (gamepad1.y) {
+//            rh.armNew.flip.setTargetPosition(0);
+        } else {
+//            rh.armNew.flip.setTargetPosition(0.5);
         }
 
-        rh.liftNew.adjustPosition(LiftControl.Positions.UP, gamepad1.y);
-        rh.liftNew.setPosition();
+//        rh.armNew.arm.setTargetPosition(0.48);
+//        rh.armNew.flip.move();
+//        rh.armNew.arm.move();
+
+
+//        rh.armNew.armUpdate();
+
+//        // offset
+//        int offsetSize = 2;
+//
+//        if (gamepad1.dpad_down) {
+//            rh.liftNew.adjustOffset(-offsetSize);
+//        } else if (gamepad1.dpad_up) {
+//            rh.liftNew.adjustOffset(offsetSize);
+//        } else if (gamepad1.a) {
+////            rh.liftNew.adjustPosition(LiftControl.Positions.DOWN);
+//        }
+//
+//        rh.liftNew.adjustPosition(LiftControl.Positions.UP);
+//        rh.liftNew.setPosition();
     }
 
 

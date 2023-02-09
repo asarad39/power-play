@@ -36,7 +36,7 @@ public class LiftControl {
 // TODO: scale motor powers before we change clicks, the motors are not currently reaching targets
 
 
-    final int minPosition = 0;
+    final int minPosition = -18;
 
 //    final int maxPosition = 500;
     final int maxPosition = (int) (4975.0 / (19.2 / 3.7));
@@ -73,6 +73,12 @@ public class LiftControl {
         touch = op.hardwareMap.get(TouchSensor.class, "touch");
     }
 
+    public boolean isMoving() {
+        return !(left.isBusy() || right.isBusy());
+        // TODO check if position is within range
+        // isBusy
+    }
+
     public boolean getTouch() {
         return touch.isPressed();
     }
@@ -103,8 +109,8 @@ public class LiftControl {
 
         if (homing) {
 
-            left.setPower(0.1);
-            right.setPower(0.1);
+            left.setPower(0.04);
+            right.setPower(0.04);
 
             newPosition = maxPosition;
             if (getTouch()) {
@@ -114,7 +120,8 @@ public class LiftControl {
 
         }
 
-        double power = Mathematics.getLogisticCurve(maxPower, left.getCurrentPosition(), newPosition, .015);
+//        double power = Mathematics.getLogisticCurve(maxPower, left.getCurrentPosition(), newPosition, .015);
+        double power = 0.2;
 
         left.setPower(power);
         right.setPower(power);
@@ -140,7 +147,7 @@ public class LiftControl {
     }
     // liftcontrol.adjustPosition(LiftControl.Positions.UP)
 
-    public void adjustPosition(Positions p, boolean change) {
+    public void adjustPosition(Positions p) {
 
         int d = 0;
 
@@ -155,20 +162,10 @@ public class LiftControl {
                 break;
         }
 
-        if (change) {
-
-            if (canLift) {
-
-                posIndex = (posIndex + d) % positions.length;
-                telemetry.addData("adjusting", d);
-                offset = 0;
-                canLift = false;
-                this.setPosition();
-            }
-
-        } else {
-            canLift = true;
-        }
+        posIndex = (posIndex + d + positions.length) % positions.length;
+        telemetry.addData("adjusting", d);
+        offset = 0;
+        this.setPosition();
     }
 
     public void adjustOffset(int o) {

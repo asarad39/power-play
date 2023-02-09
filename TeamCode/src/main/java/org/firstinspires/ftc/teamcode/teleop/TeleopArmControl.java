@@ -58,11 +58,13 @@ public class TeleopArmControl implements State {
         if (!facingFront) {
             index = 5 - index;
         }
-        rh.armNew.setPosition(index);
-
-        // claw
+//        rh.armNew.setPosition(index);
+// todo only set position when index != currentindex
+// claw
         rh.armNew.moveClaw(rh.gamepad1.right_bumper);
+
         rh.armNew.clawUpdate();
+        rh.armNew.armUpdate();
     }
 
     @Override

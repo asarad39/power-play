@@ -128,9 +128,21 @@ public class CombinedLiftArmTestTeleop extends OpMode
         } else {
             canLift = true;
         }
+        if (rh.gamepad1.y || rh.gamepad1.b) {
 
-        rh.liftNew.adjustPosition(LiftControl.Positions.UP, gamepad1.y);
-        rh.liftNew.adjustPosition(LiftControl.Positions.DOWN, gamepad1.b);
+            if (canLift) {
+                if (rh.gamepad1.y) {
+                    rh.liftNew.adjustPosition(LiftControl.Positions.UP);
+                }
+                if (rh.gamepad1.b) {
+                    rh.liftNew.adjustPosition(LiftControl.Positions.DOWN);
+                }
+                canLift = false;
+            }
+
+        } else {
+            canLift = true;
+        }
 
         // Move to collect
         if (gamepad1.a) {

@@ -10,6 +10,7 @@ public class TeleopLiftControl implements State {
     RobotHardware rh = null;
 
     private boolean canJump = true;
+    private boolean canLift = true;
 
     public TeleopLiftControl(RobotHardware rh) {
 
@@ -21,8 +22,26 @@ public class TeleopLiftControl implements State {
     }
 
     public void update() {
-        rh.liftNew.adjustPosition(LiftControl.Positions.UP, rh.gamepad1.b);
-        rh.liftNew.adjustPosition(LiftControl.Positions.DOWN, rh.gamepad1.a);
+        if (rh.gamepad1.y || rh.gamepad1.b) {
+
+            if (canLift) {
+                if (rh.gamepad1.y) {
+                    rh.liftNew.adjustPosition(LiftControl.Positions.UP);
+                }
+                if (rh.gamepad1.b) {
+                    rh.liftNew.adjustPosition(LiftControl.Positions.DOWN);
+                }
+                canLift = false;
+            }
+
+        } else {
+            canLift = true;
+        }
+
+        // collect
+        if (rh.gamepad1.a) {
+            rh.liftNew.setPositionsIndex(0);
+        }
 
         // jumping
         if (rh.gamepad1.dpad_right) {
@@ -41,6 +60,8 @@ public class TeleopLiftControl implements State {
         } else if (rh.gamepad1.dpad_up) {
             rh.liftNew.adjustOffset(offsetSize);
         }
+
+        rh.liftNew.setPosition();
     }
 
     @Override

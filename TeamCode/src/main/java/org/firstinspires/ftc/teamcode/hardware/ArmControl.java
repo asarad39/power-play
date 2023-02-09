@@ -58,9 +58,8 @@ public class ArmControl {
         tiny.initialize(op);
 
         armStack = new SeriesStack(rh);
-        int goal = getGoalIndex("front down");
-        currentIndex = positions.length - 1 - goal;
-        setPosition(goal);
+        currentIndex = 5;
+        setPosition(0);
     }
 
     public boolean isMoving() {
