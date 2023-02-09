@@ -3,14 +3,12 @@ package org.firstinspires.ftc.teamcode.autonomous;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
-import org.firstinspires.ftc.teamcode.roadrunnerPackages.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 // State for driving using game controller
-public class AutoSpline implements State {
+public class AutoSplineRR implements State {
 
     RobotHardware rh = null;
     Trajectory traj = null;
@@ -25,12 +23,12 @@ public class AutoSpline implements State {
     private Pose2d startPose = null;
     private Pose2d endPose = null;
 
-    public AutoSpline(RobotHardware rh,
-                      boolean track,
-                      double x,
-                      double y,
-                      double theta,
-                      boolean backwards) {
+    public AutoSplineRR(RobotHardware rh,
+                        boolean track,
+                        double x,
+                        double y,
+                        double theta,
+                        boolean backwards) {
 
         this.rh = rh;
         this.x = x;

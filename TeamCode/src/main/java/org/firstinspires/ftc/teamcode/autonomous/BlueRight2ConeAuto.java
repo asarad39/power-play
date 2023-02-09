@@ -70,7 +70,7 @@ public class BlueRight2ConeAuto extends OpMode {
         State[] las = {
 
                 new AutoMoveLift(rh, "high"),
-                new AutoSpline(rh, true,-36, -12, Math.toRadians(45), false),
+                new AutoSplineRR(rh, true,-36, -12, Math.toRadians(45), false),
         };
 
         tfAndClaw.createStack(las);
