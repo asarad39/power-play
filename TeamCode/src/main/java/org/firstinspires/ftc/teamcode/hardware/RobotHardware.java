@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.archive.NewLiftSystem;
 import org.firstinspires.ftc.teamcode.roadrunnerPackages.drive.SampleMecanumDrive;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class RobotHardware {
     // Create objects for all of the hardware subsystems of the robot
     public DriveTrain driveTrain = null;
 
-//    public NewLiftSystem lift = null;
+    public NewLiftSystem lift = null;
     public LiftControl liftNew = null;
     public ArmControl armNew = null;
 
@@ -40,7 +41,7 @@ public class RobotHardware {
     public RobotHardware() {
 
         driveTrain = new DriveTrain();
-//        lift = new NewLiftSystem();
+        lift = new NewLiftSystem();
         tensorFlow = new TensorFlow();
 
 
@@ -57,7 +58,7 @@ public class RobotHardware {
     public RobotHardware(Pose2d currentPose) {
 
         driveTrain = new DriveTrain();
-//        lift = new NewLiftSystem();
+        lift = new NewLiftSystem();
         tensorFlow = new TensorFlow();
 //        colorSensor = new ColorSensor();
 
@@ -69,10 +70,10 @@ public class RobotHardware {
     public void initialize(OpMode op) {
 
         driveTrain.initialize(op);
-//        lift.initialize(op);
+        lift.initialize(op);
         tensorFlow.initialize(op);
-        liftNew.initialize(op, this);
-        armNew.initialize(op, this);
+//        liftNew.initialize(op, this);
+//        armNew.initialize(op, this);
 
 //        colorSensor.initialize(op);
 
@@ -93,18 +94,18 @@ public class RobotHardware {
 
     //TODO
 //     Lift system methods
-//    public void lift(double power) {
-//
-//        if (liftNew.getGoHome() != 0) {
-//
-//            lift.moveMotorsHome();
-//
-//        } else {
-//
-//            lift.setPower(power);
-//
-//        }
-//    }
+    public void lift(double power) {
+
+        if (lift.getGoHome() != 0) {
+
+            lift.moveMotorsHome();
+
+        } else {
+
+            lift.setPower(power);
+
+        }
+    }
 
     //TODO ARM and LIFT CONTROL
     public void setArmServoGoal(double target) {
@@ -124,22 +125,22 @@ public class RobotHardware {
     }
 
 
-//    public void setLiftTarget(double target) {
-//
-//        if (lift.getGoHome() == 2) {
-//
-//            lift.setTarget(300);
-//
-//        } else if (lift.getGoHome() == 1) {
-//
-//            lift.setTarget(-100);
-//
-//        } else {
-//
-//            lift.setTarget(target);
-//
-//        }
-//    }
+    public void setLiftTarget(double target) {
+
+        if (lift.getGoHome() == 2) {
+
+            lift.setTarget(300);
+
+        } else if (lift.getGoHome() == 1) {
+
+            lift.setTarget(-100);
+
+        } else {
+
+            lift.setTarget(target);
+
+        }
+    }
 
 //    public void liftServos(double positionArmL, double positionClawL) {
 //
@@ -185,33 +186,33 @@ public class RobotHardware {
     // -------------------- new lift below
 
 //    TODO
-//    public int getLiftEncoderLeft() {
-//        return lift.getLiftEncoderLeft();
-//    }
+    public int getLiftEncoderLeft() {
+        return lift.getLiftEncoderLeft();
+    }
 
-//    public int getLiftEncoderRight() {
-//        return lift.getLiftEncoderRight();
-//    }
+    public int getLiftEncoderRight() {
+        return lift.getLiftEncoderRight();
+    }
 
-//    public double getArmPos() {
-//        return lift.getArmPos();
-//    }
+    public double getArmPos() {
+        return lift.getArmPos();
+    }
 
-//    public double getFlipPos() {
-//        return lift.getFlipPos();
-//    }
+    public double getFlipPos() {
+        return lift.getFlipPos();
+    }
 
-//    public double getRotatePos() {
-//        return lift.getRotatePos();
-//    }
+    public double getRotatePos() {
+        return lift.getRotatePos();
+    }
 
-//    public double getClawPos() {
-//        return lift.getClawPos();
-//    }
+    public double getClawPos() {
+        return lift.getClawPos();
+    }
 
-//    public boolean getTouch() {
-//        return lift.getTouch();
-//    }
+    public boolean getTouch() {
+        return lift.getTouch();
+    }
 
     // ------------------------------
 

@@ -3,12 +3,13 @@ package org.firstinspires.ftc.teamcode.archive;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Mathematics;
 import org.firstinspires.ftc.teamcode.PID;
+import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 // State for driving using game controller
 public class TeleopNewLiftSystem implements State {
 
-    RobotHardwareOldLiftSystem rh = null;
+    RobotHardware rh = null;
     Telemetry telemetry;
 //    PID liftPID = new PID(2900);
     PID liftPID = new PID(5700); // for new robot
@@ -42,7 +43,7 @@ public class TeleopNewLiftSystem implements State {
     private double mirrorSeconds = 0;
     double maxLiftSpeed = 0.0;
 
-    public TeleopNewLiftSystem(RobotHardwareOldLiftSystem rh) {
+    public TeleopNewLiftSystem(RobotHardware rh) {
         this.rh = rh;
     }
 
@@ -81,7 +82,7 @@ public class TeleopNewLiftSystem implements State {
         clawPos = 0.23;
 
 //        rh.setServoPositions(armPos, flipPos, rotatePos, clawPos);
-        goHome = 0;
+        goHome = 2;
         level = "home";
         lastLevel = "home";
         vertical = true;
@@ -95,6 +96,7 @@ public class TeleopNewLiftSystem implements State {
         endMirror = true;
 
         canJump = true;
+        rh.telemetry.addData("MaxLiftSpeed", maxLiftSpeed);
     }
 
     @Override
@@ -106,7 +108,7 @@ public class TeleopNewLiftSystem implements State {
     public void update() {
 
         currentSeconds = rh.time.seconds();
-//        goHome = rh.lift.getGoHome();
+        goHome = rh.lift.getGoHome();
 
         double armPos = getArm();
         double flipPos = getFlip();
