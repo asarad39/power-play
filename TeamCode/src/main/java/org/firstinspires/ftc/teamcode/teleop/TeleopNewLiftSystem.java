@@ -4,12 +4,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Mathematics;
 import org.firstinspires.ftc.teamcode.PID;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.hardware.RobotHardwareOldLiftSystem;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 // State for driving using game controller
 public class TeleopNewLiftSystem implements State {
 
-    RobotHardware rh = null;
+    RobotHardwareOldLiftSystem rh = null;
     Telemetry telemetry;
 //    PID liftPID = new PID(2900);
     PID liftPID = new PID(5700); // for new robot
@@ -38,12 +39,12 @@ public class TeleopNewLiftSystem implements State {
     private double flipPos = 0;
     private double rotatePos = 0;
     private double clawPos = 0;
-    
+
     private double currentSeconds = 0;
     private double mirrorSeconds = 0;
     double maxLiftSpeed = 0.0;
 
-    public TeleopNewLiftSystem(RobotHardware rh) {
+    public TeleopNewLiftSystem(RobotHardwareOldLiftSystem rh) {
         this.rh = rh;
     }
 
@@ -86,10 +87,10 @@ public class TeleopNewLiftSystem implements State {
         level = "home";
         lastLevel = "home";
         vertical = true;
-        
+
         mirrored = false;
         canMirror = true;
-        
+
         armMirror1 = false;
         flipMirror = false;
         rotateMirror = false;
@@ -107,7 +108,7 @@ public class TeleopNewLiftSystem implements State {
     public void update() {
 
         currentSeconds = rh.time.seconds();
-        goHome = rh.lift.getGoHome();
+//        goHome = rh.lift.getGoHome();
 
         double armPos = getArm();
         double flipPos = getFlip();
@@ -122,7 +123,7 @@ public class TeleopNewLiftSystem implements State {
         double liftMove = getLiftPowerLogistic(liftSpeed, liftPID.getTargetPosition());
 
         level = getLevel();
-        
+
         getMirrored();
 
         adjustLiftHeight();
@@ -445,7 +446,7 @@ public class TeleopNewLiftSystem implements State {
             flipPosition = 0.0;
 
         }
-        
+
         return flipPosition;
     }
 
@@ -508,7 +509,7 @@ public class TeleopNewLiftSystem implements State {
 
         return rotatePosition;
     }
-    
+
     public double getClaw() {
 
         double clawPosition = rh.getClawPos();

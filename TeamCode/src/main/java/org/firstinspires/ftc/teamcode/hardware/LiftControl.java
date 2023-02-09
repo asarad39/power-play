@@ -6,12 +6,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.Mathematics;
 import org.firstinspires.ftc.teamcode.PID;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 public class LiftControl {
 
-//    RobotHardware rh;
+    RobotHardware rh = null;
 
     private TouchSensor touch = null;
 
@@ -20,6 +21,8 @@ public class LiftControl {
     public DcMotor right;
 
     boolean homing = true;
+
+    private double maxPower = 0.8;
 
 //    final int[] positions = {0, 100, 200, 300, 400};
     
@@ -44,9 +47,10 @@ public class LiftControl {
 
     boolean canLift = true;
 
-    public void initialize(OpMode op) {
+    public void initialize(OpMode op, RobotHardware rh) {
         // Get telemetry object from opMode for debugging
         this.telemetry = op.telemetry;
+        this.rh = rh;
 
         posIndex = 0;
         offset = 0;
@@ -110,8 +114,10 @@ public class LiftControl {
 
         }
 
-        left.setPower(0.2);
-        right.setPower(0.2);
+        double power = Mathematics.getLogisticCurve(maxPower, left.getCurrentPosition(), newPosition, .015);
+
+        left.setPower(power);
+        right.setPower(power);
 
         telemetry.addData("posIndex", posIndex);
         telemetry.addData("final goal position", newPosition);
@@ -122,6 +128,10 @@ public class LiftControl {
 
         left.setTargetPosition(newPosition);
         right.setTargetPosition(newPosition);
+    }
+
+    public int getPosition() {
+        return posIndex;
     }
 
     public static enum Positions {

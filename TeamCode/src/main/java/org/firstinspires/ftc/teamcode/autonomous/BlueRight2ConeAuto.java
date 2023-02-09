@@ -59,7 +59,7 @@ public class BlueRight2ConeAuto extends OpMode {
 
         State[] tfac = {
 
-                new AutoClawArm(rh, "open", "down"),
+//                new AutoClawArm(rh, "open", "down"),
                 new AutoTensorFlow(rh, false),
         };
 
@@ -69,7 +69,7 @@ public class BlueRight2ConeAuto extends OpMode {
 
         State[] las = {
 
-                new AutoMoveLift(rh, "high"),
+//                new AutoMoveLift(rh, "high"),
                 new AutoSplineRR(rh, true,-36, -12, Math.toRadians(45), false),
         };
 
@@ -78,7 +78,7 @@ public class BlueRight2ConeAuto extends OpMode {
         State[] states = {
 
                 tfAndClaw,
-                new AutoClawArm(rh, "closed", "down"),
+//                new AutoClawArm(rh, "closed", "down"),
                 liftAndSpline,
                 new AutoTFParkRR(rh, "blue", "right", true),
         };

@@ -74,7 +74,7 @@ public class RobotHardwareOldLiftSystem {
         driveTrain.initialize(op);
         lift.initialize(op);
         tensorFlow.initialize(op);
-        liftNew.initialize(op);
+//        liftNew.initialize(op,t);
 //        colorSensor.initialize(op);
 
         gamepad1 = op.gamepad1;

@@ -106,7 +106,8 @@ public class CombinedLiftArmTestTeleop extends OpMode
                 }
 
             }
-        } if (rh.gamepad1.y && index <= 3) {
+        }
+        if (rh.gamepad1.y && index <= 3) {
             if (canLift) {
 
                 index++;
@@ -155,6 +156,7 @@ public class CombinedLiftArmTestTeleop extends OpMode
         // TODO: add final click adjustment
         if (rh.gamepad1.dpad_right) {
             if (canJump) {
+
 
                 rh.liftNew.adjustOffset(100);
                 canJump = false;

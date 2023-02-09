@@ -118,8 +118,8 @@ public class ArmControl {
         }
     }
 
-    boolean clawClosed = false;
-    boolean canClaw = true;
+    private boolean clawClosed = false;
+    private boolean canClaw = true;
 
     public void moveClaw(boolean changeClaw) {
         if (changeClaw) {

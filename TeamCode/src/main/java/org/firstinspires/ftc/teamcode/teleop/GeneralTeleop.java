@@ -56,9 +56,12 @@ public class GeneralTeleop extends OpMode
         State[] states = {
 
                 new TeleopMove(rh),
+                new TeleopArmControl(rh),
+                new TeleopLiftControl(rh),
+
+
 //                new TeleopLiftToggle(rh),
 //                new TeleopLift(rh),
-
 //                new TeleopNewLiftSystem(rh), // for drive testing
         };
 

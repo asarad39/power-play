@@ -76,7 +76,7 @@ public class LeftPoleAutonomous extends OpMode
         ParallelStack driveAndUp1 = new ParallelStack(rh);
         State[] forDriveAndUp1 = {
                 driveSequence1,
-                new AutoMoveLift(rh, "low"),
+//                new AutoMoveLift(rh, "low"),
 
         };
         driveAndUp1.createStack(forDriveAndUp1);
@@ -92,7 +92,7 @@ public class LeftPoleAutonomous extends OpMode
         ParallelStack driveAndUp2 = new ParallelStack(rh);
         State[] forDriveAndUp2 = {
                 driveSequence2,
-                new AutoMoveLift(rh, "home"),
+//                new AutoMoveLift(rh, "home"),
 
         };
         driveAndUp2.createStack(forDriveAndUp2);

@@ -71,10 +71,10 @@ public class AutoPlan {
         ArrayList<State> states = new ArrayList<State> (
 
                 Arrays.asList(
-                        new AutoTensorFlow(rh, customSleeve),
-                        new AutoClawArm(rh, "open", "down"),
-                        new AutoClawArm(rh, "closed", "down"),
-                        new AutoClawArm(rh, "closed", "up")
+                        new AutoTensorFlow(rh, customSleeve)
+//                        new AutoClawArm(rh, "open", "down"),
+//                        new AutoClawArm(rh, "closed", "down"),
+//                        new AutoClawArm(rh, "closed", "up")
                 )
         );
 
@@ -84,21 +84,21 @@ public class AutoPlan {
             ParallelStack driveLift = new ParallelStack(rh);
             driveLift.createStack(new State[] {
                     new AutoSplineRR(rh, track, -36, 0, Math.toRadians(45), false),
-                    new AutoMoveLift(rh, "high")
+//                    new AutoMoveLift(rh, "high")
             });
 
             ParallelStack clawLift = new ParallelStack(rh);
             clawLift.createStack(new State[] {
-                    new AutoClawArm(rh, "open", "down"),
-                    new AutoMoveLift(rh, "home")
+//                    new AutoClawArm(rh, "open", "down"),
+//                    new AutoMoveLift(rh, "home")
             });
 
             Collections.addAll(states,
 
-                    driveLift,
+                    driveLift
 
-                    new AutoClawArm(rh, "closed", "down"),
-                    new AutoClawArm(rh, "open", "down")
+//                    new AutoClawArm(rh, "closed", "down"),
+//                    new AutoClawArm(rh, "open", "down")
 
             );
 
