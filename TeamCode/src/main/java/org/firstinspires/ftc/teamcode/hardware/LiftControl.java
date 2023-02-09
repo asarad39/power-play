@@ -167,6 +167,12 @@ public class LiftControl {
         this.setPosition();
     }
 
+    public void setPositionsIndex(int index) {
+
+        posIndex = index;
+        offset = 0;
+        this.setPosition();
+    }
 
 
 //    public void setLiftTarget() {
