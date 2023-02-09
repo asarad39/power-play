@@ -64,11 +64,12 @@ public class CombinedLiftArmTestTeleop extends OpMode
     @Override
     public void loop() {
 
-        // Before writing this:
+        // Before testing this:
         // - Push code
         // - Add power curve to lift
         // - Find correct positions using LiftTestTeleop
         // - Adjust min and max positions for lift!
+        // - Speed up claw transitions?
 
         // mirror button (modifier)
         if (rh.gamepad1.right_bumper) {
@@ -171,8 +172,6 @@ public class CombinedLiftArmTestTeleop extends OpMode
         rh.armNew.moveClaw(gamepad1.right_bumper);
         rh.armNew.clawUpdate();
         rh.liftNew.setPosition();
-
-        // Speed up claw transitions?
     }
 
 
