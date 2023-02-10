@@ -35,12 +35,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.archive.AutoDriveTime;
+import org.firstinspires.ftc.teamcode.hardware.ArmMove;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-@Disabled
+//@Disabled
 @Autonomous(name="General Autonomous 2022")
 public class GeneralAutonomous extends OpMode
 {
@@ -49,8 +50,6 @@ public class GeneralAutonomous extends OpMode
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
-//    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
-    //    private ParallelStack autoStack = new ParallelStack(rh);
     private SeriesStack autoStack = new SeriesStack(rh);
 
     @Override
@@ -58,31 +57,12 @@ public class GeneralAutonomous extends OpMode
 
         rh.initialize(this);
 
-        ParallelStack scanAndOpen = new ParallelStack(rh);
-        State[] forScanAndOpen = {
-                new AutoTensorFlow(rh, true),
-                new AutoNewClaw(rh,"closed", "down", true),
-        };
-        scanAndOpen.createStack(forScanAndOpen);
-
-        SeriesStack driveSequence = new SeriesStack(rh);
-        State[] forDriveSequence = {
-                new AutoDriveTime(rh, 4.0, "forward", 0.2),
-                new AutoTFParkNoRR(rh)
-        };
-        driveSequence.createStack(forDriveSequence);
-
-        ParallelStack driveAndUp = new ParallelStack(rh);
-        State[] forDriveAndUp = {
-                driveSequence,
-//                new AutoNewClaw(rh,"closed", "up", false),
-        };
-        driveAndUp.createStack(forDriveAndUp);
-
         State[] forAutoStack = {
-                scanAndOpen,
-                new AutoNewClaw(rh, "closed", "down", false),
-                driveAndUp,
+
+                new AutoGridRR(rh, false, "forward", 12),
+                new ArmMove(rh, 0.668),
+                new AutoGridRR(rh, false, "back", 12),
+                new ArmMove(rh, 0.668),
         };
 
         autoStack.createStack(forAutoStack);
