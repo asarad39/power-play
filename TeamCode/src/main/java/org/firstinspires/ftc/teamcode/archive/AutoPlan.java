@@ -27,8 +27,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.archive;
 
+import org.firstinspires.ftc.teamcode.autonomous.AutoSplineRR;
+import org.firstinspires.ftc.teamcode.autonomous.AutoTFParkRR;
+import org.firstinspires.ftc.teamcode.autonomous.AutoTensorFlow;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;

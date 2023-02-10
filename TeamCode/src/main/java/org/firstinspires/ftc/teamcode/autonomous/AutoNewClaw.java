@@ -26,7 +26,7 @@ public class AutoNewClaw implements State {
 
         // close the claw with the arm down
         if (init) {
-            rh.setServoPositions(1, 0, 0, 0.16);
+            rh.setServoPositions(1, 1, 0, 0.16);
         }
     }
 
@@ -36,7 +36,7 @@ public class AutoNewClaw implements State {
 
     public void update() {
 
-        rh.setServoPositions(arm(), 0, 0, claw());
+        rh.setServoPositions(arm(), 1, 0, claw());
 
     }
 

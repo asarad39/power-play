@@ -72,8 +72,8 @@ public class RobotHardware {
         driveTrain.initialize(op);
         lift.initialize(op);
         tensorFlow.initialize(op);
-//        liftNew.initialize(op, this);
-//        armNew.initialize(op, this);
+        liftNew.initialize(op, this);
+        armNew.initialize(op, this);
 
 //        colorSensor.initialize(op);
 

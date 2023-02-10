@@ -27,29 +27,30 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.archive;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.archive.AutoDriveTime;
+import org.firstinspires.ftc.teamcode.autonomous.AutoSplineRR;
+import org.firstinspires.ftc.teamcode.autonomous.AutoTFParkRR;
+import org.firstinspires.ftc.teamcode.autonomous.AutoTensorFlow;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-@Disabled
-@Autonomous(name="DebugStrafe")
-public class DebugStrafe extends OpMode
-{
 
+@Disabled
+@Autonomous(name="Blue Right 2+ Cones Park", group="Blue Right")
+public class BlueRight2ConeAuto extends OpMode {
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
-    private RobotHardware rh = new RobotHardware();
-    //    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
-    //    private ParallelStack autoStack = new ParallelStack(rh);
+    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
     private SeriesStack autoStack = new SeriesStack(rh);
 
     @Override
@@ -57,14 +58,35 @@ public class DebugStrafe extends OpMode
 
         rh.initialize(this);
 
-        State[] forDriveSequence = {
-                new AutoDriveTime(rh, 2, "left", 0.2),
-                new AutoDriveTime(rh, 2, "forward", 0.2),
-                new AutoDriveTime(rh, 2, "right", 0.2),
-                new AutoDriveTime(rh, 2, "backward", 0.2),
-        };
-        autoStack.createStack(forDriveSequence);
+        ParallelStack tfAndClaw = new ParallelStack(rh);
 
+        State[] tfac = {
+
+//                new AutoClawArm(rh, "open", "down"),
+                new AutoTensorFlow(rh, false),
+        };
+
+        tfAndClaw.createStack(tfac);
+
+        ParallelStack liftAndSpline = new ParallelStack(rh);
+
+        State[] las = {
+
+//                new AutoMoveLift(rh, "high"),
+                new AutoSplineRR(rh, true,-36, -12, Math.toRadians(45), false),
+        };
+
+        tfAndClaw.createStack(las);
+
+        State[] states = {
+
+                tfAndClaw,
+//                new AutoClawArm(rh, "closed", "down"),
+                liftAndSpline,
+                new AutoTFParkRR(rh, "blue", "right", true),
+        };
+
+        autoStack.createStack(states);
         autoStack.init();
 
         // Tell the driver that initialization is complete.
@@ -73,7 +95,8 @@ public class DebugStrafe extends OpMode
 
     @Override
     public void loop() {
-
+        rh.telemetry.addData("autoStack", autoStack.getIsDone());
+        rh.telemetry.addData("sleeve", RobotHardware.getSleeve());
 
         if (!autoStack.getIsDone()) {
             autoStack.update();

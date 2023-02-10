@@ -38,7 +38,7 @@ import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-@Disabled
+//@Disabled
 @Autonomous(name= "Park Auto")
 public class ParkAuto extends OpMode  {
 
