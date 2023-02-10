@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.archive.NewLiftSystem;
 import org.firstinspires.ftc.teamcode.roadrunnerPackages.drive.SampleMecanumDrive;
 
 import java.util.List;

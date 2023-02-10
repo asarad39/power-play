@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.hardware.DriveTrain;
 import org.firstinspires.ftc.teamcode.hardware.LiftControl;
+import org.firstinspires.ftc.teamcode.hardware.NewLiftSystem;
 import org.firstinspires.ftc.teamcode.hardware.ServoControl;
 import org.firstinspires.ftc.teamcode.hardware.TensorFlow;
 import org.firstinspires.ftc.teamcode.roadrunnerPackages.drive.SampleMecanumDrive;
