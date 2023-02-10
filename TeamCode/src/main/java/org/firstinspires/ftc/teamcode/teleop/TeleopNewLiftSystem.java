@@ -20,6 +20,7 @@ public class TeleopNewLiftSystem implements State {
     private boolean canMirror = false;
 
     private boolean armMirror1 = false;
+    private boolean armMirror2 = false;
     private boolean flipMirror = false;
     private boolean endMirror = false;
     private boolean rotateMirror = false;
@@ -43,6 +44,8 @@ public class TeleopNewLiftSystem implements State {
     private double mirrorSeconds = 0;
     double maxLiftSpeed = 0.0;
 
+    private final double stepSize = 0.00007;
+
     public TeleopNewLiftSystem(RobotHardware rh) {
         this.rh = rh;
     }
@@ -65,7 +68,7 @@ public class TeleopNewLiftSystem implements State {
          *      0 = for the front
          *      1 = for the back
          * claw:
-         *      0.28 = closed
+         *      0.27 = closed
          *      0 = open
          **/
 
@@ -79,7 +82,7 @@ public class TeleopNewLiftSystem implements State {
         armPos = 0.48;
         flipPos = 0.5;
         rotatePos = 1;
-        clawPos = 0.28;
+        clawPos = 0.27;
 
 //        rh.setServoPositions(armPos, flipPos, rotatePos, clawPos);
         goHome = 2;
@@ -92,6 +95,7 @@ public class TeleopNewLiftSystem implements State {
 
         armMirror1 = false;
         flipMirror = false;
+        armMirror2 = false;
         rotateMirror = false;
         endMirror = true;
 
@@ -229,13 +233,6 @@ public class TeleopNewLiftSystem implements State {
 
             vertical = true;
 
-//        } else if (rh.gamepad1.dpad_left) {
-//
-//            newLevel = "topStack";
-//
-//            vertical = false;
-//            liftTargetSetBefore = false;
-
         } else {
 
             lastLevel = level;
@@ -249,11 +246,10 @@ public class TeleopNewLiftSystem implements State {
 
         if (rh.gamepad1.right_bumper && canMirror && vertical) {
 
-                endMirror = false;
-//                mirrorSeconds = currentSeconds;
+            endMirror = false;
+            canMirror = false;
 
-                armMirror1 = true;
-                canMirror = false;
+            armMirror1 = true;
         }
     }
 
@@ -372,6 +368,18 @@ public class TeleopNewLiftSystem implements State {
 
             flipMirror = true;
 
+//            double targetPosition = 0.0;
+//
+//            if (liftArmPosition - targetPosition < stepSize) {
+//
+//                flipMirror = true;
+//
+//            } else if (liftArmPosition - targetPosition > 0) {
+//                liftArmPosition -= stepSize;
+//            } else {
+//                liftArmPosition += stepSize;
+//            }
+
         } else if (armMirror1 && mirrored) {
 
             for (double i = 0.48; i <= 1; i += 0.00000002) {
@@ -380,6 +388,14 @@ public class TeleopNewLiftSystem implements State {
             }
 
             flipMirror = true;
+
+        } else if (armMirror2 && mirrored) {
+
+
+
+        } else if (armMirror2 && !mirrored) {
+
+
 
         } else if (vertical) {
 
@@ -516,14 +532,14 @@ public class TeleopNewLiftSystem implements State {
 
         if (vertical) {
 
-            clawPosition = 0.28;
+            clawPosition = 0.27;
 
         } else if (rh.gamepad1.left_bumper) {
 
             if (lastClaw == clawPosition) {
                 if (clawPosition == 0.0) {
 
-                    clawPosition = 0.28;
+                    clawPosition = 0.27;
 
                 } else {
 
