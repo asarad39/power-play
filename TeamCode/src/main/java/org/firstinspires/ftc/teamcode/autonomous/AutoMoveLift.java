@@ -72,7 +72,7 @@ public class AutoMoveLift implements State {
         double home = 0;
         double low = 1460.0 / (19.2 / 3.7);
         double middle = 3310.0 / (19.2 / 3.7);
-        double high = 4975.0 / (19.2 / 3.7);
+        double high = 1020; // 4975.0 / (19.2 / 3.7);
 
         if (goalString.equals("home")) {
             liftPID.setTargetPosition(home);
