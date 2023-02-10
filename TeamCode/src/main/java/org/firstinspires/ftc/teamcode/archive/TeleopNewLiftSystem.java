@@ -65,7 +65,7 @@ public class TeleopNewLiftSystem implements State {
          *      0 = for the front
          *      1 = for the back
          * claw:
-         *      0.23 = closed
+         *      0.30 = closed
          *      0 = open
          **/
 
@@ -79,7 +79,7 @@ public class TeleopNewLiftSystem implements State {
         armPos = 0.48;
         flipPos = 0.5;
         rotatePos = 1;
-        clawPos = 0.23;
+        clawPos = 0.30;
 
 //        rh.setServoPositions(armPos, flipPos, rotatePos, clawPos);
         goHome = 2;
@@ -312,7 +312,7 @@ public class TeleopNewLiftSystem implements State {
     public double getLiftPowerPID(double maxPower) {
 
         double pos = 0;
-        double homePos = -18;
+        double homePos = -30;
 
         if (level.equals("home")) {
 
@@ -413,11 +413,11 @@ public class TeleopNewLiftSystem implements State {
          *      1 = for the back
          */
 
-        double flipPosition = 0.0;
+        double flipPosition = 1.0;
 
         if (flipMirror && !mirrored) {
 
-            for (double i = 0.5; i <= 1; i += 0.0000002) {
+            for (double i = 0.5; i >= 0.0; i -= 0.0000002) {
 
                 flipPosition = i;
             }
@@ -426,7 +426,7 @@ public class TeleopNewLiftSystem implements State {
 
         } else if (flipMirror && mirrored) {
 
-            for (double i = 0.5; i >= 0.0; i -= 0.0000002) {
+            for (double i = 0.5; i <= 1.0; i += 0.0000002) {
 
                 flipPosition = i;
             }
@@ -439,11 +439,11 @@ public class TeleopNewLiftSystem implements State {
 
         } else if (mirrored) {
 
-            flipPosition = 1.0;
+            flipPosition = 0.0;
 
         } else if (!mirrored) {
 
-            flipPosition = 0.0;
+            flipPosition = 1.0;
 
         }
 
@@ -516,14 +516,14 @@ public class TeleopNewLiftSystem implements State {
 
         if (vertical) {
 
-            clawPosition = 0.23;
+            clawPosition = 0.30;
 
         } else if (rh.gamepad1.left_bumper) {
 
             if (lastClaw == clawPosition) {
                 if (clawPosition == 0.0) {
 
-                    clawPosition = 0.23;
+                    clawPosition = 0.30;
 
                 } else {
 

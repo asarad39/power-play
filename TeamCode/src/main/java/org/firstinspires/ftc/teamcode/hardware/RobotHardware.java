@@ -153,8 +153,8 @@ public class RobotHardware {
                                   double rotatePosition,
                                   double clawPosition) {
 // TODO
-//        lift.setServosPositions(armPosition, flipPosition, rotatePosition, clawPosition);
-//        lift.getServoPositions();
+        lift.setServosPositions(armPosition, flipPosition, rotatePosition, clawPosition);
+        lift.getServoPositions();
     }
 
     // --------------------- old lift below

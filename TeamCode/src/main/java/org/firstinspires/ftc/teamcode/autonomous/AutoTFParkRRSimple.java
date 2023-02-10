@@ -19,7 +19,7 @@ public class AutoTFParkRRSimple implements State {
     RobotHardware rh = null;
     Trajectory traj = null;
 
-    private double distance = 0;
+    private double distance = 24;
     private int sleeve = 0;
 
     public AutoTFParkRRSimple(RobotHardware rh) {
