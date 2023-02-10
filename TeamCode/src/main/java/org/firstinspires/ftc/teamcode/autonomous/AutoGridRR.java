@@ -22,22 +22,17 @@ public class AutoGridRR implements State {
     private Pose2d startPose = null;
     private Pose2d endPose = null;
 
-    public AutoGridRR(RobotHardware rh, boolean track, String direction, double distance) {
+    public AutoGridRR(RobotHardware rh, String direction, double distance) {
 
         this.rh = rh;
         this.direction = direction;
         this.distance = distance;
-        this.track = track;
     }
 
     public void init() {
 
         // We may have a delay in our program since we create a new trajectory for each movement
-        if(track) {
-            startPose = rh.getCurrentPose();
-        } else {
-            startPose = new Pose2d();
-        }
+        startPose = rh.getCurrentPose();
 
         rh.sampleMec.setPoseEstimate(startPose);
 

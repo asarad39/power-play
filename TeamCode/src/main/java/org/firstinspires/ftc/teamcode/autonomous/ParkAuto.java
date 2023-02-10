@@ -55,7 +55,7 @@ public class ParkAuto extends OpMode  {
         State[] states = {
 
                 new AutoTensorFlow(rh, false),
-                new AutoGridRR(rh, true, "forward", 24),
+                new AutoGridRR(rh, "forward", 24),
                 new AutoTFParkRRSimple(rh)
 
         };

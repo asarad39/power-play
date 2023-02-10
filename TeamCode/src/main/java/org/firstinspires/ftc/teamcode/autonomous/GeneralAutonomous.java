@@ -74,10 +74,10 @@ public class GeneralAutonomous extends OpMode
         State[] forAutoStack = {
 
                 setUpServos,
-                new AutoGridRR(rh, false, "forward", 12),
+                new AutoGridRR(rh, "forward", 12),
                 new ArmMove(rh, 0.668),
                 new AutoMoveLift(rh, "low"),
-                new AutoGridRR(rh, false, "back", 12),
+                new AutoGridRR(rh, "back", 12),
                 new ArmMove(rh, 1),
         };
 

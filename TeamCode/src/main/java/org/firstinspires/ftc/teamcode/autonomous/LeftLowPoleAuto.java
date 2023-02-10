@@ -33,23 +33,23 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.archive.AutoDriveTime;
+import org.firstinspires.ftc.teamcode.hardware.ArmMove;
+import org.firstinspires.ftc.teamcode.hardware.ClawMove;
+import org.firstinspires.ftc.teamcode.hardware.FlipMove;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.hardware.RotateMove;
 import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 //@Disabled
-@Autonomous(name="Left Pole Autonomous 2022")
-public class LeftPoleAuto extends OpMode
+@Autonomous(name="Left Low Pole Auto")
+public class LeftLowPoleAuto extends OpMode
 {
-
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
-    //    private RobotHardware rh = new RobotHardware(new Pose2d(-66, -36, Math.toRadians(0)));
-    //    private ParallelStack autoStack = new ParallelStack(rh);
     private SeriesStack autoStack = new SeriesStack(rh);
 
     @Override
@@ -57,54 +57,46 @@ public class LeftPoleAuto extends OpMode
 
         rh.initialize(this);
 
-        ParallelStack scanAndOpen = new ParallelStack(rh);
-        State[] forScanAndOpen = {
-//                new AutoTensorFlow(rh, true),
-                new AutoNewClaw(rh,"closed", "down", true),
-        };
-        scanAndOpen.createStack(forScanAndOpen);
+        ParallelStack setUpServos = new ParallelStack(rh);
+        State[] forSetUpServos = {
 
-        SeriesStack driveSequence1 = new SeriesStack(rh);
-        State[] forDriveSequence1 = {
-                new AutoNewClaw(rh,"closed", "up", false),
-                new AutoDriveTime(rh, 1.28, "forward", 0.2),
-                new AutoDriveTime(rh, 3.25, "right", 0.2),
-                new AutoNewClaw(rh,"open", "up", false),
-                new AutoDriveTime(rh, 3.25, "left", 0.2),
+                new ArmMove(rh, 1),
+                new ClawMove(rh, 0.30),
+                new FlipMove(rh, 1),
+                new RotateMove(rh, 0),
         };
-        driveSequence1.createStack(forDriveSequence1);
+        setUpServos.createStack(forSetUpServos);
 
-        ParallelStack driveAndUp1 = new ParallelStack(rh);
-        State[] forDriveAndUp1 = {
-                driveSequence1,
-//                new AutoMoveLift(rh, "low"),
+        ParallelStack driveAndLift1 = new ParallelStack(rh);
+        State[] forDriveAndLift1 = {
+
+                new ArmMove(rh, 0.668),
+                new AutoMoveLift(rh, "low"),
+                new AutoGridRR(rh, "forward", 4),
 
         };
-        driveAndUp1.createStack(forDriveAndUp1);
+        driveAndLift1.createStack(forDriveAndLift1);
 
-        SeriesStack driveSequence2 = new SeriesStack(rh);
-        State[] forDriveSequence2 = {
-                new AutoNewClaw(rh,"open", "down", false),
-                new AutoDriveTime(rh, 3.1, "forward", 0.2),
-                new AutoTFParkNoRR(rh)
-        };
-        driveSequence2.createStack(forDriveSequence2);
+        ParallelStack driveAndLift2 = new ParallelStack(rh);
+        State[] forDriveAndLift2 = {
 
-        ParallelStack driveAndUp2 = new ParallelStack(rh);
-        State[] forDriveAndUp2 = {
-                driveSequence2,
-//                new AutoMoveLift(rh, "home"),
+                new ArmMove(rh, 1.0),
+                new AutoMoveLift(rh, "home"),
+                new AutoGridRR(rh, "forward", 24),
 
         };
-        driveAndUp2.createStack(forDriveAndUp2);
-
+        driveAndLift2.createStack(forDriveAndLift2);
 
         State[] forAutoStack = {
 
                 new AutoTensorFlow(rh, true),
-                scanAndOpen,
-                driveAndUp1,
-                driveAndUp2,
+                setUpServos,
+                driveAndLift1,
+                new AutoGridRR(rh, "right", 12),
+                new ClawMove(rh, 0.0),
+                new AutoGridRR(rh, "left", 12),
+                driveAndLift2,
+                new AutoTFParkRRSimple(rh),
         };
 
         autoStack.createStack(forAutoStack);
