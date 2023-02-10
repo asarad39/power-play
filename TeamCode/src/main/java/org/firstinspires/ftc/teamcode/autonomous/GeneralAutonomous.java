@@ -36,7 +36,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.archive.AutoDriveTime;
 import org.firstinspires.ftc.teamcode.hardware.ArmMove;
+import org.firstinspires.ftc.teamcode.hardware.ClawMove;
+import org.firstinspires.ftc.teamcode.hardware.FlipMove;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
+import org.firstinspires.ftc.teamcode.hardware.RotateMove;
 import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
@@ -57,12 +60,25 @@ public class GeneralAutonomous extends OpMode
 
         rh.initialize(this);
 
+        ParallelStack setUpServos = new ParallelStack(rh);
+        State[] forsetUpServos = {
+
+                new ArmMove(rh, 1),
+                new ClawMove(rh, 0.30),
+                new FlipMove(rh, 1),
+                new RotateMove(rh, 0),
+
+        };
+        setUpServos.createStack(forsetUpServos);
+
         State[] forAutoStack = {
 
+                setUpServos,
                 new AutoGridRR(rh, false, "forward", 12),
                 new ArmMove(rh, 0.668),
+                new AutoMoveLift(rh, "low"),
                 new AutoGridRR(rh, false, "back", 12),
-                new ArmMove(rh, 0.668),
+                new ArmMove(rh, 1),
         };
 
         autoStack.createStack(forAutoStack);
