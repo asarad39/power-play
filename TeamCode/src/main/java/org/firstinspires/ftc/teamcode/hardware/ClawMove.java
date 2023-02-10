@@ -6,6 +6,7 @@ public class ClawMove implements State {
 
     RobotHardware rh = null;
     private double target = 1.0;
+    private boolean setStart = false;
 
     /**
      * Servo positions:
@@ -20,6 +21,12 @@ public class ClawMove implements State {
         this.target = target;
     }
 
+    public ClawMove(RobotHardware rh, double target, boolean setStart) {
+        this.rh = rh;
+        this.target = target;
+        this.setStart = setStart;
+    }
+
     @Override
     public void update() {
         rh.armNew.claw.move();
@@ -28,6 +35,9 @@ public class ClawMove implements State {
     @Override
     public void init() {
         rh.armNew.claw.setTargetPosition(target);
+        if (setStart) {
+            rh.armNew.claw.setCurrentPosition(target + 0.01);
+        }
     }
 
     @Override

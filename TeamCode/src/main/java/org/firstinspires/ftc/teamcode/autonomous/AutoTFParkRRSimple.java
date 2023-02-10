@@ -17,10 +17,14 @@ public class AutoTFParkRRSimple implements State {
      */
 
     RobotHardware rh = null;
-    Trajectory traj = null;
+    Trajectory traj2 = null;
+
+    private Pose2d startPose = null;
 
     private double distance = 24;
     private int sleeve = 0;
+
+    boolean endEarly = false;
 
     public AutoTFParkRRSimple(RobotHardware rh) {
 
@@ -30,45 +34,47 @@ public class AutoTFParkRRSimple implements State {
     public void init() {
 
         sleeve = RobotHardware.getSleeve();
-        Pose2d startPose = new Pose2d();
+
+        startPose = rh.getCurrentPose();
+
+        rh.sampleMec.setPoseEstimate(startPose);
+
 
         if (sleeve == 3) {
 
-            traj = rh.sampleMec.trajectoryBuilder(startPose)
-                    .strafeLeft(distance)
-                    .build();
-
-        } else if (sleeve == 2) {
-
-            traj = rh.sampleMec.trajectoryBuilder(startPose)
-                    .forward(0)
+            traj2 = rh.sampleMec.trajectoryBuilder(startPose)
+                    .strafeRight(distance)
                     .build();
 
         } else if (sleeve == 1) {
 
-            traj = rh.sampleMec.trajectoryBuilder(startPose)
-                    .strafeRight(distance)
+            traj2 = rh.sampleMec.trajectoryBuilder(startPose)
+                    .strafeLeft(distance)
                     .build();
 
         } else {
 
-            traj = rh.sampleMec.trajectoryBuilder(startPose)
-                    .forward(0)
-                    .build();
+            endEarly = true;
 
         }
 
-        rh.sampleMec.followTrajectoryAsync(traj);
+        if(!endEarly) {
+
+            rh.sampleMec.followTrajectoryAsync(traj2);
+        }
     }
 
     public void update() {
 
-        rh.sampleMec.update();
+        if(!endEarly) {
+
+            rh.sampleMec.update();
+        }
     }
 
     public boolean getIsDone() {
 
         // Updates the robot's current position to that created by the trajectory
-        return !rh.sampleMec.isBusy();
+        return !rh.sampleMec.isBusy() || endEarly;
     }
 }

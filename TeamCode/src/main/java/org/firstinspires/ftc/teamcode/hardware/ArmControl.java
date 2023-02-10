@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
+import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 public class ArmControl {
 
@@ -58,7 +59,7 @@ public class ArmControl {
         tiny.initialize(op);
 
         armStack = new SeriesStack(rh);
-        currentIndex = 5;
+        currentIndex = 1;
         setPosition(0);
     }
 
@@ -115,23 +116,25 @@ public class ArmControl {
         if (armStack.size() > 0) {
             armStack.update();
         }
+
+        telemetry.addData("Current Arm Index", currentIndex);
+        telemetry.addData("Current Arm Position", positions[currentIndex]);
+        telemetry.addData("Goal Arm Position", armPositions[currentIndex]);
+        telemetry.addData("Arm position", arm.getCurrentPosition());
+        telemetry.addData("Claw position", claw.getCurrentPosition());
+        telemetry.addData("Flip position", flip.getCurrentPosition());
+        telemetry.addData("Rotate position", rotate.getCurrentPosition());
+        telemetry.addData("Tiny position", tiny.getCurrentPosition());
+
+        telemetry.addData("Stack", armStack.size());
     }
 
     private boolean clawClosed = false;
     private boolean canClaw = true;
 
     public void moveClaw(boolean changeClaw) {
-        if (changeClaw) {
-
-            if (canClaw) {
-
-                clawClosed = !clawClosed;
-                canClaw = false;
-
-            }
-
-        } else {
-            canClaw = true;
+        if (changeClaw && !claw.isMoving()) {
+            clawClosed = !clawClosed;
         }
     }
 

@@ -6,6 +6,7 @@ public class ArmMove implements State {
 
     RobotHardware rh = null;
     private double target;
+    private boolean setStart = false;
 
     /**
      * Servo positions:
@@ -22,6 +23,12 @@ public class ArmMove implements State {
         this.target = target;
     }
 
+    public ArmMove(RobotHardware rh, double target, boolean setStart) {
+        this.rh = rh;
+        this.target = target;
+        this.setStart = setStart;
+    }
+
     @Override
     public void update() {
         rh.armNew.arm.move();
@@ -30,6 +37,9 @@ public class ArmMove implements State {
     @Override
     public void init() {
         rh.armNew.arm.setTargetPosition(target);
+        if (setStart) {
+            rh.armNew.arm.setCurrentPosition(target + 0.01);
+        }
     }
 
     @Override

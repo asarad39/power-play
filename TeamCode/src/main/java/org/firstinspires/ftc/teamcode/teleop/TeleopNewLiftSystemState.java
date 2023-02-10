@@ -85,9 +85,9 @@ public class TeleopNewLiftSystemState implements State {
         goHome = 2;
         level = "home";
         lastLevel = "home";
-        vertical = true;
+        vertical = false;
 
-        mirrored = false;
+        mirrored = true;
 
         canMirror = true;
         armMirror2 = false;
@@ -168,7 +168,6 @@ public class TeleopNewLiftSystemState implements State {
         rh.telemetry.addData("Claw Servo Pos", rh.getClawPos());
     }
 
-
     private String getLevel() {
 
         String newLevel = this.level;
@@ -179,7 +178,7 @@ public class TeleopNewLiftSystemState implements State {
 
             if(lastLevel.equals("home")) {
 
-                newLevel = "low";
+                newLevel = "high";
 
             } else if(lastLevel.equals("low")) {
 
@@ -190,6 +189,12 @@ public class TeleopNewLiftSystemState implements State {
                 newLevel = "high";
 
             }
+
+//            else if(lastLevel.equals("high")) {
+//
+//                newLevel = "home";
+//
+//            }
 
             vertical = false;
             liftTargetSetBefore = false;
@@ -211,6 +216,12 @@ public class TeleopNewLiftSystemState implements State {
                 newLevel = "middle";
 
             }
+
+//            else if(lastLevel.equals("home")) {
+//
+//                newLevel = "high";
+//
+//            }
 
             vertical = false;
             liftTargetSetBefore = false;
@@ -252,7 +263,8 @@ public class TeleopNewLiftSystemState implements State {
             endMirror = false;
             canMirror = false;
             armMirror2 = true;
-        } else if (rh.gamepad1.left_stick_button && canMirror && level.equals("high")) {
+
+        } else if (rh.gamepad1.left_stick_button && canMirror && !level.equals("home")) {
 
             endMirror = false;
             canMirror = false;
@@ -263,7 +275,7 @@ public class TeleopNewLiftSystemState implements State {
 
     public void adjustLiftHeight() {
 
-        double adjustmentSize = 5;
+        double adjustmentSize = 10;
 
         if (rh.gamepad1.dpad_up) {
 
@@ -277,7 +289,7 @@ public class TeleopNewLiftSystemState implements State {
 
     public void jumpLiftHeight() {
 
-        double adjustmentSize = 900.0 / (19.2 / 3.7);;
+        double adjustmentSize = 900.0 / (19.2 / 3.7) + 15;
 
         double clawPosition = rh.getClawPos();
 
@@ -296,7 +308,7 @@ public class TeleopNewLiftSystemState implements State {
     }
 
     public double getLiftPowerLogistic(double maxPower, double targetPosition) {
-        return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoderLeft(), targetPosition, .015);
+        return Mathematics.getLogisticCurve(maxPower, rh.getLiftEncoderLeft(), targetPosition, .017);
     }
 
     public double getLiftPowerPID(double maxPower) {
@@ -310,7 +322,7 @@ public class TeleopNewLiftSystemState implements State {
 
         } else if (level.equals("low")) {
 
-            pos = 1460.0 / (19.2 / 3.7);
+            pos = 240; // 1460.0 / (19.2 / 3.7);
 
         } else if (level.equals("middle")) {
 
@@ -502,7 +514,7 @@ public class TeleopNewLiftSystemState implements State {
                 liftTargetSetBefore = false;
                 level = "high";
 
-            } else if (level.equals("high") && downHome) {
+            } else if (downHome) {
 
                 liftTargetSetBefore = false;
                 level = "home";
@@ -526,7 +538,7 @@ public class TeleopNewLiftSystemState implements State {
             if (level.equals("home")) {
                 liftTargetSetBefore = false;
                 level = "high";
-            } else if (level.equals("high") && downHome) {
+            } else if (downHome) {
 
                 liftTargetSetBefore = false;
                 level = "home";

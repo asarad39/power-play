@@ -38,6 +38,7 @@ import org.firstinspires.ftc.teamcode.hardware.LiftControl;
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
 
 // Teleop program that uses TeleopMove state to drive using robot controller
+
 @Disabled
 @TeleOp(name="Arm System Test Teleop")
 public class ArmSystemTestTeleop extends OpMode
@@ -71,11 +72,11 @@ public class ArmSystemTestTeleop extends OpMode
             rh.armNew.setPosition(5);
         }
 
-        if (gamepad1.dpad_down) {
-            rh.liftNew.adjustOffset(-2);
-        } else if (gamepad1.dpad_up) {
-            rh.liftNew.adjustOffset(2);
-        }
+//        if (gamepad1.dpad_down) {
+//            rh.liftNew.adjustOffset(-2);
+//        } else if (gamepad1.dpad_up) {
+//            rh.liftNew.adjustOffset(2);
+//        }
 
         rh.armNew.moveClaw(gamepad1.left_bumper);
 

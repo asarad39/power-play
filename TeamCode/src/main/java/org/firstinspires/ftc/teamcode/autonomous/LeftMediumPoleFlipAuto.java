@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -14,9 +13,9 @@ import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-@Disabled
-@Autonomous(name="Left Medium Pole Auto")
-public class LeftMediumPoleAuto extends OpMode
+//@Disabled
+@Autonomous(name="Left Medium Pole FLIP Auto")
+public class LeftMediumPoleFlipAuto extends OpMode
 {
 
     // Declare OpMode members
@@ -53,10 +52,21 @@ public class LeftMediumPoleAuto extends OpMode
         };
         driveAndLift1.createStack(forDriveAndLift1);
 
+        SeriesStack flipSides = new SeriesStack(rh);
+        State[] forFlipSides = {
+                new ClawMove(rh, 0.3),
+                new ArmMove(rh, 0.48),
+                new FlipMove(rh, 0.5),
+                new RotateMove(rh, 1),
+                new FlipMove(rh, 0),
+                new ArmMove(rh, 0),
+        };
+        flipSides.createStack(forFlipSides);
+
         ParallelStack driveAndLift2 = new ParallelStack(rh);
         State[] forDriveAndLift2 = {
 
-                new ArmMove(rh, 0.48),
+                flipSides,
                 new AutoMoveLift(rh, "home"),
 //                new AutoGridRR(rh, "forward", 24),
 

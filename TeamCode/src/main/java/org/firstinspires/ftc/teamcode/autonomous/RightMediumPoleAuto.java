@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -13,7 +14,7 @@ import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-//@Disabled
+@Disabled
 @Autonomous(name="Right Medium Pole Auto")
 public class RightMediumPoleAuto extends OpMode
 {
@@ -31,19 +32,23 @@ public class RightMediumPoleAuto extends OpMode
         ParallelStack setUpServos = new ParallelStack(rh);
         State[] forSetUpServos = {
 
-                new ArmMove(rh, 1),
-                new ClawMove(rh, 0.30),
-                new FlipMove(rh, 1),
-                new RotateMove(rh, 0),
+                new ArmMove(rh, 1, true),
+                new ClawMove(rh, 0.30, true),
+                new FlipMove(rh, 1, true),
+                new RotateMove(rh, 0, true),
         };
         setUpServos.createStack(forSetUpServos);
+
+        //        // TODO: test if we can move servos on init
+        setUpServos.init();
+        setUpServos.update();
 
         ParallelStack driveAndLift1 = new ParallelStack(rh);
         State[] forDriveAndLift1 = {
 
                 new ArmMove(rh, 0.668),
-                new AutoMoveLift(rh, "low"),
-                new AutoGridRR(rh, "forward", 4 + 24),
+                new AutoMoveLift(rh, "middle"),
+                new AutoGridRR(rh, "forward", 6.5 + 24),
 
         };
         driveAndLift1.createStack(forDriveAndLift1);
@@ -51,7 +56,7 @@ public class RightMediumPoleAuto extends OpMode
         ParallelStack driveAndLift2 = new ParallelStack(rh);
         State[] forDriveAndLift2 = {
 
-                new ArmMove(rh, 1.0),
+                new ArmMove(rh, 0.48),
                 new AutoMoveLift(rh, "home"),
 //                new AutoGridRR(rh, "forward", 24),
 
@@ -61,7 +66,7 @@ public class RightMediumPoleAuto extends OpMode
         State[] forAutoStack = {
 
                 new AutoTensorFlow(rh, true),
-                setUpServos,
+//                setUpServos,
                 driveAndLift1,
                 new AutoGridRR(rh, "left", 12),
                 new ClawMove(rh, 0.0),

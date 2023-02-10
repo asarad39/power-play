@@ -27,25 +27,28 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.autonomous;
+package org.firstinspires.ftc.teamcode.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.hardware.RobotHardware;
-import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
+import org.firstinspires.ftc.teamcode.stateStructure.ParallelStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-//@Disabled
-@Autonomous(name= "Park Auto")
-public class ParkAuto extends OpMode  {
+// Teleop program that uses TeleopMove state to drive using robot controller
+
+@Disabled
+@TeleOp(name="Test Teleop for new Systems")
+public class TestTeleopNewSystem extends OpMode
+{
 
     // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
-    private SeriesStack autoStack = new SeriesStack(rh);
+    private ParallelStack teleStack = new ParallelStack(rh);
 
     @Override
     public void init() {
@@ -54,26 +57,38 @@ public class ParkAuto extends OpMode  {
 
         State[] states = {
 
-                new AutoTensorFlow(rh, true),
-                new AutoGridRR(rh, "forward", 26), // 24),
-                new AutoTFParkRRSimple(rh)
+//                new TeleopArmControl(rh),
+                new TeleopLiftControl(rh),
 
         };
 
-        autoStack.createStack(states);
-        autoStack.init();
+        teleStack.createStack(states);
+        teleStack.init();
 
-        // Tell the driver that initialization is complete.
         rh.telemetry.addData("Status", "Initialized");
     }
 
     @Override
     public void loop() {
-        rh.telemetry.addData("autoStack", autoStack.getIsDone());
-        rh.telemetry.addData("sleeve", RobotHardware.getSleeve());
 
-        if (!autoStack.getIsDone()) {
-            autoStack.update();
+        rh.telemetry.addData("teleStack", teleStack.getIsDone());
+
+        if (!teleStack.getIsDone()) {
+            teleStack.update();
         }
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void stop() {
+    }
+    @Override
+    public void init_loop() {
+    }
+    @Override
+    public void start() {
+        runtime.reset();
     }
 }

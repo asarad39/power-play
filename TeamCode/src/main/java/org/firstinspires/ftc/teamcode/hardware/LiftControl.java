@@ -141,11 +141,11 @@ public class LiftControl {
         return posIndex;
     }
 
-    public static enum Positions {
-        UP,
-        DOWN
-    }
     // liftcontrol.adjustPosition(LiftControl.Positions.UP)
+    public static enum Positions {
+        DOWN,
+        UP,
+    }
 
     public void adjustPosition(Positions p) {
 

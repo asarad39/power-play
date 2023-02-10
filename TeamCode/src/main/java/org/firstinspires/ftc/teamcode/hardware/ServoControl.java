@@ -74,6 +74,10 @@ public class ServoControl {
         targetPosition = target;
     }
 
+    public void setCurrentPosition(double position) {
+        currentPosition = position;
+    }
+
     public boolean isMoving() {
         return (currentPosition != targetPosition);
     }
