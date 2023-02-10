@@ -40,8 +40,8 @@ import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 //@Disabled
-@Autonomous(name="Right Pole Autonomous 2022")
-public class RightPoleAutonomous extends OpMode
+@Autonomous(name="Left Pole Autonomous 2022")
+public class LeftPoleAuto extends OpMode
 {
 
 
@@ -68,9 +68,9 @@ public class RightPoleAutonomous extends OpMode
         State[] forDriveSequence1 = {
                 new AutoNewClaw(rh,"closed", "up", false),
                 new AutoDriveTime(rh, 1.28, "forward", 0.2),
-                new AutoDriveTime(rh, 3.33, "left", 0.2),
+                new AutoDriveTime(rh, 3.25, "right", 0.2),
                 new AutoNewClaw(rh,"open", "up", false),
-                new AutoDriveTime(rh, 3.33, "right", 0.2),
+                new AutoDriveTime(rh, 3.25, "left", 0.2),
         };
         driveSequence1.createStack(forDriveSequence1);
 

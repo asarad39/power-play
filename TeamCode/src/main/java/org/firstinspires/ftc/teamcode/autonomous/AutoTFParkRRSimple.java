@@ -69,7 +69,6 @@ public class AutoTFParkRRSimple implements State {
     public boolean getIsDone() {
 
         // Updates the robot's current position to that created by the trajectory
-
         return !rh.sampleMec.isBusy();
     }
 }
