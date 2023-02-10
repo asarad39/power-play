@@ -2,19 +2,20 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import org.firstinspires.ftc.teamcode.stateStructure.State;
 
-public class RotateMove implements State {
+public class FlipMove implements State {
 
     RobotHardware rh = null;
     private double target = 1.0;
 
     /**
      * Servo positions:
-     * rotate:
-     *      0 = for the front
-     *      1 = for the back
+     * flip:
+     *      1 = for the front
+     *      0.5 = vertical
+     *      0 = for the back
      **/
 
-    public RotateMove(RobotHardware rh, double target) {
+    public FlipMove(RobotHardware rh, double target) {
         this.rh = rh;
 
         this.target = target;
@@ -22,16 +23,16 @@ public class RotateMove implements State {
 
     @Override
     public void update() {
-        rh.armNew.rotate.move();
+        rh.armNew.flip.move();
     }
 
     @Override
     public void init() {
-        rh.armNew.rotate.setTargetPosition(target);
+        rh.armNew.flip.setTargetPosition(target);
     }
 
     @Override
     public boolean getIsDone() {
-        return !(rh.armNew.rotate.isMoving());
+        return !(rh.armNew.flip.isMoving());
     }
 }

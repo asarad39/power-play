@@ -76,7 +76,7 @@ public class ArmControl {
             if ((currentIndex <= 2) == (targetIndex >= 3)) {
 
                 armStack.stack.add(new ArmMove(rh, armPositions[2]));
-                armStack.stack.add(new ClawMove(rh, 0.5));
+                armStack.stack.add(new FlipMove(rh, 0.5));
 
 
                 ParallelStack armParallel = new ParallelStack(rh);
@@ -84,7 +84,7 @@ public class ArmControl {
                 double target = (targetIndex / 3);
 
                 armParallel.stack.add(new RotateMove(rh, target));
-                armParallel.stack.add(new ClawMove(rh, 1 - target));
+                armParallel.stack.add(new FlipMove(rh, 1 - target));
                 armParallel.stack.add(new ArmMove(rh, armPositions[targetIndex]));
 
                 armStack.stack.add(armParallel);

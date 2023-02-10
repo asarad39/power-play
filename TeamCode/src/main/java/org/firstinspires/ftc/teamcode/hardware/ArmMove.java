@@ -7,22 +7,15 @@ public class ArmMove implements State {
     RobotHardware rh = null;
     private double target;
 
-//    double[] armPositions = {
-//            1,
-//            0.668,
-//            0.48,
-//            0.48,
-//            0.282,
-//            0,
-//    };
-//    private final String[] positions = {
-//            "front down",
-//            "front up",
-//            "front vertical",
-//            "back vertical",
-//            "back up",
-//            "back down",
-//    };
+    /**
+     * Servo positions:
+     * arm:
+     *      0 = down back
+     *      0.282 = lifted (back)
+     *      0.48 = vertical (transition)
+     *      0.668 = lifted (front)
+     *      1 = down front
+     **/
 
     public ArmMove(RobotHardware rh, double target) {
         this.rh = rh;

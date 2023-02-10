@@ -58,9 +58,9 @@ public class TeleopNewLiftSystem implements State {
          *      0.668 = lifted (front)
          *      1 = down front
          * flip:
-         *      0 = for the front
+         *      1 = for the front
          *      0.5 = vertical
-         *      1 = for the back
+         *      0 = for the back
          * rotate:
          *      0 = for the front
          *      1 = for the back
