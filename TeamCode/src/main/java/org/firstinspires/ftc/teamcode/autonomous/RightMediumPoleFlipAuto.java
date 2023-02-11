@@ -79,9 +79,9 @@ public class RightMediumPoleFlipAuto extends OpMode
                 new AutoTensorFlow(rh, true),
 //                setUpServos,
                 driveAndLift1,
-                new AutoGridRR(rh, "left", 12),
+                new AutoGridRR(rh, "left", 12 + 1),
                 new ClawMove(rh, 0.0),
-                new AutoGridRR(rh, "right", 12),
+                new AutoGridRR(rh, "right", 12 + 1),
                 driveAndLift2,
                 new AutoTFParkRRSimple(rh),
         };
