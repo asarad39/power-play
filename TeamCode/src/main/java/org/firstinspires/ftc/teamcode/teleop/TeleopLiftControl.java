@@ -49,6 +49,11 @@ public class TeleopLiftControl implements State {
             rh.liftNew.setPositionsIndex(0);
         }
 
+        // high
+        if (rh.gamepad1.left_stick_button) {
+            rh.liftNew.setPositionsIndex(3);
+        }
+
         // jumping
         if (rh.gamepad1.dpad_right) {
             if (canJump) {

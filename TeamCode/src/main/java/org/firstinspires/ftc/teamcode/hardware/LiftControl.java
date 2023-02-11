@@ -165,20 +165,16 @@ public class LiftControl {
         posIndex = (posIndex + d + positions.length) % positions.length;
         telemetry.addData("adjusting", d);
         offset = 0;
-        this.setPosition();
     }
 
     public void adjustOffset(int o) {
         offset += o;
-
-        this.setPosition();
     }
 
     public void setPositionsIndex(int index) {
 
         posIndex = index;
         offset = 0;
-        this.setPosition();
     }
 
 
