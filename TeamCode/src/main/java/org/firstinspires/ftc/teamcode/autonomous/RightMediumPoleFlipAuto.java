@@ -60,6 +60,7 @@ public class RightMediumPoleFlipAuto extends OpMode
                 new RotateMove(rh, 1),
                 new FlipMove(rh, 0),
                 new ArmMove(rh, 0),
+                new ClawMove(rh, 0),
         };
         flipSides.createStack(forFlipSides);
 
