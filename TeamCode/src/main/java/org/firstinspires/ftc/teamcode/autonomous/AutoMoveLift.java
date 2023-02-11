@@ -15,6 +15,8 @@ public class AutoMoveLift implements State {
 
     private double startTime;
     private String goalString;
+    private boolean halveSpeed = false;
+    private double maxLiftSpeed = 0.8;
 
     private boolean isDone = false;
 
@@ -23,11 +25,18 @@ public class AutoMoveLift implements State {
         this.goalString = goalString;
     }
 
+    public AutoMoveLift(RobotHardware rh, String goalString, boolean halveSpeed) {
+        this.rh = rh;
+        this.goalString = goalString;
+        this.halveSpeed = true;
+    }
+
     public void init() {
         startTime = rh.time.seconds();
-        double maxLiftSpeed = 0.8;
 
-        double liftSpeed = getLiftPowerPID(goalString, maxLiftSpeed);
+        if (halveSpeed) {
+            maxLiftSpeed /= 2;
+        }
     }
 
     public boolean getIsDone() {
@@ -43,9 +52,6 @@ public class AutoMoveLift implements State {
     }
 
     public void update() {
-
-        // set lift movement speed
-        double maxLiftSpeed = 0.8;
 
         double liftSpeed = getLiftPowerPID(goalString, maxLiftSpeed);
         rh.setLiftTarget(liftPID.getTargetPosition());
@@ -69,7 +75,7 @@ public class AutoMoveLift implements State {
 
     public double getLiftPowerPID(String goalString, double maxPower) {
 
-        double home = 0;
+        double home = -30;
         double low = 240; // 1460.0 / (19.2 / 3.7);
         double middle = 3310.0 / (19.2 / 3.7);
         double high = 1020; // 4975.0 / (19.2 / 3.7);

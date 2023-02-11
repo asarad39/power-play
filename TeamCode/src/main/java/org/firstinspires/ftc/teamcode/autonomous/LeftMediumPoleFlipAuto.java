@@ -47,7 +47,7 @@ public class LeftMediumPoleFlipAuto extends OpMode
 
                 new ArmMove(rh, 0.668),
                 new AutoMoveLift(rh, "middle"),
-                new AutoGridRR(rh, "forward", 6.5 + 24),
+                new AutoGridRR(rh, "forward", 7.5 + 24),
 
         };
         driveAndLift1.createStack(forDriveAndLift1);
@@ -67,7 +67,7 @@ public class LeftMediumPoleFlipAuto extends OpMode
         State[] forDriveAndLift2 = {
 
                 flipSides,
-                new AutoMoveLift(rh, "home"),
+                new AutoMoveLift(rh, "home", true),
 //                new AutoGridRR(rh, "forward", 24),
 
         };

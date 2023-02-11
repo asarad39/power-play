@@ -322,7 +322,7 @@ public class TeleopNewLiftSystemState implements State {
 
         } else if (level.equals("low")) {
 
-            pos = 240; // 1460.0 / (19.2 / 3.7);
+            pos = 220; // 1460.0 / (19.2 / 3.7);
 
         } else if (level.equals("middle")) {
 
@@ -330,7 +330,7 @@ public class TeleopNewLiftSystemState implements State {
 
         } else if (level.equals("high")) {
 
-            pos = 1020; // 4975.0 / (19.2 / 3.7);
+            pos = 1010; // 4975.0 / (19.2 / 3.7);
 
         } else if (level.equals("topStack")) {
 
