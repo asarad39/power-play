@@ -59,7 +59,8 @@ public class ArmControl {
         tiny.initialize(op);
 
         armStack = new SeriesStack(rh);
-        currentIndex = 1;
+        currentIndex = 3;
+
         setPosition(0);
     }
 
@@ -71,35 +72,33 @@ public class ArmControl {
 
     public void setPosition(int targetIndex) {
 
+        // check if the arm will pass vertical
+        if ((currentIndex <= 2) == (targetIndex >= 3)) {
 
-        if (!isMoving()) {
-            // check if the arm will pass vertical
-            if ((currentIndex <= 2) == (targetIndex >= 3)) {
-
-                armStack.stack.add(new ArmMove(rh, armPositions[2]));
-                armStack.stack.add(new FlipMove(rh, 0.5));
+            armStack.stack.add(new ArmMove(rh, armPositions[2]));
+            armStack.stack.add(new FlipMove(rh, 0.5));
 
 
-                ParallelStack armParallel = new ParallelStack(rh);
+            ParallelStack armParallel = new ParallelStack(rh);
 
-                double target = (targetIndex / 3);
+            double target = (targetIndex / 3);
 
-                armParallel.stack.add(new RotateMove(rh, target));
-                armParallel.stack.add(new FlipMove(rh, 1 - target));
-                armParallel.stack.add(new ArmMove(rh, armPositions[targetIndex]));
+            armParallel.stack.add(new RotateMove(rh, target));
+            armParallel.stack.add(new FlipMove(rh, 1 - target));
+            armParallel.stack.add(new ArmMove(rh, armPositions[targetIndex]));
 
-                armStack.stack.add(armParallel);
+            armStack.stack.add(armParallel);
 
-            } else {
+        } else {
 
-                armStack.stack.add(new ArmMove(rh, armPositions[targetIndex]));
+            armStack.stack.add(new ArmMove(rh, armPositions[targetIndex]));
 
-            }
-
-            armStack.init();
-
-            currentIndex = targetIndex;
         }
+
+        armStack.init();
+
+        currentIndex = targetIndex;
+
 
     }
 
@@ -110,6 +109,10 @@ public class ArmControl {
             }
         }
         return -1;
+    }
+
+    public int getIndex() {
+        return currentIndex;
     }
 
     public void armUpdate() {
@@ -132,13 +135,13 @@ public class ArmControl {
     private boolean clawClosed = false;
     private boolean canClaw = true;
 
-    public void moveClaw(boolean changeClaw) {
-        if (changeClaw && !claw.isMoving()) {
-            clawClosed = !clawClosed;
-        }
+    public void moveClaw() {
+        clawClosed = !clawClosed;
     }
 
     public void clawUpdate() {
+        telemetry.addData("clawClosed", clawClosed);
+        telemetry.addData("claw.isMoving", claw.isMoving());
         if (clawClosed || isMoving()) {
             claw.setTargetPosition(0.23);
         } else {

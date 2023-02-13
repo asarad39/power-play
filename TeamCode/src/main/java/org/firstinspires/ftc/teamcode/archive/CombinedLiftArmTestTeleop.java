@@ -185,7 +185,7 @@ public class CombinedLiftArmTestTeleop extends OpMode
             canJump = true;
         }
 
-        rh.armNew.moveClaw(gamepad1.right_bumper);
+//        rh.armNew.moveClaw(gamepad1.right_bumper);
         rh.armNew.clawUpdate();
         rh.liftNew.setPosition();
     }

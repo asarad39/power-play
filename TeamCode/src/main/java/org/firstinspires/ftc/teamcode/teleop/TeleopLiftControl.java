@@ -30,28 +30,32 @@ public class TeleopLiftControl implements State {
                 rh.liftNew.adjustPosition(LiftControl.Positions.UP);
                 canUP = false;
             }
+            rh.telemetry.addLine("pressing y");
         } else {
             canUP = true;
         }
 
         // go down 1
         if (rh.gamepad1.b) {
-            if (canDOWN) {
-                rh.liftNew.adjustPosition(LiftControl.Positions.UP);
-                canDOWN = false;
+//            if (canDOWN) {
+                rh.liftNew.adjustPosition(LiftControl.Positions.DOWN);
+//                canDOWN = false;
             }
-        } else {
-            canDOWN = true;
-        }
+//            rh.telemetry.addLine("pressing b");
+//        } else {
+//            canDOWN = true;
+//        }
 
         // collect
         if (rh.gamepad1.a) {
             rh.liftNew.setPositionsIndex(0);
+            rh.telemetry.addLine("pressing a");
         }
 
         // high
         if (rh.gamepad1.left_stick_button) {
             rh.liftNew.setPositionsIndex(3);
+            rh.telemetry.addLine("pressing left stick");
         }
 
         // jumping
@@ -60,6 +64,7 @@ public class TeleopLiftControl implements State {
                 rh.liftNew.adjustOffset(100);
                 canJump = false;
             }
+            rh.telemetry.addLine("pressing dpad right");
         } else {
             canJump = true;
         }
@@ -68,11 +73,17 @@ public class TeleopLiftControl implements State {
         // adjust lift height
         if (rh.gamepad1.dpad_down) {
             rh.liftNew.adjustOffset(-offsetSize);
+            rh.telemetry.addLine("pressing dpad down");
         } else if (rh.gamepad1.dpad_up) {
             rh.liftNew.adjustOffset(offsetSize);
+            rh.telemetry.addLine("pressing dpad up");
         }
 
-        rh.liftNew.setPosition();
+        if (rh.liftNew.getLiftLevel() + rh.liftNew.getOffset() == rh.liftNew.getLiftPosition()) {
+            rh.liftNew.setPosition();
+        }
+
+        rh.liftNew.liftUpdate();
     }
 
     @Override

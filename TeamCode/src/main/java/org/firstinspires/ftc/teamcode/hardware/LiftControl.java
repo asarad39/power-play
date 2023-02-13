@@ -44,8 +44,7 @@ public class LiftControl {
     int posIndex;
     int offset;
     private Telemetry telemetry;
-
-    boolean canLift = true;
+    int liftPosition;
 
     public void initialize(OpMode op, RobotHardware rh) {
         // Get telemetry object from opMode for debugging
@@ -54,6 +53,8 @@ public class LiftControl {
 
         posIndex = 0;
         offset = 0;
+        liftPosition = 0;
+
         // get DcMotors
         // set encoders
         left = op.hardwareMap.get(DcMotor.class, "liftMotorLeft");
@@ -117,8 +118,12 @@ public class LiftControl {
                 resetEncoders();
                 homing = false;
             }
-
         }
+
+        liftPosition = newPosition;
+    }
+
+    public void liftUpdate() {
 
 //        double power = Mathematics.getLogisticCurve(maxPower, left.getCurrentPosition(), newPosition, .015);
         double power = 0.2;
@@ -127,18 +132,30 @@ public class LiftControl {
         right.setPower(power);
 
         telemetry.addData("posIndex", posIndex);
-        telemetry.addData("final goal position", newPosition);
+        telemetry.addData("final goal position", liftPosition);
         telemetry.addData("clicks", left.getCurrentPosition());
 
         telemetry.addData("touching", getTouch());
         telemetry.addData("Homing", homing);
 
-        left.setTargetPosition(newPosition);
-        right.setTargetPosition(newPosition);
+        left.setTargetPosition(liftPosition);
+        right.setTargetPosition(liftPosition);
     }
 
     public int getPosition() {
         return posIndex;
+    }
+
+    public int getLiftLevel() {
+        return positions[posIndex];
+    }
+
+    public int getLiftPosition() {
+        return liftPosition;
+    }
+
+    public int getOffset() {
+        return offset;
     }
 
     // liftcontrol.adjustPosition(LiftControl.Positions.UP)

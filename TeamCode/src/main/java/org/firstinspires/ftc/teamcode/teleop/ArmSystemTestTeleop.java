@@ -78,7 +78,7 @@ public class ArmSystemTestTeleop extends OpMode
 //            rh.liftNew.adjustOffset(2);
 //        }
 
-        rh.armNew.moveClaw(gamepad1.left_bumper);
+//        rh.armNew.moveClaw(gamepad1.left_bumper);
 
         rh.armNew.clawUpdate();
         rh.armNew.armUpdate();

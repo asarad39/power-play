@@ -40,7 +40,6 @@ import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 // Teleop program that uses TeleopMove state to drive using robot controller
 
-@Disabled
 @TeleOp(name="Test Teleop for new Systems")
 public class TestTeleopNewSystem extends OpMode
 {
@@ -49,8 +48,8 @@ public class TestTeleopNewSystem extends OpMode
     private ElapsedTime runtime = new ElapsedTime();
     private RobotHardware rh = new RobotHardware();
     private ParallelStack teleStack = new ParallelStack(rh);
-    private TeleopArmControl teleopArmControl = new TeleopArmControl(rh);
-    private TeleopLiftControl teleopLiftControl = new TeleopLiftControl(rh);
+//    private TeleopArmControl teleopArmControl = new TeleopArmControl(rh);
+//    private TeleopLiftControl teleopLiftControl = new TeleopLiftControl(rh);
 
     @Override
     public void init() {
@@ -58,17 +57,17 @@ public class TestTeleopNewSystem extends OpMode
         rh.initialize(this);
 
 //        teleopArmControl.init();
-        teleopLiftControl.init();
+//        teleopLiftControl.init();
 
-//        State[] states = {
-//
-//                new TeleopArmControl(rh),
-//                new TeleopLiftControl(rh),
-//
-//        };
+        State[] states = {
 
-//        teleStack.createStack(states);
-//        teleStack.init();
+                new TeleopArmControl(rh),
+                new TeleopLiftControl(rh),
+
+        };
+
+        teleStack.createStack(states);
+        teleStack.init();
 
         rh.telemetry.addData("Status", "Initialized");
     }
@@ -76,14 +75,14 @@ public class TestTeleopNewSystem extends OpMode
     @Override
     public void loop() {
 
-//        rh.telemetry.addData("teleStack", teleStack.getIsDone());
+        rh.telemetry.addData("teleStack", teleStack.getIsDone());
 
-//        if (!teleStack.getIsDone()) {
-//            teleStack.update();
-//        }
+        if (!teleStack.getIsDone()) {
+            teleStack.update();
+        }
 
 //        teleopArmControl.update();
-        teleopLiftControl.update();
+//        teleopLiftControl.update();
     }
 
 

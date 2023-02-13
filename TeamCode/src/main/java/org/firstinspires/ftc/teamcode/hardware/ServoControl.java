@@ -39,13 +39,6 @@ public class ServoControl {
 
         this.servo = op.hardwareMap.get(Servo.class, servoName);
 
-        if (stepSize > maxStepSize) {
-            this.stepSize = maxStepSize;
-        } else if (stepSize < 0) {
-            this.stepSize = 0;
-        } else {
-            this.stepSize = stepSize;
-        }
     }
 
     public void move() {

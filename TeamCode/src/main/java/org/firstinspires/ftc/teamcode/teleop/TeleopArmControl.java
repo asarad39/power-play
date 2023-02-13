@@ -12,8 +12,7 @@ public class TeleopArmControl implements State {
     private boolean isVertical = false;
 
     private boolean canMirror = true;
-    private boolean canScore = true;
-    private boolean canCollect = true;
+    private boolean canClaw = true;
     private boolean canVertical = true;
     private int level = 0;  //  0 collect  1 score  2 vertical
 
@@ -65,12 +64,19 @@ public class TeleopArmControl implements State {
             index = 5 - level;
         }
 
-        rh.armNew.setPosition(index);
-
-// todo only set position when index != currentindex
-
         // claw
-        rh.armNew.moveClaw(rh.gamepad1.right_bumper);
+        if (rh.gamepad1.right_bumper) {
+            if (canClaw) {
+                rh.armNew.moveClaw();
+                canClaw = false;
+            }
+        } else {
+            canClaw = true;
+        }
+
+        if (!rh.armNew.isMoving() && index != rh.armNew.getIndex()) {
+            rh.armNew.setPosition(index);
+        }
 
         rh.armNew.clawUpdate();
         rh.armNew.armUpdate();
