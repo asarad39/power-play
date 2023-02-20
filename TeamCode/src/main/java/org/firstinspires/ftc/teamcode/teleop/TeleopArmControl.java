@@ -8,13 +8,11 @@ public class TeleopArmControl implements State {
 
     RobotHardware rh = null;
 
-    private boolean facingFront = true;
-    private boolean isVertical = false;
+    private boolean clawClosed = false;
+    private boolean armDown = true;
 
-    private boolean canMirror = true;
     private boolean canClaw = true;
-    private boolean canVertical = true;
-    private int level = 0;  //  0 collect  1 score  2 vertical
+    private boolean canArm = true;
 
     public TeleopArmControl(RobotHardware rh) {
 
@@ -27,59 +25,28 @@ public class TeleopArmControl implements State {
 
     public void update() {
 
-        // left bumper mirror
+        // left bumper claw
         if (rh.gamepad1.left_bumper) {
-            if (canMirror) {
-                facingFront = !facingFront;
-                canMirror = false;
-            }
-        } else {
-            canMirror = true;
-        }
-
-        // x go to vertical
-        if (rh.gamepad1.x) {
-            if (canVertical) {
-                isVertical = !isVertical;
-                canVertical = false;
-            }
-        } else {
-            canVertical = true;
-        }
-
-        // go to score
-        if (rh.liftNew.getPosition() > 0) {
-            level = 1;
-        } else {
-            level = 0;
-        }
-
-        if (isVertical) {
-            level = 2;
-        }
-
-        // convert side and level to index
-        int index = level;
-        if (!facingFront) {
-            index = 5 - level;
-        }
-
-        // claw
-        if (rh.gamepad1.right_bumper) {
             if (canClaw) {
-                rh.armNew.moveClaw();
+                clawClosed = !clawClosed;
                 canClaw = false;
             }
         } else {
             canClaw = true;
         }
 
-        if (!rh.armNew.isMoving() && index != rh.armNew.getIndex()) {
-            rh.armNew.setPosition(index);
+        // right bumper arm
+        if (rh.gamepad1.right_bumper) {
+            if (canArm) {
+                armDown = !armDown;
+                canArm = false;
+            }
+        } else {
+            canArm = true;
         }
 
-        rh.armNew.clawUpdate();
-        rh.armNew.armUpdate();
+        rh.armNew.clawUpdate(clawClosed);
+        rh.armNew.armUpdate(armDown);
     }
 
     @Override

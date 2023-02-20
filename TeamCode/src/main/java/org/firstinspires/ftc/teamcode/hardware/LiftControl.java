@@ -20,8 +20,6 @@ public class LiftControl {
     public DcMotor left;
     public DcMotor right;
 
-    boolean homing = true;
-
     private double maxPower = 0.8;
 
 //    final int[] positions = {0, 100, 200, 300, 400};
@@ -108,18 +106,6 @@ public class LiftControl {
             newPosition = maxPosition;
         }
 
-        if (homing) {
-
-            left.setPower(0.04);
-            right.setPower(0.04);
-
-            newPosition = maxPosition;
-            if (getTouch()) {
-                resetEncoders();
-                homing = false;
-            }
-        }
-
         liftPosition = newPosition;
     }
 
@@ -136,7 +122,6 @@ public class LiftControl {
         telemetry.addData("clicks", left.getCurrentPosition());
 
         telemetry.addData("touching", getTouch());
-        telemetry.addData("Homing", homing);
 
         left.setTargetPosition(liftPosition);
         right.setTargetPosition(liftPosition);

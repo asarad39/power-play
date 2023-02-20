@@ -18,7 +18,7 @@ public class RobotHardware {
     // Create objects for all of the hardware subsystems of the robot
     public DriveTrain driveTrain = null;
 
-    public NewLiftSystem lift = null;
+//    public NewLiftSystem lift = null;
     public LiftControl liftNew = null;
     public ArmControl armNew = null;
 
@@ -40,7 +40,7 @@ public class RobotHardware {
     public RobotHardware() {
 
         driveTrain = new DriveTrain();
-        lift = new NewLiftSystem();
+//        lift = new NewLiftSystem();
         tensorFlow = new TensorFlow();
 
 
@@ -57,7 +57,7 @@ public class RobotHardware {
     public RobotHardware(Pose2d currentPose) {
 
         driveTrain = new DriveTrain();
-        lift = new NewLiftSystem();
+//        lift = new NewLiftSystem();
         tensorFlow = new TensorFlow();
 //        colorSensor = new ColorSensor();
 
@@ -69,7 +69,7 @@ public class RobotHardware {
     public void initialize(OpMode op) {
 
         driveTrain.initialize(op);
-        lift.initialize(op);
+//        lift.initialize(op);
         tensorFlow.initialize(op);
         liftNew.initialize(op, this);
         armNew.initialize(op, this);
@@ -91,70 +91,12 @@ public class RobotHardware {
         driveTrain.setPower(powerFR, powerFL, powerBR, powerBL);
     }
 
-    //TODO
-//     Lift system methods
-    public void lift(double power) {
-
-        if (lift.getGoHome() != 0) {
-
-            lift.moveMotorsHome();
-
-        } else {
-
-            lift.setPower(power);
-
-        }
-    }
-
-    //TODO ARM and LIFT CONTROL
-    public void setArmServoGoal(double target) {
-        armNew.arm.setTargetPosition(target);
-    }
-    public void setRotateServoGoal(double target) {
-        armNew.rotate.setTargetPosition(target);
-    }
-    public void setFlipServoGoal(double target) {
-        armNew.flip.setTargetPosition(target);
-    }
-    public void setClawServoGoal(double target) {
-        armNew.claw.setTargetPosition(target);
-    }
-    public void setTinyServoGoal(double target) {
-        armNew.tiny.setTargetPosition(target);
-    }
-
-
-    public void setLiftTarget(double target) {
-
-        if (lift.getGoHome() == 2) {
-
-            lift.setTarget(300);
-
-        } else if (lift.getGoHome() == 1) {
-
-            lift.setTarget(-100);
-
-        } else {
-
-            lift.setTarget(target);
-
-        }
-    }
 
 //    public void liftServos(double positionArmL, double positionClawL) {
 //
 //        lift.setLiftServos(positionArmL, positionClawL);
 //        lift.setLiftServoEncoders();
 //    }
-
-    public void setServoPositions(double armPosition,
-                                  double flipPosition,
-                                  double rotatePosition,
-                                  double clawPosition) {
-// TODO
-        lift.setServosPositions(armPosition, flipPosition, rotatePosition, clawPosition);
-        lift.getServoPositions();
-    }
 
     // --------------------- old lift below
 
@@ -184,37 +126,6 @@ public class RobotHardware {
 
     // -------------------- new lift below
 
-//    TODO
-    public int getLiftEncoderLeft() {
-        return lift.getLiftEncoderLeft();
-    }
-
-    public int getLiftEncoderRight() {
-        return lift.getLiftEncoderRight();
-    }
-
-    public double getArmPos() {
-        return lift.getArmPos();
-    }
-
-    public double getFlipPos() {
-        return lift.getFlipPos();
-    }
-
-    public double getRotatePos() {
-        return lift.getRotatePos();
-    }
-
-    public double getClawPos() {
-        return lift.getClawPos();
-    }
-
-    public boolean getTouch() {
-        return lift.getTouch();
-    }
-
-    // ------------------------------
-
     // prepare tensorflow for recognizing the cone sleeve
     public List<Recognition> getRecognitions() throws Exception {
         return tensorFlow.getRecognitions();
@@ -242,22 +153,6 @@ public class RobotHardware {
         this.currentPose = currentPose;
     }
 
-    // Color sensor values
-//    public double getRed() {
-//        return colorSensor.getRed();
-//    }
-//
-//    public double getGreen() {
-//        return colorSensor.getGreen();
-//    }
-//
-//    public double getBlue() {
-//        return colorSensor.getBlue();
-//    }
-//
-//    public double getDistance() {
-//        return colorSensor.getDistance();
-//    }
 
     public int getEncoderBL() { return driveTrain.getEncoderBL(); }
     public int getEncoderFL() { return driveTrain.getEncoderFL(); }

@@ -36,9 +36,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 //import org.firstinspires.ftc.teamcode.autonomous.AutoClawArm;
-import org.firstinspires.ftc.teamcode.autonomous.AutoTensorFlow;
 import org.firstinspires.ftc.teamcode.stateStructure.SeriesStack;
-import org.firstinspires.ftc.teamcode.stateStructure.State;
 
 /**
  * This OpMode scans a single servo back and forward until Stop is pressed.
